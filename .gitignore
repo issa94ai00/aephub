@@ -1,0 +1,38 @@
+vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+public/downloads/lms-android.apk
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+# استثناء مجلد الـ course-files بالكامل
+storage/app/private/course-files/
+
+# استثناء مجلد الـ receipts بالكامل
+storage/app/private/receipts/
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+
+# Laravel 5 & Lumen specific with changed public path
+public_html/storage
+public_html/hot
+
+storage/*.key
+storage/framework/views/
+storage/framework/cache/
+storage/framework/sessions/
+.env
+Homestead.yaml
+Homestead.json
+.vagrant
+.phpunit.result.cache
+
+public/build
+storage/pail
+.env.backup
+.env.production
+.phpactor.json
+auth.json
+node_modules

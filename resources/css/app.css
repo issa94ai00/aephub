@@ -1,0 +1,544 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Tajawal', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Site palette: ~60% neutrals (surfaces), ~30% secondary (mint + calm blue in ambience), ~10% accent (warm CTA) */
+    --color-site-canvas: #fafaf9;
+    --color-site-canvas-dark: #0c1222;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    html[lang^='en'] {
+        font-family: 'Inter', 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    html[lang^='ar'] {
+        font-family: 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    html.dark {
+        color-scheme: dark;
+    }
+
+    html.dark body.soft-bg {
+        background:
+            radial-gradient(52rem 40rem at 92% -8%, color-mix(in oklab, #34d399 16%, transparent), transparent 58%),
+            radial-gradient(46rem 34rem at 4% 102%, color-mix(in oklab, #38bdf8 12%, transparent), transparent 55%),
+            radial-gradient(36rem 28rem at 48% 42%, color-mix(in oklab, #334155 14%, transparent), transparent 62%),
+            var(--color-site-canvas-dark, #0c1222);
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+}
+
+@layer components {
+    .soft-bg {
+        background:
+            radial-gradient(52rem 40rem at 92% -8%, color-mix(in oklab, #6ee7b7 9%, transparent), transparent 58%),
+            radial-gradient(46rem 34rem at 4% 102%, color-mix(in oklab, #7dd3fc 10%, transparent), transparent 55%),
+            radial-gradient(38rem 30rem at 50% 50%, color-mix(in oklab, #e7e5e4 14%, transparent), transparent 65%),
+            var(--color-site-canvas, #fafaf9);
+    }
+
+    /*
+     * الخلفية الثابتة: دمج الصورة مع تدرجات soft-bg كطبقات background-image
+     * (الطبقة الأولى أقرب للمستخدم). الطبقة الأخيرة هي الصورة بـ attachment: fixed.
+     * لا تُستخدم ::before مع z-index سالب لأنها تُرسَم خلف خلفية body وتختفي.
+     */
+    body.site-bg-fixed-layer.soft-bg {
+        background-image:
+            radial-gradient(52rem 40rem at 92% -8%, color-mix(in oklab, #6ee7b7 9%, transparent), transparent 58%),
+            radial-gradient(46rem 34rem at 4% 102%, color-mix(in oklab, #7dd3fc 10%, transparent), transparent 55%),
+            var(--site-fixed-bg);
+        background-color: var(--color-site-canvas, #fafaf9);
+        background-attachment: scroll, scroll, fixed;
+        background-size: auto, auto, cover;
+        background-position: center;
+        background-repeat: no-repeat, no-repeat, no-repeat;
+    }
+
+    html.dark body.site-bg-fixed-layer.soft-bg {
+        background-image:
+            radial-gradient(52rem 40rem at 92% -8%, color-mix(in oklab, #34d399 16%, transparent), transparent 58%),
+            radial-gradient(46rem 34rem at 4% 102%, color-mix(in oklab, #38bdf8 12%, transparent), transparent 55%),
+            var(--site-fixed-bg);
+        background-color: var(--color-site-canvas-dark, #0c1222);
+        background-attachment: scroll, scroll, fixed;
+        background-size: auto, auto, cover;
+        background-position: center;
+        background-repeat: no-repeat, no-repeat, no-repeat;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        body.site-bg-fixed-layer.soft-bg {
+            background-attachment: scroll, scroll, scroll;
+        }
+    }
+
+    .course-card {
+        @apply rounded-3xl border border-slate-200/60 bg-white/80 p-5 shadow-lg shadow-slate-900/5 ring-1 ring-white/50 backdrop-blur-xl transition duration-500 ease-out hover:-translate-y-1.5 hover:border-emerald-200/50 hover:shadow-xl hover:shadow-emerald-900/10;
+    }
+
+    .hero-carousel {
+        @apply relative overflow-hidden rounded-3xl border border-slate-200/50 shadow-2xl shadow-slate-900/10 ring-1 ring-white/40 sm:rounded-[2rem] dark:border-slate-700/50 dark:shadow-black/30 dark:ring-slate-700/30;
+    }
+
+    .hero-carousel__track {
+        @apply flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)];
+    }
+
+    .hero-carousel__slide {
+        @apply relative min-w-full shrink-0;
+    }
+
+    .hero-carousel__img {
+        @apply h-[min(52vh,420px)] sm:h-[min(56vh,480px)] w-full object-cover;
+    }
+
+    .hero-carousel__overlay {
+        @apply absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/35 to-slate-900/10;
+    }
+
+    .hero-carousel__caption {
+        @apply absolute bottom-0 right-0 left-0 p-5 sm:p-8 text-right text-white;
+    }
+
+    .hero-carousel__dot {
+        @apply h-2 w-2 rounded-full bg-white/35 transition duration-300 hover:bg-white/80;
+    }
+
+    .hero-carousel__dot.is-active {
+        @apply w-7 bg-amber-400 shadow-sm shadow-amber-900/35;
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition:
+            opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+            transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .top-nav {
+        @apply transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)];
+    }
+
+    html.dark .top-nav {
+        @apply rounded-2xl border border-slate-700/50 bg-slate-900/80 px-3 shadow-lg shadow-black/20 backdrop-blur-xl;
+    }
+
+    .top-nav.is-sticky {
+        @apply rounded-2xl border border-slate-200/80 bg-white/80 px-3 shadow-lg shadow-slate-900/10 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-900/85 dark:shadow-black/25;
+    }
+
+    html.dark .top-nav.is-sticky {
+        @apply border-slate-700/60 bg-slate-900/85;
+    }
+
+    html.dark .course-card {
+        @apply border-slate-700/60 bg-slate-900/75 ring-slate-700/40 hover:border-emerald-700/40;
+    }
+
+    html.dark .hero-carousel {
+        @apply border-slate-700/50 shadow-black/40;
+    }
+
+    html.dark [data-carousel-prev],
+    html.dark [data-carousel-next] {
+        @apply border-slate-600/80 bg-slate-900/90 text-slate-100 ring-slate-600/60 hover:bg-slate-800;
+    }
+
+    .site-nav-link {
+        @apply relative text-sm font-medium text-slate-600 transition duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-center after:scale-x-0 after:bg-sky-600 after:transition after:duration-300 after:content-[''] hover:text-emerald-800 hover:after:scale-x-100 dark:text-slate-200 dark:after:bg-sky-400 dark:hover:text-emerald-300;
+    }
+
+    .site-btn-primary {
+        @apply inline-flex items-center justify-center rounded-xl bg-gradient-to-b from-amber-500 to-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-orange-900/25 outline-none ring-2 ring-amber-400/0 transition duration-300 hover:-translate-y-0.5 hover:from-amber-400 hover:to-orange-500 hover:shadow-lg hover:shadow-orange-900/30 hover:ring-amber-300/35 focus-visible:ring-amber-400/55 active:translate-y-0 dark:from-amber-500 dark:to-orange-600 dark:hover:from-amber-400 dark:hover:to-orange-500;
+    }
+
+    .site-btn-secondary {
+        @apply inline-flex items-center justify-center rounded-xl border border-slate-200/90 bg-white/90 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-white hover:shadow-md dark:border-slate-600 dark:bg-slate-800/90 dark:text-slate-100 dark:hover:border-slate-500;
+    }
+
+    .site-input {
+        @apply mt-1 w-full rounded-xl border border-slate-200/90 bg-white/95 px-3.5 py-2.5 text-sm text-slate-900 shadow-inner shadow-slate-900/5 outline-none ring-2 ring-emerald-600/0 transition placeholder:text-slate-400 focus:border-sky-400/55 focus:ring-sky-500/18 dark:border-slate-600 dark:bg-slate-900/90 dark:text-slate-100 dark:focus:border-sky-500/45;
+    }
+
+    .site-panel {
+        @apply rounded-3xl border border-stone-200/65 bg-white/75 p-6 shadow-xl shadow-stone-900/5 ring-1 ring-white/80 backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-900/65 dark:shadow-black/25 dark:ring-slate-700/35 sm:p-8;
+    }
+
+    .site-fab-wa {
+        animation: site-fab-pulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes site-fab-pulse {
+        0%,
+        100% {
+            box-shadow:
+                0 20px 40px -12px color-mix(in oklab, #16a34a 40%, transparent),
+                0 0 0 0 color-mix(in oklab, #4ade80 28%, transparent);
+        }
+        50% {
+            box-shadow:
+                0 24px 48px -10px color-mix(in oklab, #16a34a 48%, transparent),
+                0 0 0 10px transparent;
+        }
+    }
+
+    .site-faq details summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .site-faq details[open] summary .site-faq-chevron {
+        transform: rotate(180deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .site-fab-wa {
+        animation: none !important;
+    }
+}
+
+/* —— Admin panel: layout, motion, glass —— */
+@layer components {
+    .admin-shell {
+        position: relative;
+        isolation: isolate;
+        background-color: #070a09;
+    }
+
+    .admin-ambient {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+    .admin-ambient__orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(72px);
+        opacity: 0.45;
+        will-change: transform;
+    }
+
+    .admin-ambient__orb--a {
+        width: min(42rem, 90vw);
+        height: min(42rem, 90vw);
+        right: -18%;
+        top: -22%;
+        background: radial-gradient(circle at 30% 30%, color-mix(in oklab, #34d399 55%, transparent), transparent 62%);
+        animation: admin-float-a 18s ease-in-out infinite;
+    }
+
+    .admin-ambient__orb--b {
+        width: min(36rem, 85vw);
+        height: min(36rem, 85vw);
+        left: -14%;
+        bottom: -18%;
+        background: radial-gradient(circle at 60% 50%, color-mix(in oklab, #22c55e 38%, transparent), transparent 65%);
+        animation: admin-float-b 22s ease-in-out infinite;
+    }
+
+    .admin-ambient__orb--c {
+        width: min(28rem, 70vw);
+        height: min(28rem, 70vw);
+        left: 35%;
+        top: 40%;
+        opacity: 0.28;
+        background: radial-gradient(circle at 50% 50%, color-mix(in oklab, #a7f3d0 40%, transparent), transparent 70%);
+        animation: admin-float-c 26s ease-in-out infinite;
+    }
+
+    .admin-ambient__grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0.06;
+        background-image:
+            linear-gradient(to left, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(ellipse at 50% 20%, black 0%, transparent 72%);
+    }
+
+    .admin-shell > .flex {
+        position: relative;
+        z-index: 1;
+    }
+
+    .admin-header {
+        transition:
+            background-color 0.35s ease,
+            box-shadow 0.35s ease,
+            border-color 0.35s ease;
+    }
+
+    .admin-header.is-scrolled {
+        background-color: color-mix(in oklab, #0c110f 88%, transparent);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        border-color: color-mix(in oklab, white 14%, transparent);
+    }
+
+    .admin-sidebar {
+        transition:
+            transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+            box-shadow 0.35s ease,
+            border-color 0.35s ease;
+        background: linear-gradient(165deg, rgba(12, 17, 15, 0.96), rgba(8, 12, 10, 0.98));
+        box-shadow: -12px 0 48px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(12px);
+    }
+
+    .admin-nav-link {
+        transition:
+            transform 0.22s ease,
+            background-color 0.22s ease,
+            color 0.22s ease,
+            box-shadow 0.22s ease;
+    }
+
+    .admin-nav-link:hover {
+        transform: translateX(-3px);
+    }
+
+    .admin-nav-link:active {
+        transform: translateX(-1px) scale(0.99);
+    }
+
+    .admin-card {
+        border-radius: 1rem;
+        border: 1px solid color-mix(in oklab, white 12%, transparent);
+        background: linear-gradient(155deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+        transition:
+            transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+            border-color 0.35s ease,
+            box-shadow 0.35s ease;
+    }
+
+    .admin-card:hover {
+        transform: translateY(-2px);
+        border-color: color-mix(in oklab, #34d399 28%, transparent);
+        box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.28),
+            0 0 0 1px color-mix(in oklab, #34d399 18%, transparent);
+    }
+
+    .admin-table-wrap {
+        border-radius: 1rem;
+        transition: box-shadow 0.35s ease;
+    }
+
+    .admin-table-wrap:hover {
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
+    }
+
+    .admin-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .admin-btn {
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.25s ease,
+            background-color 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+    .admin-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .admin-btn:active {
+        transform: translateY(0) scale(0.98);
+    }
+
+    .admin-fade-up {
+        opacity: 0;
+        transform: translate3d(0, 16px, 0);
+        transition:
+            opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+            transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition-delay: var(--admin-delay, 0ms);
+    }
+
+    .admin-fade-up.is-visible {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .admin-login-page .admin-login-brand {
+        animation: admin-login-pop 0.85s cubic-bezier(0.2, 0.85, 0.2, 1) both;
+    }
+
+    .admin-login-page .admin-login-card {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) scale(0.985);
+        transition:
+            opacity 0.65s cubic-bezier(0.2, 0.85, 0.2, 1),
+            transform 0.7s cubic-bezier(0.2, 0.85, 0.2, 1),
+            box-shadow 0.35s ease,
+            border-color 0.35s ease;
+    }
+
+    .admin-login-page.is-ready .admin-login-card {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .admin-login-page.is-ready .admin-login-card:hover {
+        border-color: color-mix(in oklab, #34d399 28%, transparent);
+        box-shadow:
+            0 24px 48px rgba(0, 0, 0, 0.35),
+            0 0 0 1px color-mix(in oklab, #34d399 15%, transparent);
+    }
+
+    .admin-brand-icon {
+        animation: admin-icon-pulse 3.2s ease-in-out infinite;
+    }
+
+    .admin-overlay {
+        transition: opacity 0.28s ease;
+    }
+
+    .admin-overlay:not(.hidden) {
+        animation: admin-overlay-in 0.28s ease both;
+    }
+}
+
+@keyframes admin-float-a {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(-3%, 4%, 0) scale(1.05);
+    }
+}
+
+@keyframes admin-float-b {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(4%, -3%, 0) scale(1.06);
+    }
+}
+
+@keyframes admin-float-c {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(-2%, -2%, 0);
+    }
+}
+
+@keyframes admin-login-pop {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 12px, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes admin-icon-pulse {
+    0%,
+    100% {
+        filter: drop-shadow(0 0 0 transparent);
+    }
+    50% {
+        filter: drop-shadow(0 0 12px color-mix(in oklab, #34d399 45%, transparent));
+    }
+}
+
+@keyframes admin-overlay-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-ambient__orb,
+    .admin-ambient__orb--a,
+    .admin-ambient__orb--b,
+    .admin-ambient__orb--c {
+        animation: none !important;
+    }
+
+    .admin-brand-icon {
+        animation: none !important;
+    }
+
+    .admin-login-page .admin-login-brand {
+        animation: none !important;
+    }
+
+    .admin-nav-link:hover {
+        transform: none;
+    }
+
+    .admin-card:hover {
+        transform: none;
+    }
+
+    .admin-fade-up {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .admin-login-page .admin-login-card {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
