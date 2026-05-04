@@ -14,6 +14,7 @@ return [
 
     'nav' => [
         'dashboard' => 'Overview',
+        'statistics' => 'Statistics',
         'courses' => 'Courses',
         'registration_payments' => 'Registration (payment) requests',
         'student_courses' => 'Courses visible to students',
@@ -100,6 +101,23 @@ return [
         'review' => 'Review',
         'no_payments' => 'No payment requests.',
         'course_fallback' => 'Course',
+    ],
+
+    'statistics' => [
+        'title' => 'Statistics',
+        'heading' => 'Course Statistics',
+        'subheading' => 'File sizes and revenue per course',
+        'total_file_size' => 'Total file size',
+        'total_revenue' => 'Total revenue',
+        'file_size_chart' => 'File size — Top 10 courses',
+        'revenue_chart' => 'Revenue — Top 10 courses',
+        'course' => 'Course',
+        'teacher' => 'Teacher',
+        'file_size' => 'File size',
+        'revenue' => 'Revenue',
+        'enrollments' => 'Enrolled students',
+        'no_data' => 'No data available.',
+        'bytes' => 'bytes',
     ],
 
     'courses' => [

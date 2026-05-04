@@ -48,6 +48,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
 
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('statistics', [DashboardController::class, 'statistics'])->name('statistics');
 
         Route::get('student-courses', [CourseWebController::class, 'indexStudentCatalog'])->name('courses.student-catalog');
 
