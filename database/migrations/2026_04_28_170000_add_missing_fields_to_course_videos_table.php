@@ -9,9 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('course_videos', function (Blueprint $table) {
-            $table->string('title_en')->nullable()->after('title');
-            $table->text('description_en')->nullable()->after('description');
-            $table->string('encrypted_sha256')->nullable()->after('key_version');
+            if (!Schema::hasColumn('course_videos', 'title_en')) {
+                $table->string('title_en')->nullable()->after('title');
+            }
+            if (!Schema::hasColumn('course_videos', 'description_en')) {
+                $table->text('description_en')->nullable()->after('description');
+            }
+            if (!Schema::hasColumn('course_videos', 'encrypted_sha256')) {
+                $table->string('encrypted_sha256')->nullable()->after('key_version');
+            }
         });
     }
 
