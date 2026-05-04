@@ -821,6 +821,7 @@
 #36 C:/Users/Damatech/Desktop/AEP/artisan(16): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
 #37 {main}
 "} 
+<<<<<<< HEAD
 [2026-05-04 02:19:36] local.ERROR: Command "migreate" is not defined.
 
 Did you mean one of these?
@@ -926,3 +927,563 @@ Did you mean one of these?
 #35 C:/Users/Damatech/Desktop/AEP/artisan(16): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
 #36 {main}
 "} 
+=======
+[2026-05-04 02:18:10] local.ERROR: SQLSTATE[42S21]: Column already exists: 1060 Duplicate column name 'title_en' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: aep, SQL: alter table `course_videos` add `title_en` varchar(255) null after `title`) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S21): SQLSTATE[42S21]: Column already exists: 1060 Duplicate column name 'title_en' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: aep, SQL: alter table `course_videos` add `title_en` varchar(255) null after `title`) at /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838)
+[stacktrace]
+#0 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(794): Illuminate\\Database\\Connection->runQueryCallback()
+#1 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(573): Illuminate\\Database\\Connection->run()
+#2 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(121): Illuminate\\Database\\Connection->statement()
+#3 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(686): Illuminate\\Database\\Schema\\Blueprint->build()
+#4 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(494): Illuminate\\Database\\Schema\\Builder->build()
+#5 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(363): Illuminate\\Database\\Schema\\Builder->table()
+#6 /var/www/aephub.com/html/database/migrations/2026_04_28_170000_add_missing_fields_to_course_videos_table.php(11): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#7 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(517): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(442): Illuminate\\Database\\Migrations\\Migrator->runMethod()
+#9 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(451): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#10 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->runMigration()
+#11 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(41): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#12 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(814): Illuminate\\Console\\View\\Components\\Task->render()
+#13 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->write()
+#14 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(211): Illuminate\\Database\\Migrations\\Migrator->runUp()
+#15 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(138): Illuminate\\Database\\Migrations\\Migrator->runPending()
+#16 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run()
+#17 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(671): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->Illuminate\\Database\\Console\\Migrations\\{closure}()
+#18 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection()
+#19 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#22 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure()
+#23 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#24 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call()
+#25 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call()
+#26 /var/www/aephub.com/html/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute()
+#27 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run()
+#28 /var/www/aephub.com/html/vendor/symfony/console/Application.php(1117): Illuminate\\Console\\Command->run()
+#29 /var/www/aephub.com/html/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand()
+#30 /var/www/aephub.com/html/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun()
+#31 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run()
+#32 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle()
+#33 /var/www/aephub.com/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand()
+#34 {main}
+
+[previous exception] [object] (PDOException(code: 42S21): SQLSTATE[42S21]: Column already exists: 1060 Duplicate column name 'title_en' at /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:584)
+[stacktrace]
+#0 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(584): PDOStatement->execute()
+#1 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(827): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}()
+#2 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(794): Illuminate\\Database\\Connection->runQueryCallback()
+#3 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(573): Illuminate\\Database\\Connection->run()
+#4 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(121): Illuminate\\Database\\Connection->statement()
+#5 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(686): Illuminate\\Database\\Schema\\Blueprint->build()
+#6 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(494): Illuminate\\Database\\Schema\\Builder->build()
+#7 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(363): Illuminate\\Database\\Schema\\Builder->table()
+#8 /var/www/aephub.com/html/database/migrations/2026_04_28_170000_add_missing_fields_to_course_videos_table.php(11): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#9 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(517): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(442): Illuminate\\Database\\Migrations\\Migrator->runMethod()
+#11 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(451): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#12 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->runMigration()
+#13 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(41): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#14 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(814): Illuminate\\Console\\View\\Components\\Task->render()
+#15 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->write()
+#16 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(211): Illuminate\\Database\\Migrations\\Migrator->runUp()
+#17 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(138): Illuminate\\Database\\Migrations\\Migrator->runPending()
+#18 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run()
+#19 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(671): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->Illuminate\\Database\\Console\\Migrations\\{closure}()
+#20 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection()
+#21 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#24 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure()
+#25 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#26 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call()
+#27 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call()
+#28 /var/www/aephub.com/html/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute()
+#29 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run()
+#30 /var/www/aephub.com/html/vendor/symfony/console/Application.php(1117): Illuminate\\Console\\Command->run()
+#31 /var/www/aephub.com/html/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand()
+#32 /var/www/aephub.com/html/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun()
+#33 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run()
+#34 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle()
+#35 /var/www/aephub.com/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand()
+#36 {main}
+"} 
+[2026-05-04 02:23:21] local.ERROR: SQLSTATE[42S21]: Column already exists: 1060 Duplicate column name 'title_en' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: aep, SQL: alter table `course_videos` add `title_en` varchar(255) null after `title`) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S21): SQLSTATE[42S21]: Column already exists: 1060 Duplicate column name 'title_en' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: aep, SQL: alter table `course_videos` add `title_en` varchar(255) null after `title`) at /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838)
+[stacktrace]
+#0 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(794): Illuminate\\Database\\Connection->runQueryCallback()
+#1 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(573): Illuminate\\Database\\Connection->run()
+#2 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(121): Illuminate\\Database\\Connection->statement()
+#3 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(686): Illuminate\\Database\\Schema\\Blueprint->build()
+#4 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(494): Illuminate\\Database\\Schema\\Builder->build()
+#5 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(363): Illuminate\\Database\\Schema\\Builder->table()
+#6 /var/www/aephub.com/html/database/migrations/2026_04_28_170000_add_missing_fields_to_course_videos_table.php(11): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#7 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(517): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(442): Illuminate\\Database\\Migrations\\Migrator->runMethod()
+#9 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(451): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#10 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->runMigration()
+#11 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(41): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#12 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(814): Illuminate\\Console\\View\\Components\\Task->render()
+#13 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->write()
+#14 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(211): Illuminate\\Database\\Migrations\\Migrator->runUp()
+#15 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(138): Illuminate\\Database\\Migrations\\Migrator->runPending()
+#16 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run()
+#17 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(671): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->Illuminate\\Database\\Console\\Migrations\\{closure}()
+#18 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection()
+#19 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#22 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure()
+#23 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#24 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call()
+#25 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call()
+#26 /var/www/aephub.com/html/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute()
+#27 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run()
+#28 /var/www/aephub.com/html/vendor/symfony/console/Application.php(1117): Illuminate\\Console\\Command->run()
+#29 /var/www/aephub.com/html/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand()
+#30 /var/www/aephub.com/html/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun()
+#31 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run()
+#32 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle()
+#33 /var/www/aephub.com/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand()
+#34 {main}
+
+[previous exception] [object] (PDOException(code: 42S21): SQLSTATE[42S21]: Column already exists: 1060 Duplicate column name 'title_en' at /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:584)
+[stacktrace]
+#0 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(584): PDOStatement->execute()
+#1 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(827): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}()
+#2 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(794): Illuminate\\Database\\Connection->runQueryCallback()
+#3 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(573): Illuminate\\Database\\Connection->run()
+#4 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(121): Illuminate\\Database\\Connection->statement()
+#5 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(686): Illuminate\\Database\\Schema\\Blueprint->build()
+#6 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(494): Illuminate\\Database\\Schema\\Builder->build()
+#7 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(363): Illuminate\\Database\\Schema\\Builder->table()
+#8 /var/www/aephub.com/html/database/migrations/2026_04_28_170000_add_missing_fields_to_course_videos_table.php(11): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#9 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(517): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(442): Illuminate\\Database\\Migrations\\Migrator->runMethod()
+#11 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(451): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#12 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->runMigration()
+#13 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(41): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#14 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(814): Illuminate\\Console\\View\\Components\\Task->render()
+#15 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(253): Illuminate\\Database\\Migrations\\Migrator->write()
+#16 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(211): Illuminate\\Database\\Migrations\\Migrator->runUp()
+#17 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(138): Illuminate\\Database\\Migrations\\Migrator->runPending()
+#18 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run()
+#19 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(671): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->Illuminate\\Database\\Console\\Migrations\\{closure}()
+#20 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection()
+#21 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#24 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure()
+#25 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#26 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(799): Illuminate\\Container\\BoundMethod::call()
+#27 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\Container\\Container->call()
+#28 /var/www/aephub.com/html/vendor/symfony/console/Command/Command.php(341): Illuminate\\Console\\Command->execute()
+#29 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run()
+#30 /var/www/aephub.com/html/vendor/symfony/console/Application.php(1117): Illuminate\\Console\\Command->run()
+#31 /var/www/aephub.com/html/vendor/symfony/console/Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand()
+#32 /var/www/aephub.com/html/vendor/symfony/console/Application.php(195): Symfony\\Component\\Console\\Application->doRun()
+#33 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run()
+#34 /var/www/aephub.com/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle()
+#35 /var/www/aephub.com/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand()
+#36 {main}
+"} 
+[2026-05-04 06:03:48] local.DEBUG: From: Laravel <hello@example.com>
+To: your@example.com
+Subject: =?utf-8?Q?=D9=86=D8=B3=D8=AE_=D8=A7=D8=AD=D8=AA=D9=8A?=
+ =?utf-8?Q?=D8=A7=D8=B7=D9=8A_=D8=AC=D8=AF=D9=8A=D8=AF_=D9=86=D8=A7=D8=AC?=
+ =?utf-8?Q?=D8=AD_=D9=84?= AEPHUB (local)
+MIME-Version: 1.0
+Date: Mon, 04 May 2026 06:03:48 +0000
+Message-ID: <edc714ed91c7fc4493ab0eb3e6e5f999@example.com>
+Content-Type: multipart/alternative; boundary=nlVhV_fE
+
+--nlVhV_fE
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+AEPHUB: https://aephub.com
+
+# Hello!
+
+أخبار عظيمة، نسخة احتياطية جديدة ل AEPHUB (local) تم إنشاؤها بنجاح على القرص المسمى local.
+
+اسم التطبيق: AEPHUB (local)
+
+اسم النسخ الاحتياطي: Laravel
+
+القرص: local
+
+أحدث حجم للنسخ الاحتياطي: 102.05 KB
+
+عدد النسخ الاحتياطية: 1
+
+إجمالي مساحة التخزين المستخدمة: 102.05 KB
+
+أحدث تاريخ النسخ الاحتياطي: 2026/05/04 06:03:47
+
+أقدم تاريخ نسخ احتياطي: 2026/05/04 06:03:47
+
+Regards,
+AEPHUB
+
+© 2026 AEPHUB. All rights reserved.
+
+--nlVhV_fE
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ar">
+<head>
+<title>AEPHUB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<style>
+@media only screen and (max-width: 600px) {
+.inner-body {
+width: 100% !important;
+}
+
+.footer {
+width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 500px) {
+.button {
+width: 100% !important;
+}
+}
+</style>
+
+</head>
+<body style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -webkit-text-size-adjust: none; background-color: #ffffff; color: #52525b; height: 100%; line-height: 1.4; margin: 0; padding: 0; width: 100% !important;">
+
+<table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #fafafa; margin: 0; padding: 0; width: 100%;">
+<tr>
+<td align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; margin: 0; padding: 0; width: 100%;">
+<tr>
+<td class="header" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; padding: 25px 0; text-align: center;">
+<a href="https://aephub.com" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #18181b; font-size: 19px; font-weight: bold; text-decoration: none; display: inline-block;">
+AEPHUB
+</a>
+</td>
+</tr>
+
+<!-- Email Body -->
+<tr>
+<td class="body" width="100%" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #fafafa; border-bottom: 1px solid #fafafa; border-top: 1px solid #fafafa; margin: 0; padding: 0; width: 100%; border: hidden !important;">
+<table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; background-color: #ffffff; border-color: #e4e4e7; border-radius: 4px; border-width: 1px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); margin: 0 auto; padding: 0; width: 570px;">
+<!-- Body content -->
+<tr>
+<td class="content-cell" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
+<h1 style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #18181b; font-size: 18px; font-weight: bold; margin-top: 0; text-align: start;">Hello!</h1>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أخبار عظيمة، نسخة احتياطية جديدة ل AEPHUB (local) تم إنشاؤها بنجاح على القرص المسمى local.</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">اسم التطبيق: AEPHUB (local)</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">اسم النسخ الاحتياطي: Laravel</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">القرص: local</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أحدث حجم للنسخ الاحتياطي: 102.05 KB</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">عدد النسخ الاحتياطية: 1</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">إجمالي مساحة التخزين المستخدمة: 102.05 KB</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أحدث تاريخ النسخ الاحتياطي: 2026/05/04 06:03:47</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أقدم تاريخ نسخ احتياطي: 2026/05/04 06:03:47</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">Regards,<br>
+AEPHUB</p>
+
+
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; margin: 0 auto; padding: 0; text-align: center; width: 570px;">
+<tr>
+<td class="content-cell" align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; line-height: 1.5em; margin-top: 0; color: #a1a1aa; font-size: 12px; text-align: center;">© 2026 AEPHUB. All rights reserved.</p>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+--nlVhV_fE--
+  
+[2026-05-04 06:14:03] local.DEBUG: From: Laravel <hello@example.com>
+To: your@example.com
+Subject: =?utf-8?Q?=D9=86=D8=B3=D8=AE_=D8=A7=D8=AD=D8=AA=D9=8A?=
+ =?utf-8?Q?=D8=A7=D8=B7=D9=8A_=D8=AC=D8=AF=D9=8A=D8=AF_=D9=86=D8=A7=D8=AC?=
+ =?utf-8?Q?=D8=AD_=D9=84?= AEPHUB (local)
+MIME-Version: 1.0
+Date: Mon, 04 May 2026 06:14:03 +0000
+Message-ID: <390a959195d54417d22a6e573d86067d@example.com>
+Content-Type: multipart/alternative; boundary=NMTUxv-W
+
+--NMTUxv-W
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+AEPHUB: https://aephub.com
+
+# Hello!
+
+أخبار عظيمة، نسخة احتياطية جديدة ل AEPHUB (local) تم إنشاؤها بنجاح على القرص المسمى local.
+
+اسم التطبيق: AEPHUB (local)
+
+اسم النسخ الاحتياطي: Laravel
+
+القرص: local
+
+أحدث حجم للنسخ الاحتياطي: 102.05 KB
+
+عدد النسخ الاحتياطية: 2
+
+إجمالي مساحة التخزين المستخدمة: 204.11 KB
+
+أحدث تاريخ النسخ الاحتياطي: 2026/05/04 06:14:03
+
+أقدم تاريخ نسخ احتياطي: 2026/05/04 06:03:47
+
+Regards,
+AEPHUB
+
+© 2026 AEPHUB. All rights reserved.
+
+--NMTUxv-W
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ar">
+<head>
+<title>AEPHUB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<style>
+@media only screen and (max-width: 600px) {
+.inner-body {
+width: 100% !important;
+}
+
+.footer {
+width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 500px) {
+.button {
+width: 100% !important;
+}
+}
+</style>
+
+</head>
+<body style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -webkit-text-size-adjust: none; background-color: #ffffff; color: #52525b; height: 100%; line-height: 1.4; margin: 0; padding: 0; width: 100% !important;">
+
+<table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #fafafa; margin: 0; padding: 0; width: 100%;">
+<tr>
+<td align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; margin: 0; padding: 0; width: 100%;">
+<tr>
+<td class="header" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; padding: 25px 0; text-align: center;">
+<a href="https://aephub.com" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #18181b; font-size: 19px; font-weight: bold; text-decoration: none; display: inline-block;">
+AEPHUB
+</a>
+</td>
+</tr>
+
+<!-- Email Body -->
+<tr>
+<td class="body" width="100%" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #fafafa; border-bottom: 1px solid #fafafa; border-top: 1px solid #fafafa; margin: 0; padding: 0; width: 100%; border: hidden !important;">
+<table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; background-color: #ffffff; border-color: #e4e4e7; border-radius: 4px; border-width: 1px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); margin: 0 auto; padding: 0; width: 570px;">
+<!-- Body content -->
+<tr>
+<td class="content-cell" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
+<h1 style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #18181b; font-size: 18px; font-weight: bold; margin-top: 0; text-align: start;">Hello!</h1>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أخبار عظيمة، نسخة احتياطية جديدة ل AEPHUB (local) تم إنشاؤها بنجاح على القرص المسمى local.</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">اسم التطبيق: AEPHUB (local)</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">اسم النسخ الاحتياطي: Laravel</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">القرص: local</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أحدث حجم للنسخ الاحتياطي: 102.05 KB</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">عدد النسخ الاحتياطية: 2</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">إجمالي مساحة التخزين المستخدمة: 204.11 KB</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أحدث تاريخ النسخ الاحتياطي: 2026/05/04 06:14:03</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أقدم تاريخ نسخ احتياطي: 2026/05/04 06:03:47</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">Regards,<br>
+AEPHUB</p>
+
+
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; margin: 0 auto; padding: 0; text-align: center; width: 570px;">
+<tr>
+<td class="content-cell" align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; line-height: 1.5em; margin-top: 0; color: #a1a1aa; font-size: 12px; text-align: center;">© 2026 AEPHUB. All rights reserved.</p>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+--NMTUxv-W--
+  
+[2026-05-04 06:17:35] local.DEBUG: From: Laravel <hello@example.com>
+To: your@example.com
+Subject: =?utf-8?Q?=D9=86=D8=B3=D8=AE_=D8=A7=D8=AD=D8=AA=D9=8A?=
+ =?utf-8?Q?=D8=A7=D8=B7=D9=8A_=D8=AC=D8=AF=D9=8A=D8=AF_=D9=86=D8=A7=D8=AC?=
+ =?utf-8?Q?=D8=AD_=D9=84?= AEPHUB (local)
+MIME-Version: 1.0
+Date: Mon, 04 May 2026 06:17:35 +0000
+Message-ID: <495d4b693c0dc1aa0b8101ffde22427a@example.com>
+Content-Type: multipart/alternative; boundary=UXp5n0n9
+
+--UXp5n0n9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+AEPHUB: https://aephub.com
+
+# Hello!
+
+أخبار عظيمة، نسخة احتياطية جديدة ل AEPHUB (local) تم إنشاؤها بنجاح على القرص المسمى local.
+
+اسم التطبيق: AEPHUB (local)
+
+اسم النسخ الاحتياطي: Laravel
+
+القرص: local
+
+أحدث حجم للنسخ الاحتياطي: 102.25 KB
+
+عدد النسخ الاحتياطية: 3
+
+إجمالي مساحة التخزين المستخدمة: 306.36 KB
+
+أحدث تاريخ النسخ الاحتياطي: 2026/05/04 06:17:34
+
+أقدم تاريخ نسخ احتياطي: 2026/05/04 06:03:47
+
+Regards,
+AEPHUB
+
+© 2026 AEPHUB. All rights reserved.
+
+--UXp5n0n9
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ar">
+<head>
+<title>AEPHUB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<style>
+@media only screen and (max-width: 600px) {
+.inner-body {
+width: 100% !important;
+}
+
+.footer {
+width: 100% !important;
+}
+}
+
+@media only screen and (max-width: 500px) {
+.button {
+width: 100% !important;
+}
+}
+</style>
+
+</head>
+<body style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -webkit-text-size-adjust: none; background-color: #ffffff; color: #52525b; height: 100%; line-height: 1.4; margin: 0; padding: 0; width: 100% !important;">
+
+<table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #fafafa; margin: 0; padding: 0; width: 100%;">
+<tr>
+<td align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; margin: 0; padding: 0; width: 100%;">
+<tr>
+<td class="header" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; padding: 25px 0; text-align: center;">
+<a href="https://aephub.com" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #18181b; font-size: 19px; font-weight: bold; text-decoration: none; display: inline-block;">
+AEPHUB
+</a>
+</td>
+</tr>
+
+<!-- Email Body -->
+<tr>
+<td class="body" width="100%" cellpadding="0" cellspacing="0" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%; background-color: #fafafa; border-bottom: 1px solid #fafafa; border-top: 1px solid #fafafa; margin: 0; padding: 0; width: 100%; border: hidden !important;">
+<table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; background-color: #ffffff; border-color: #e4e4e7; border-radius: 4px; border-width: 1px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); margin: 0 auto; padding: 0; width: 570px;">
+<!-- Body content -->
+<tr>
+<td class="content-cell" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
+<h1 style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; color: #18181b; font-size: 18px; font-weight: bold; margin-top: 0; text-align: start;">Hello!</h1>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أخبار عظيمة، نسخة احتياطية جديدة ل AEPHUB (local) تم إنشاؤها بنجاح على القرص المسمى local.</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">اسم التطبيق: AEPHUB (local)</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">اسم النسخ الاحتياطي: Laravel</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">القرص: local</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أحدث حجم للنسخ الاحتياطي: 102.25 KB</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">عدد النسخ الاحتياطية: 3</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">إجمالي مساحة التخزين المستخدمة: 306.36 KB</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أحدث تاريخ النسخ الاحتياطي: 2026/05/04 06:17:34</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">أقدم تاريخ نسخ احتياطي: 2026/05/04 06:03:47</p>
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">Regards,<br>
+AEPHUB</p>
+
+
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative;">
+<table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px; margin: 0 auto; padding: 0; text-align: center; width: 570px;">
+<tr>
+<td class="content-cell" align="center" style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; max-width: 100vw; padding: 32px;">
+<p style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; line-height: 1.5em; margin-top: 0; color: #a1a1aa; font-size: 12px; text-align: center;">© 2026 AEPHUB. All rights reserved.</p>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+--UXp5n0n9--
+  
+>>>>>>> 13dd51b3d910e01be25ad13ed8a1c8c72f549e8d
