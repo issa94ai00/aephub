@@ -25,7 +25,7 @@
 
 ### خيار أ — رفع متعدد الأجزاء (مُفضّل لـ ~150 ميغابايت)
 
-1. **`POST /api/v1/courses/{course}/files/multipart/init`**  
+1. **`POST /api/v1/courses/{course}/videos/multipart/init`**  
    - ترويسات: `Authorization: Bearer <JWT>`، وعادة `X-Device-Id` وغيرها حسب سياسة التطبيق.  
    - جسم JSON يتضمن على الأقل:  
      `original_name`, `cipher`, `content_key`, `content_iv`  
@@ -37,7 +37,7 @@
 
 2. **`POST .../multipart/sign-part`** لكل جزء — يعيد `url` و `method: PUT`.  
    - **للتخزين المحلي:** الـ `url` يشير إلى  
-     `PUT /api/v1/courses/{course}/files/multipart/part?part_token=...`  
+     `PUT /api/v1/courses/{course}/videos/multipart/part?part_token=...`  
      الهوية مثبتة بـ **`part_token`** في الاستعلام (يمكن عدم إرسال Bearer على هذا الـ PUT إن وُجد التوكن؛ يُفضّل إرسال نفس الترويسات إن أمكن).
 
 3. **`POST .../multipart/complete`** — يرسل `parts` مع `etag` كما يعيدها الخادم/التخزين بعد كل PUT.
@@ -45,6 +45,8 @@
 4. استجابة الإكمال أو عرض الملف تحتوي **`file.id`** و **`download_path`** بالشكل الثابت:
 
    `"/api/v1/courses/{courseId}/files/{fileId}/download"`
+
+> **ملاحظة:** يمكن أيضاً استخدام مسارات الملفات `/courses/{course}/files/multipart/...` بدلاً من `/courses/{course}/videos/multipart/...` — كلاهما يوصل لنفس المنطق.
 
 ### خيار ب — رفع واحد (Multipart form)
 
@@ -195,10 +197,13 @@ Future<void> deleteCourseVideo({
 
 | الغرض | الطريقة | المسار |
 |--------|---------|--------|
-| بدء رفع متعدد | POST | `/api/v1/courses/{course}/files/multipart/init` |
-| توقيع جزء | POST | `/api/v1/courses/{course}/files/multipart/sign-part` |
-| رفع جزء (محلي) | PUT | `/api/v1/courses/{course}/files/multipart/part` |
-| إكمال الرفع | POST | `/api/v1/courses/{course}/files/multipart/complete` |
+| بدء رفع متعدد (ملفات) | POST | `/api/v1/courses/{course}/files/multipart/init` |
+| بدء رفع متعدد (فيديو) | POST | `/api/v1/courses/{course}/videos/multipart/init` |
+| توقيع جزء | POST | `.../multipart/sign-part` |
+| رفع جزء (محلي - ملفات) | PUT | `/api/v1/courses/{course}/files/multipart/part` |
+| رفع جزء (محلي - فيديو) | PUT | `/api/v1/courses/{course}/videos/multipart/part` |
+| إكمال الرفع | POST | `.../multipart/complete` |
+| إلغاء الرفع | POST | `.../multipart/abort` |
 | إنشاء فيديو | POST | `/api/v1/courses/{course}/videos` |
 | حذف فيديو | DELETE | `/api/v1/courses/{course}/videos/{video}` |
 | بث مشفّر (JWT) | GET | `/api/v1/videos/{video}/encrypted` |

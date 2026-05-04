@@ -15,6 +15,7 @@ class CourseFile extends Model
         'uploader_id',
         'name',
         'name_en',
+        'original_name',
         'storage_disk',
         'storage_path',
         'size_bytes',

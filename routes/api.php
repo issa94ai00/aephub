@@ -120,6 +120,8 @@ Route::prefix('v1')->group(function () {
             ->middleware('role:teacher,admin');
         Route::post('/courses/{course}/files/multipart/abort', [CourseFileController::class, 'multipartAbort'])
             ->middleware('role:teacher,admin');
+        Route::put('/courses/{course}/files/multipart/part', [CourseFileController::class, 'multipartPutPart'])
+            ->middleware('auth.multipart_local_part');
 
         Route::get('/courses/{course}/chat', [CourseChatController::class, 'index']);
         Route::post('/courses/{course}/chat', [CourseChatController::class, 'store']);
@@ -131,6 +133,18 @@ Route::prefix('v1')->group(function () {
             ->middleware('role:teacher,admin');
         Route::delete('/courses/{course}/videos/{video}', [VideoController::class, 'destroy'])
             ->middleware('role:teacher,admin');
+
+        // Video multipart upload — delegates to CourseFileController (same logic as file multipart)
+        Route::post('/courses/{course}/videos/multipart/init', [CourseFileController::class, 'multipartInit'])
+            ->middleware('role:teacher,admin');
+        Route::post('/courses/{course}/videos/multipart/sign-part', [CourseFileController::class, 'multipartSignPart'])
+            ->middleware('role:teacher,admin');
+        Route::post('/courses/{course}/videos/multipart/complete', [CourseFileController::class, 'multipartComplete'])
+            ->middleware('role:teacher,admin');
+        Route::post('/courses/{course}/videos/multipart/abort', [CourseFileController::class, 'multipartAbort'])
+            ->middleware('role:teacher,admin');
+        Route::put('/courses/{course}/videos/multipart/part', [CourseFileController::class, 'multipartPutPart'])
+            ->middleware('auth.multipart_local_part');
 
         Route::post('/videos/{video}/playback/session', [PlaybackController::class, 'createSession'])
             ->middleware('role:student,teacher,admin');

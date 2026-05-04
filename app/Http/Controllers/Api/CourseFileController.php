@@ -87,6 +87,7 @@ class CourseFileController extends Controller
             'uploader_id' => $request->user()->id,
             'name' => $data['name'] ?? $request->file('file')->getClientOriginalName(),
             'name_en' => $data['name_en'] ?? null,
+            'original_name' => $request->file('file')->getClientOriginalName(),
             'storage_disk' => $disk,
             'storage_path' => $path,
             'size_bytes' => $request->file('file')->getSize(),
@@ -171,6 +172,7 @@ class CourseFileController extends Controller
                 'storage_disk' => $s3Disk,
                 'name' => $data['name'] ?? $data['original_name'],
                 'name_en' => $data['name_en'] ?? null,
+                'original_name' => $data['original_name'],
                 'size_bytes' => $data['size_bytes'] ?? null,
                 'mime_type' => $mime,
                 'cipher' => $data['cipher'],
@@ -228,7 +230,8 @@ class CourseFileController extends Controller
             ];
             $partToken = Crypt::encryptString(json_encode($partPayload, JSON_THROW_ON_ERROR));
             $base = rtrim((string) config('app.url', ''), '/');
-            $url = $base.'/api/v1/courses/'.$course->id.'/files/multipart/part?part_token='.rawurlencode($partToken);
+            $multipartBase = str_contains($request->path(), '/videos/multipart/') ? 'videos' : 'files';
+            $url = $base.'/api/v1/courses/'.$course->id.'/'.$multipartBase.'/multipart/part?part_token='.rawurlencode($partToken);
 
             return response()->json([
                 'url' => $url,
@@ -432,6 +435,7 @@ class CourseFileController extends Controller
             'uploader_id' => $request->user()->id,
             'name' => (string) ($token['name'] ?? 'uploaded-file'),
             'name_en' => $token['name_en'] ?? null,
+            'original_name' => $token['original_name'] ?? null,
             'storage_disk' => $tokenDisk,
             'storage_path' => $objectKey,
             'size_bytes' => $sizeBytes,
@@ -664,6 +668,7 @@ class CourseFileController extends Controller
             'storage_disk' => 'local',
             'name' => $data['name'] ?? $data['original_name'],
             'name_en' => $data['name_en'] ?? null,
+            'original_name' => $data['original_name'],
             'size_bytes' => $data['size_bytes'] ?? null,
             'mime_type' => $mime,
             'cipher' => $data['cipher'],
@@ -751,6 +756,7 @@ class CourseFileController extends Controller
             'uploader_id' => $request->user()->id,
             'name' => (string) ($token['name'] ?? 'uploaded-file'),
             'name_en' => $token['name_en'] ?? null,
+            'original_name' => $token['original_name'] ?? null,
             'storage_disk' => 'local',
             'storage_path' => $objectKey,
             'size_bytes' => $sizeBytes,
@@ -942,15 +948,20 @@ class CourseFileController extends Controller
             'course_id' => $f->course_id,
             'name' => $f->name,
             'name_en' => $f->name_en,
+            'original_name' => $f->original_name,
             'localized_name' => $f->localized_name,
+            'mime_type' => $f->mime_type ?: 'application/pdf',
             'storage_disk' => $f->storage_disk,
+            'storage_path' => $f->storage_path,
             'size_bytes' => $f->size_bytes,
             'download_path' => "/api/v1/courses/{$course->id}/files/{$f->id}/download",
-            'cipher' => $f->cipher,
-            'content_key' => $f->content_key,
-            'content_iv' => $f->content_iv,
-            'key_version' => $f->key_version ?: null,
-            'encrypted_sha256' => $f->encrypted_sha256 ?: null,
+            'encryption' => [
+                'cipher' => $f->cipher,
+                'content_key' => $f->content_key,
+                'content_iv' => $f->content_iv,
+                'key_version' => $f->key_version ?: null,
+                'encrypted_sha256' => $f->encrypted_sha256 ?: null,
+            ],
         ];
     }
 }
