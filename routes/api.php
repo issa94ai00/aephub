@@ -120,8 +120,6 @@ Route::prefix('v1')->group(function () {
             ->middleware('role:teacher,admin');
         Route::post('/courses/{course}/files/multipart/abort', [CourseFileController::class, 'multipartAbort'])
             ->middleware('role:teacher,admin');
-        Route::put('/courses/{course}/files/multipart/part', [CourseFileController::class, 'multipartPutPart'])
-            ->middleware('auth.multipart_local_part');
 
         Route::get('/courses/{course}/chat', [CourseChatController::class, 'index']);
         Route::post('/courses/{course}/chat', [CourseChatController::class, 'store']);
@@ -143,8 +141,6 @@ Route::prefix('v1')->group(function () {
             ->middleware('role:teacher,admin');
         Route::post('/courses/{course}/videos/multipart/abort', [CourseFileController::class, 'multipartAbort'])
             ->middleware('role:teacher,admin');
-        Route::put('/courses/{course}/videos/multipart/part', [CourseFileController::class, 'multipartPutPart'])
-            ->middleware('auth.multipart_local_part');
 
         Route::post('/videos/{video}/playback/session', [PlaybackController::class, 'createSession'])
             ->middleware('role:student,teacher,admin');
@@ -226,6 +222,12 @@ Route::prefix('v1')->group(function () {
         Route::patch('/admin/site-settings', [SiteSettingsAdminController::class, 'update'])
             ->middleware('role:admin');
     });
+
+    // Multipart part uploads — outside JWT group because raw PUTs use part_token instead of Bearer
+    Route::put('/courses/{course}/files/multipart/part', [CourseFileController::class, 'multipartPutPart'])
+        ->middleware(['auth.multipart_local_part', 'account.freeze']);
+    Route::put('/courses/{course}/videos/multipart/part', [CourseFileController::class, 'multipartPutPart'])
+        ->middleware(['auth.multipart_local_part', 'account.freeze']);
 
     Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/videos/playback/key', [PlaybackController::class, 'getKeyForSession'])
