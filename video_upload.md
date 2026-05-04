@@ -186,6 +186,40 @@ Future<void> deleteCourseVideo({
 
 ---
 
+## 6.5) استئناف الرفع المتقطع
+
+إذا انقطع الرفع (خروج من التطبيق، فقدان الشبكة، إلخ)، يمكن استئنافه بدون إعادة رفع الأجزاء المكتملة:
+
+1. **احتفظ محلياً بـ:** `upload_id`, `object_key`, `multipart_token`, `total_parts`
+2. عند إعادة فتح التطبيق، أرسل:
+
+   **`POST .../multipart/status`**
+   ```json
+   {
+     "upload_id": "...",
+     "object_key": "...",
+     "multipart_token": "..."
+   }
+   ```
+
+3. الاستجابة:
+   ```json
+   {
+     "upload_id": "...",
+     "object_key": "...",
+     "storage_disk": "local",
+     "uploaded_parts": [1, 2, 3, 5],
+     "expires_at": 1746200000
+     }
+   ```
+
+4. أعد رفع الأجزاء المفقودة فقط (في المثال: الجزء 4 وما بعده).
+5. ثم أرسل `multipart/complete` كالمعتاد.
+
+> **ملاحظة:** الـ `multipart_token` تنتهي صلاحيته بعد ساعتين. إذا انتهت، يجب بدء رفع جديد عبر `multipart/init`.
+
+---
+
 ## 6) متطلبات الخادم (مرجعية لتجنب فشل الرفع)
 
 - **Nginx:** `client_max_body_size` كافٍ لأكبر جزء رفع (مثلاً ≥ 128M إن لزم).  
@@ -204,6 +238,7 @@ Future<void> deleteCourseVideo({
 | رفع جزء (محلي - فيديو) | PUT | `/api/v1/courses/{course}/videos/multipart/part` |
 | إكمال الرفع | POST | `.../multipart/complete` |
 | إلغاء الرفع | POST | `.../multipart/abort` |
+| حالة الرفع (استئناف) | POST | `.../multipart/status` |
 | إنشاء فيديو | POST | `/api/v1/courses/{course}/videos` |
 | حذف فيديو | DELETE | `/api/v1/courses/{course}/videos/{video}` |
 | بث مشفّر (JWT) | GET | `/api/v1/videos/{video}/encrypted` |

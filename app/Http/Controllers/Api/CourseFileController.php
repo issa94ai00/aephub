@@ -452,6 +452,94 @@ class CourseFileController extends Controller
         ], 201);
     }
 
+    public function multipartStatus(Request $request, Course $course): JsonResponse
+    {
+        $this->authorizeTeacherAccess($request, $course);
+
+        $data = $request->validate([
+            'upload_id' => ['required', 'string', 'max:512'],
+            'object_key' => ['required', 'string', 'max:2048'],
+            'multipart_token' => ['required', 'string'],
+        ]);
+
+        $token = $this->parseMultipartToken((string) $data['multipart_token']);
+        if ($token === null) {
+            return response()->json(['message' => 'Invalid multipart token'], 422);
+        }
+        if ((int) ($token['expires_at'] ?? 0) < now()->timestamp) {
+            return response()->json(['message' => 'Multipart token expired; restart upload'], 422);
+        }
+        if ((int) ($token['course_id'] ?? 0) !== (int) $course->id || (int) ($token['uploader_id'] ?? 0) !== (int) $request->user()->id) {
+            return response()->json(['message' => 'Multipart token does not match user/course'], 422);
+        }
+        if ((string) ($token['upload_id'] ?? '') !== (string) $data['upload_id'] || (string) ($token['object_key'] ?? '') !== (string) $data['object_key']) {
+            return response()->json(['message' => 'Multipart token does not match upload session'], 422);
+        }
+
+        $objectKey = (string) $data['object_key'];
+        if (!$this->isMultipartKeyForCourse($course->id, $objectKey)) {
+            return response()->json(['message' => 'object_key is invalid for this course'], 422);
+        }
+
+        $storageDisk = $this->multipartStorageDiskFromObjectKey($objectKey);
+        $uploadId = (string) $data['upload_id'];
+
+        if ($storageDisk === 'local') {
+            if (!$this->localMultipartSessionValid($uploadId, (int) $course->id, (int) $request->user()->id)) {
+                return response()->json(['message' => 'Multipart session not found or expired'], 422);
+            }
+
+            $disk = Storage::disk('local');
+            $tmpDir = $this->localMultipartTmpRelativePath($course->id, $uploadId);
+            $uploadedParts = [];
+            if ($disk->exists($tmpDir)) {
+                foreach ($disk->files($tmpDir) as $file) {
+                    if (preg_match('/part-(\d+)$/', $file, $m)) {
+                        $uploadedParts[] = (int) $m[1];
+                    }
+                }
+            }
+
+            return response()->json([
+                'upload_id' => $uploadId,
+                'object_key' => $objectKey,
+                'storage_disk' => 'local',
+                'uploaded_parts' => $uploadedParts,
+                'expires_at' => $token['expires_at'],
+            ]);
+        }
+
+        // S3-compatible: list parts already uploaded
+        $client = $this->buildS3ClientForDisk($storageDisk);
+        $bucket = (string) config("filesystems.disks.{$storageDisk}.bucket");
+
+        try {
+            $result = $client->listParts([
+                'Bucket' => $bucket,
+                'Key' => $objectKey,
+                'UploadId' => $uploadId,
+            ]);
+            $uploadedParts = collect($result->get('Parts', []))
+                ->map(fn (array $p) => (int) ($p['PartNumber'] ?? 0))
+                ->filter(fn (int $pn) => $pn > 0)
+                ->values()
+                ->all();
+        } catch (Throwable $e) {
+            return response()->json([
+                'message' => 'Failed to list uploaded parts',
+                'error' => $e->getMessage(),
+            ], 422);
+        }
+
+        return response()->json([
+            'upload_id' => $uploadId,
+            'object_key' => $objectKey,
+            'storage_disk' => $storageDisk,
+            'uploaded_parts' => $uploadedParts,
+            'expires_at' => $token['expires_at'],
+        ]);
+    }
+
     public function multipartAbort(Request $request, Course $course): JsonResponse
     {
         $this->authorizeTeacherAccess($request, $course);

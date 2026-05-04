@@ -120,6 +120,8 @@ Route::prefix('v1')->group(function () {
             ->middleware('role:teacher,admin');
         Route::post('/courses/{course}/files/multipart/abort', [CourseFileController::class, 'multipartAbort'])
             ->middleware('role:teacher,admin');
+        Route::post('/courses/{course}/files/multipart/status', [CourseFileController::class, 'multipartStatus'])
+            ->middleware('role:teacher,admin');
 
         Route::get('/courses/{course}/chat', [CourseChatController::class, 'index']);
         Route::post('/courses/{course}/chat', [CourseChatController::class, 'store']);
@@ -140,6 +142,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/courses/{course}/videos/multipart/complete', [CourseFileController::class, 'multipartComplete'])
             ->middleware('role:teacher,admin');
         Route::post('/courses/{course}/videos/multipart/abort', [CourseFileController::class, 'multipartAbort'])
+            ->middleware('role:teacher,admin');
+        Route::post('/courses/{course}/videos/multipart/status', [CourseFileController::class, 'multipartStatus'])
             ->middleware('role:teacher,admin');
 
         Route::post('/videos/{video}/playback/session', [PlaybackController::class, 'createSession'])
