@@ -24,6 +24,11 @@ use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\VideoProgressController;
 use App\Http\Controllers\Api\Admin\SiteSettingsAdminController;
+use App\Domain\LiveSession\Http\Controllers\AssetController;
+use App\Domain\LiveSession\Http\Controllers\EventController;
+use App\Domain\LiveSession\Http\Controllers\LiveSessionController;
+use App\Domain\LiveSession\Http\Controllers\ParticipantController;
+use App\Domain\LiveSession\Http\Controllers\RecordingController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -236,5 +241,39 @@ Route::prefix('v1')->group(function () {
     Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/videos/playback/key', [PlaybackController::class, 'getKeyForSession'])
             ->middleware('throttle:playback-key');
+
+        // Live Session Routes
+        Route::prefix('live-sessions')->group(function () {
+            Route::get('/', [LiveSessionController::class, 'index']);
+            Route::post('/', [LiveSessionController::class, 'store']);
+            Route::get('/{liveSession}', [LiveSessionController::class, 'show']);
+            Route::patch('/{liveSession}', [LiveSessionController::class, 'update']);
+            Route::delete('/{liveSession}', [LiveSessionController::class, 'destroy']);
+            Route::post('/{liveSession}/start', [LiveSessionController::class, 'start']);
+            Route::post('/{liveSession}/end', [LiveSessionController::class, 'end']);
+            Route::post('/{liveSession}/cancel', [LiveSessionController::class, 'cancel']);
+            Route::post('/{liveSession}/token', [LiveSessionController::class, 'token']);
+
+            // Asset Routes
+            Route::get('/{liveSession}/assets', [AssetController::class, 'index']);
+            Route::post('/{liveSession}/assets', [AssetController::class, 'store']);
+            Route::get('/{liveSession}/assets/{asset}', [AssetController::class, 'show']);
+            Route::delete('/{liveSession}/assets/{asset}', [AssetController::class, 'destroy']);
+
+            // Event Routes
+            Route::get('/{liveSession}/events', [EventController::class, 'index']);
+            Route::post('/{liveSession}/events', [EventController::class, 'store']);
+            Route::get('/{liveSession}/events/{eventId}', [EventController::class, 'show']);
+
+            // Recording Routes
+            Route::get('/{liveSession}/recordings', [RecordingController::class, 'index']);
+            Route::get('/{liveSession}/recordings/{recording}', [RecordingController::class, 'show']);
+            Route::delete('/{liveSession}/recordings/{recording}', [RecordingController::class, 'destroy']);
+
+            // Participant Routes
+            Route::get('/{liveSession}/participants', [ParticipantController::class, 'index']);
+            Route::get('/{liveSession}/participants/statistics', [ParticipantController::class, 'statistics']);
+            Route::delete('/{liveSession}/participants/{participantId}', [ParticipantController::class, 'destroy']);
+        });
     });
 });

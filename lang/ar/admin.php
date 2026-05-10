@@ -14,6 +14,7 @@ return [
 
     'nav' => [
         'dashboard' => 'نظرة عامة',
+        'statistics' => 'إحصائيات',
         'courses' => 'الدورات',
         'registration_payments' => 'طلبات التسجيل (الدفع)',
         'student_courses' => 'الدورات المتاحة للطلاب',
@@ -100,6 +101,23 @@ return [
         'review' => 'مراجعة',
         'no_payments' => 'لا توجد طلبات دفع.',
         'course_fallback' => 'دورة',
+    ],
+
+    'statistics' => [
+        'title' => 'إحصائيات',
+        'heading' => 'إحصائيات الدورات',
+        'subheading' => 'حجم الملفات والإيرادات لكل دورة',
+        'total_file_size' => 'إجمالي حجم الملفات',
+        'total_revenue' => 'إجمالي الإيرادات',
+        'file_size_chart' => 'حجم ملفات أعلى 10 دورات',
+        'revenue_chart' => 'إيرادات أعلى 10 دورات',
+        'course' => 'الدورة',
+        'teacher' => 'المدرس',
+        'file_size' => 'حجم الملفات',
+        'revenue' => 'الإيرادات',
+        'enrollments' => 'الطلاب المسجلين',
+        'no_data' => 'لا توجد بيانات.',
+        'bytes' => 'بايت',
     ],
 
     'courses' => [

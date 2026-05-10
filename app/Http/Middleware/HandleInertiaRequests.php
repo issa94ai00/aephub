@@ -76,6 +76,12 @@ class HandleInertiaRequests extends Middleware
                         'icon' => 'grid',
                     ],
                     [
+                        'href' => route('admin.statistics'),
+                        'match' => ['admin.statistics'],
+                        'label' => __('admin.nav.statistics'),
+                        'icon' => 'chart',
+                    ],
+                    [
                         'href' => route('admin.payments.index'),
                         'match' => ['admin.payments.*'],
                         'label' => __('admin.nav.registration_payments'),
