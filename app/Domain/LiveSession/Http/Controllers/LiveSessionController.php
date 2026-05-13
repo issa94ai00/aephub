@@ -42,7 +42,12 @@ class LiveSessionController extends Controller
             $query->where('status', $request->status);
         }
 
-        $sessions = $query->with('teacher')->latest('scheduled_at')->paginate($request->per_page ?? 15);
+        // Optimize query with eager loading and select only needed columns
+        $sessions = $query
+            ->with(['teacher:id,name,email'])
+            ->select(['id', 'course_id', 'course_session_id', 'teacher_id', 'title', 'scheduled_at', 'status', 'created_at'])
+            ->latest('scheduled_at')
+            ->paginate($request->per_page ?? 15);
 
         return response()->json([
             'data' => LiveSessionResource::collection($sessions),

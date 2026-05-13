@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\VideoProgressController;
 use App\Http\Controllers\Api\Admin\SiteSettingsAdminController;
+use App\Http\Controllers\HealthCheckController;
 use App\Domain\LiveSession\Http\Controllers\AssetController;
 use App\Domain\LiveSession\Http\Controllers\EventController;
 use App\Domain\LiveSession\Http\Controllers\LiveSessionController;
@@ -32,6 +33,10 @@ use App\Domain\LiveSession\Http\Controllers\RecordingController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
+    // Health check endpoints (no authentication required)
+    Route::get('/health', [HealthCheckController::class, 'index']);
+    Route::get('/health/detailed', [HealthCheckController::class, 'detailed']);
+
     Route::get('/site-settings', [SiteSettingsController::class, 'show']);
 
     Route::get('/academics/universities', [AcademicsController::class, 'universities']);
@@ -243,7 +248,9 @@ Route::prefix('v1')->group(function () {
             ->middleware('throttle:playback-key');
 
         // Live Session Routes
-        Route::prefix('live-sessions')->group(function () {
+        Route::prefix('live-sessions')
+            ->middleware('live-session-rate-limit')
+            ->group(function () {
             Route::get('/', [LiveSessionController::class, 'index']);
             Route::post('/', [LiveSessionController::class, 'store']);
             Route::get('/{liveSession}', [LiveSessionController::class, 'show']);

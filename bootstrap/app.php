@@ -6,6 +6,7 @@ use App\Http\Middleware\AuthenticateMultipartLocalPartOrJwt;
 use App\Http\Middleware\DeviceLockMiddleware;
 use App\Http\Middleware\EnsureAdminWeb;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\LiveSessionRateLimit;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\SetApiLocale;
 use App\Http\Middleware\SetSiteLocale;
@@ -42,6 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
             'admin.web' => EnsureAdminWeb::class,
             'signed' => ValidateSignature::class,
+            'live-session-rate-limit' => LiveSessionRateLimit::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

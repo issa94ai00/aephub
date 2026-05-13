@@ -21,18 +21,25 @@ class EventController extends Controller
      */
     public function index(Request $request, LiveSession $liveSession): JsonResponse
     {
-        $events = $this->service->getBySession($liveSession->id);
+        // Use cache for frequently accessed event data
+        $cacheService = app(\App\Domain\LiveSession\Services\LiveSessionCacheService::class);
+        
+        $events = $cacheService->getEventBuffer($liveSession->id);
+        
+        if (empty($events)) {
+            $events = $this->service->getBySession($liveSession->id);
 
-        if ($request->has('from') && $request->has('to')) {
-            $events = $this->service->getBySessionAndTimestampRange(
-                $liveSession->id,
-                (int) $request->from,
-                (int) $request->to,
-            );
+            if ($request->has('from') && $request->has('to')) {
+                $events = $this->service->getBySessionAndTimestampRange(
+                    $liveSession->id,
+                    (int) $request->from,
+                    (int) $request->to,
+                );
+            }
+
+            $limit = min($request->input('limit', 1000), 10000);
+            $events = $events->take($limit);
         }
-
-        $limit = min($request->input('limit', 1000), 10000);
-        $events = $events->take($limit);
 
         return response()->json([
             'data' => EventResource::collection($events),
@@ -40,6 +47,7 @@ class EventController extends Controller
                 'from' => $request->from,
                 'to' => $request->to,
                 'total_count' => $this->service->countBySession($liveSession->id),
+                'cached' => !empty($events),
             ],
         ]);
     }
