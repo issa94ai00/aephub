@@ -31,7 +31,10 @@
                     @endif
                 </span>
                 <div class="leading-tight">
-                    <div class="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-50">{{ trim($site['site_name_resolved'] ?? '') !== '' ? $site['site_name_resolved'] : ($site['site_name'] ?? config('app.name')) }}</div>
+                    <div class="flex items-center gap-2">
+                        <div class="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-50">{{ trim($site['site_name_resolved'] ?? '') !== '' ? $site['site_name_resolved'] : ($site['site_name'] ?? config('app.name')) }}</div>
+                        <img src="{{ asset('favicon.ico') }}" alt="Site icon" class="h-4 w-4 rounded-sm" />
+                    </div>
                     <div class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ __('site.tagline') }}</div>
                 </div>
             </a>
