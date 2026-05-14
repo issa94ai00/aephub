@@ -59,6 +59,80 @@
     </div>
 
     <div class="admin-card p-5">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h2 class="text-sm font-semibold text-white">Failed Jobs</h2>
+                <p class="mt-1 text-xs text-white/50">Latest failed queue jobs with retry and forget actions</p>
+                <p class="mt-2 text-xs text-white/50">Total failed jobs: {{ $failedJobsCount }}</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                    @csrf
+                    <input type="hidden" name="action" value="retry-job">
+                    @foreach($failedJobs as $job)
+                        <input type="hidden" name="job_ids[]" value="{{ $job->id }}">
+                    @endforeach
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Retry shown</button>
+                </form>
+                <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                    @csrf
+                    <input type="hidden" name="action" value="forget-job">
+                    @foreach($failedJobs as $job)
+                        <input type="hidden" name="job_ids[]" value="{{ $job->id }}">
+                    @endforeach
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Forget shown</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-4 overflow-x-auto">
+            @if($failedJobsCount === 0)
+                <div class="p-4 rounded-xl bg-[#0a0f0d] border border-white/10 text-sm text-white/70">No failed jobs found.</div>
+            @else
+                <table class="min-w-full text-sm text-left border-separate border-spacing-0">
+                    <thead>
+                        <tr class="text-xs uppercase text-white/50">
+                            <th class="px-3 py-2">ID</th>
+                            <th class="px-3 py-2">Connection</th>
+                            <th class="px-3 py-2">Queue</th>
+                            <th class="px-3 py-2">Failed At</th>
+                            <th class="px-3 py-2">Exception</th>
+                            <th class="px-3 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/10">
+                        @foreach($failedJobs as $job)
+                            <tr class="bg-[#08100d]">
+                                <td class="px-3 py-3 text-white">{{ $job->id }}</td>
+                                <td class="px-3 py-3 text-white/70">{{ $job->connection }}</td>
+                                <td class="px-3 py-3 text-white/70">{{ $job->queue }}</td>
+                                <td class="px-3 py-3 text-white/70">{{ $job->failed_at }}</td>
+                                <td class="px-3 py-3 text-white/70 max-w-[28rem] truncate">{{ \Illuminate\Support\Str::limit($job->exception, 120) }}</td>
+                                <td class="px-3 py-3">
+                                    <div class="flex flex-wrap gap-2">
+                                        <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="action" value="retry-job">
+                                            <input type="hidden" name="job_ids[]" value="{{ $job->id }}">
+                                            <button type="submit" class="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700">Retry</button>
+                                        </form>
+                                        <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="action" value="forget-job">
+                                            <input type="hidden" name="job_ids[]" value="{{ $job->id }}">
+                                            <button type="submit" class="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">Forget</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+    </div>
+
+    <div class="admin-card p-5">
         <h2 class="text-sm font-semibold text-white">Bulk Actions</h2>
         <p class="mt-1 text-xs text-white/50">Perform actions on all workers</p>
 
