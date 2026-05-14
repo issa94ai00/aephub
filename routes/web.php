@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeviceChangeRequestWebController;
 use App\Http\Controllers\Admin\FacultyWebController;
 use App\Http\Controllers\Admin\PaymentWebController;
+use App\Http\Controllers\Admin\QueueWorkerController;
 use App\Http\Controllers\Admin\SecurityEventWebController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StudyTermWebController;
@@ -92,6 +93,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
         Route::post('settings/clear-cache', [SettingsController::class, 'clearCache'])->name('settings.clear-cache');
+
+        Route::get('queue-workers', [QueueWorkerController::class, 'index'])->name('queue-workers.index');
+        Route::post('queue-workers/manage', [QueueWorkerController::class, 'manage'])->name('queue-workers.manage');
 
         // Academics (Universities -> Faculties -> Years -> Terms)
         Route::prefix('academics')->name('academics.')->group(function () {

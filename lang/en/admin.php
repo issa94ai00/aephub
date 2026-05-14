@@ -27,6 +27,7 @@ return [
         'security_logs' => 'Security logs',
         'carousel' => 'Homepage carousel',
         'faqs' => 'FAQs',
+        'queue_workers' => 'Queue Workers',
         'settings' => 'Settings',
         'system_admin' => 'System administration',
         'back_to_site' => 'Back to site',

@@ -142,6 +142,12 @@ class HandleInertiaRequests extends Middleware
                         'icon' => 'faq',
                     ],
                     [
+                        'href' => route('admin.queue-workers.index'),
+                        'match' => ['admin.queue-workers.*'],
+                        'label' => __('admin.nav.queue_workers'),
+                        'icon' => 'cog', // Or find a better icon
+                    ],
+                    [
                         'href' => route('admin.settings.index'),
                         'match' => ['admin.settings.*'],
                         'label' => __('admin.nav.settings'),
