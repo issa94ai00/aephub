@@ -43,9 +43,10 @@ class QueueWorkerController extends Controller
 
         $output = Artisan::output();
 
-        return response()->json([
-            'success' => $exitCode === 0,
-            'output' => $output,
-        ]);
+        if ($exitCode === 0) {
+            return redirect()->back()->with('success', "Action '{$action}' completed successfully.");
+        } else {
+            return redirect()->back()->with('error', "Action '{$action}' failed: " . $output);
+        }
     }
 }

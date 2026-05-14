@@ -5,6 +5,16 @@
 @section('subheading', 'Manage and monitor Laravel queue workers via Supervisor')
 
 @section('content')
+@if(session('success'))
+    <div class="mb-4 p-4 bg-green-600 text-white rounded">
+        {{ session('success') }}
+    </div>
+@endif
+@if(session('error'))
+    <div class="mb-4 p-4 bg-red-600 text-white rounded">
+        {{ session('error') }}
+    </div>
+@endif
 <div class="space-y-6">
     <div class="admin-card p-5">
         <h2 class="text-sm font-semibold text-white">Worker Status</h2>
@@ -18,10 +28,30 @@
                         <span class="ml-2 text-xs text-white/50">{{ $statuses[$worker] ?? 'Unknown' }}</span>
                     </div>
                     <div class="flex space-x-2">
-                        <button type="button" onclick="manageWorker('start', ['{{ $worker }}'])" class="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700">Start</button>
-                        <button type="button" onclick="manageWorker('stop', ['{{ $worker }}'])" class="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">Stop</button>
-                        <button type="button" onclick="manageWorker('restart', ['{{ $worker }}'])" class="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700">Restart</button>
-                        <button type="button" onclick="manageWorker('status', ['{{ $worker }}'])" class="px-3 py-1 text-xs bg-gray-600 text-white rounded hover:bg-gray-700">Status</button>
+                        <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                            @csrf
+                            <input type="hidden" name="action" value="start">
+                            <input type="hidden" name="workers[]" value="{{ $worker }}">
+                            <button type="submit" class="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700">Start</button>
+                        </form>
+                        <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                            @csrf
+                            <input type="hidden" name="action" value="stop">
+                            <input type="hidden" name="workers[]" value="{{ $worker }}">
+                            <button type="submit" class="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">Stop</button>
+                        </form>
+                        <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                            @csrf
+                            <input type="hidden" name="action" value="restart">
+                            <input type="hidden" name="workers[]" value="{{ $worker }}">
+                            <button type="submit" class="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700">Restart</button>
+                        </form>
+                        <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                            @csrf
+                            <input type="hidden" name="action" value="status">
+                            <input type="hidden" name="workers[]" value="{{ $worker }}">
+                            <button type="submit" class="px-3 py-1 text-xs bg-gray-600 text-white rounded hover:bg-gray-700">Status</button>
+                        </form>
                     </div>
                 </div>
             @endforeach
@@ -33,41 +63,39 @@
         <p class="mt-1 text-xs text-white/50">Perform actions on all workers</p>
 
         <div class="mt-4 flex space-x-2">
-            <button type="button" onclick="manageWorker('start')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Start All</button>
-            <button type="button" onclick="manageWorker('stop')" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Stop All</button>
-            <button type="button" onclick="manageWorker('restart')" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Restart All</button>
-            <button type="button" onclick="manageWorker('status')" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Status All</button>
+            <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                @csrf
+                <input type="hidden" name="action" value="start">
+                @foreach($workers as $worker)
+                    <input type="hidden" name="workers[]" value="{{ $worker }}">
+                @endforeach
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Start All</button>
+            </form>
+            <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                @csrf
+                <input type="hidden" name="action" value="stop">
+                @foreach($workers as $worker)
+                    <input type="hidden" name="workers[]" value="{{ $worker }}">
+                @endforeach
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Stop All</button>
+            </form>
+            <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                @csrf
+                <input type="hidden" name="action" value="restart">
+                @foreach($workers as $worker)
+                    <input type="hidden" name="workers[]" value="{{ $worker }}">
+                @endforeach
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Restart All</button>
+            </form>
+            <form method="post" action="{{ route('admin.queue-workers.manage') }}" class="inline">
+                @csrf
+                <input type="hidden" name="action" value="status">
+                @foreach($workers as $worker)
+                    <input type="hidden" name="workers[]" value="{{ $worker }}">
+                @endforeach
+                <button type="submit" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Status All</button>
+            </form>
         </div>
     </div>
 </div>
-
-<script>
-function manageWorker(action, workers = null) {
-    const data = {
-        action: action,
-        workers: workers || {{ json_encode($workers) }}
-    };
-
-    fetch('{{ route("admin.queue-workers.manage") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Action completed successfully');
-            location.reload();
-        } else {
-            alert('Action failed: ' + data.output);
-        }
-    })
-    .catch(error => {
-        alert('Error: ' + error.message);
-    });
-}
-</script>
 @endsection
