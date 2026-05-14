@@ -44,44 +44,57 @@ class DashboardController extends Controller
 
     public function statistics(): Response
     {
-        // File size per course
-        $fileSizeByCourse = CourseFile::query()
-            ->selectRaw('course_id, SUM(size_bytes) as total_bytes')
-            ->groupBy('course_id')
-            ->pluck('total_bytes', 'course_id');
+        // Use cache to avoid expensive queries on every request
+        $cacheKey = 'admin_statistics_' . now()->format('Y-m-d-H');
+        
+        $data = cache()->remember($cacheKey, 3600, function () {
+            // File size per course
+            $fileSizeByCourse = CourseFile::query()
+                ->selectRaw('course_id, SUM(size_bytes) as total_bytes')
+                ->groupBy('course_id')
+                ->pluck('total_bytes', 'course_id');
 
-        // Revenue per course (approved payments only)
-        $revenueByCourse = PaymentRequest::where('status', 'approved')
-            ->selectRaw('course_id, SUM(amount_paid_cents) as total_cents')
-            ->groupBy('course_id')
-            ->pluck('total_cents', 'course_id');
+            // Revenue per course (approved payments only)
+            $revenueByCourse = PaymentRequest::where('status', 'approved')
+                ->selectRaw('course_id, SUM(amount_paid_cents) as total_cents')
+                ->groupBy('course_id')
+                ->pluck('total_cents', 'course_id');
 
-        // Get all courses with their stats
-        $courses = Course::query()
-            ->with('teacher:id,name')
-            ->get()
-            ->map(function (Course $course) use ($fileSizeByCourse, $revenueByCourse) {
-                return [
-                    'id' => $course->id,
-                    'title' => $course->localized_title,
-                    'teacher' => $course->teacher?->name,
-                    'file_size_bytes' => (int) ($fileSizeByCourse[$course->id] ?? 0),
-                    'revenue_cents' => (int) ($revenueByCourse[$course->id] ?? 0),
-                    'enrollments_count' => $course->enrollments()->where('status', 'active')->count(),
-                ];
-            })
-            ->sortByDesc('revenue_cents')
-            ->values();
+            // Enrollment count per course (active only)
+            $enrollmentCountByCourse = CourseEnrollment::where('status', 'active')
+                ->selectRaw('course_id, COUNT(*) as count')
+                ->groupBy('course_id')
+                ->pluck('count', 'course_id');
 
-        $totalFileSize = $fileSizeByCourse->sum();
-        $totalRevenue = $revenueByCourse->sum();
+            // Get courses with their stats - limit to top 100 to avoid large responses
+            $courses = Course::query()
+                ->with('teacher:id,name')
+                ->select(['id', 'title', 'title_en', 'teacher_id'])
+                ->limit(100)
+                ->get()
+                ->map(function (Course $course) use ($fileSizeByCourse, $revenueByCourse, $enrollmentCountByCourse) {
+                    return [
+                        'id' => $course->id,
+                        'title' => $course->localized_title,
+                        'teacher' => $course->teacher?->name,
+                        'file_size_bytes' => (int) ($fileSizeByCourse[$course->id] ?? 0),
+                        'revenue_cents' => (int) ($revenueByCourse[$course->id] ?? 0),
+                        'enrollments_count' => (int) ($enrollmentCountByCourse[$course->id] ?? 0),
+                    ];
+                })
+                ->sortByDesc('revenue_cents')
+                ->values();
 
-        // Top 10 for charts
-        $topFiles = $courses->sortByDesc('file_size_bytes')->take(10)->values();
-        $topRevenue = $courses->sortByDesc('revenue_cents')->take(10)->values();
+            $totalFileSize = $fileSizeByCourse->sum();
+            $totalRevenue = $revenueByCourse->sum();
 
-        return AdminInertia::frame('admin.statistics', compact(
-            'courses', 'totalFileSize', 'totalRevenue', 'topFiles', 'topRevenue'
-        ));
+            // Top 10 for charts
+            $topFiles = $courses->sortByDesc('file_size_bytes')->take(10)->values();
+            $topRevenue = $courses->sortByDesc('revenue_cents')->take(10)->values();
+
+            return compact('courses', 'totalFileSize', 'totalRevenue', 'topFiles', 'topRevenue');
+        });
+
+        return AdminInertia::frame('admin.statistics', $data);
     }
 }
