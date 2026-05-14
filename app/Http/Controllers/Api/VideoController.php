@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessCourseVideoUploadJob;
 use App\Models\Course;
 use App\Models\CourseFile;
 use App\Models\CourseVideo;
+use App\Services\VideoUploadService;
 use App\Support\CourseVideoBlobUrls;
 use App\Support\LocalEncryptedBlobRangeResponse;
 use App\Support\MediaChunkingHints;
@@ -17,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
-    public function store(Request $request, Course $course): JsonResponse
+    public function store(Request $request, Course $course, VideoUploadService $uploadService): JsonResponse
     {
         $this->authorize('create', [CourseVideo::class, $course]);
 
@@ -56,14 +58,12 @@ class VideoController extends Controller
             'encrypted_sha256' => ['nullable', 'string', 'size:64', 'regex:/^[a-f0-9]{64}$/i'],
         ]);
 
-        // Accept relative API path, even if client accidentally sends a full URL.
         $storagePath = (string) $data['storage_path'];
         if (preg_match('#^https?://#i', $storagePath)) {
             $parsed = parse_url($storagePath);
             $storagePath = (string) ($parsed['path'] ?? $storagePath);
         }
 
-        // Keep as relative API path only (no base URL) and ensure it points to this course.
         $expectedPrefix = "/api/v1/courses/{$course->id}/files/";
         if (!str_starts_with($storagePath, $expectedPrefix)) {
             return response()->json([
@@ -72,8 +72,8 @@ class VideoController extends Controller
             ], 422);
         }
 
-        $file = $this->resolveBackingCourseFilePath($course->id, $storagePath);
-        if (!$file) {
+        $file = $uploadService->resolveBackingCourseFilePath($course->id, $storagePath);
+        if (! $file) {
             return response()->json([
                 'message' => 'storage_path must reference an existing file for this course',
             ], 422);
@@ -95,8 +95,10 @@ class VideoController extends Controller
             'content_iv' => $data['content_iv'],
             'key_version' => $data['key_version'] ?? 'v1',
             'encrypted_sha256' => $data['encrypted_sha256'] ?? null,
-            'status' => 'active',
+            'status' => VideoUploadService::STATUS_PENDING,
         ]);
+
+        ProcessCourseVideoUploadJob::dispatch($video->id);
 
         return response()->json([
             'video' => [
@@ -112,6 +114,7 @@ class VideoController extends Controller
                 'size_bytes' => $video->size_bytes,
                 'cipher' => $video->encryption_cipher,
                 'encrypted_sha256' => $video->encrypted_sha256,
+                'status' => $video->status,
             ],
         ], 201);
     }
@@ -296,26 +299,9 @@ class VideoController extends Controller
 
     private function resolveBackingCourseFile(CourseVideo $video): ?CourseFile
     {
-        return $this->resolveBackingCourseFilePath((int) $video->course_id, (string) $video->storage_path);
-    }
-
-    private function resolveBackingCourseFilePath(int $expectedCourseId, string $path): ?CourseFile
-    {
-        $path = trim($path);
-        if (!preg_match('#^/api/v1/courses/(\d+)/files/(\d+)/download$#', $path, $m)) {
-            return null;
-        }
-        $courseId = (int) $m[1];
-        $fileId = (int) $m[2];
-        if ($courseId !== $expectedCourseId) {
-            return null;
-        }
-
-        $file = CourseFile::query()->find($fileId);
-        if (!$file || (int) $file->course_id !== $courseId) {
-            return null;
-        }
-
-        return $file;
+        return app(VideoUploadService::class)->resolveBackingCourseFilePath(
+            (int) $video->course_id,
+            (string) $video->storage_path,
+        );
     }
 }
