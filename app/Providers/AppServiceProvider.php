@@ -32,10 +32,11 @@ class AppServiceProvider extends ServiceProvider
         $settings->applyToConfig();
         View::share('site', $settings->all());
 
-        $compiledViewPath = config('view.compiled');
-        if ($compiledViewPath && ! File::exists($compiledViewPath)) {
+        $compiledViewPath = config('view.compiled') ?: storage_path('framework/views');
+        if (! File::isDirectory($compiledViewPath)) {
             File::ensureDirectoryExists($compiledViewPath, 0755);
         }
+        config(['view.compiled' => $compiledViewPath]);
 
         Gate::policy(CourseVideo::class, VideoPolicy::class);
 
