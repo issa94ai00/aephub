@@ -9,6 +9,10 @@
         <a href="{{ route('admin.security-events.index') }}" class="text-xs text-emerald-200 hover:underline">← {{ __('admin.security.back_list') }}</a>
     </div>
 
+    <div class="mb-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm text-white/80">
+        {{ $securityEvent->displayTypeDescription() }}
+    </div>
+
     <div class="admin-card space-y-4 p-5 text-sm text-white/85">
         <dl class="grid gap-3 sm:grid-cols-2">
             <div><dt class="text-xs text-white/45">{{ __('admin.security.col_type') }}</dt><dd class="mt-0.5">{{ $securityEvent->displayTypeLabel() }}</dd></div>

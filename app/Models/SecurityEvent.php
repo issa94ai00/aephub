@@ -32,4 +32,12 @@ class SecurityEvent extends Model
 
         return $t === $key ? $this->type : $t;
     }
+
+    public function displayTypeDescription(): string
+    {
+        $key = 'admin.security.descriptions.'.$this->type;
+        $description = __($key);
+
+        return $description === $key ? $this->displayTypeLabel() : $description;
+    }
 }
