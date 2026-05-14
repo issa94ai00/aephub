@@ -7,6 +7,7 @@ use App\Policies\VideoPolicy;
 use App\Services\SiteSettingsService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
@@ -30,6 +31,11 @@ class AppServiceProvider extends ServiceProvider
         $settings = $this->app->make(SiteSettingsService::class);
         $settings->applyToConfig();
         View::share('site', $settings->all());
+
+        $compiledViewPath = config('view.compiled');
+        if ($compiledViewPath && ! File::exists($compiledViewPath)) {
+            File::ensureDirectoryExists($compiledViewPath, 0755);
+        }
 
         Gate::policy(CourseVideo::class, VideoPolicy::class);
 
