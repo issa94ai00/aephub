@@ -36,3 +36,35 @@ storage/pail
 .phpactor.json
 auth.json
 node_modules
+# تجاهل جميع الملفات داخل storage
+/storage/*
+
+# السماح ببقاء الملفات الضرورية للهيكل
+!/storage/app/
+!/storage/app/.gitignore
+!/storage/app/public/
+!/storage/app/public/.gitignore
+!/storage/framework/
+!/storage/framework/cache/
+!/storage/framework/cache/.gitignore
+!/storage/framework/sessions/
+!/storage/framework/sessions/.gitignore
+!/storage/framework/testing/
+!/storage/framework/testing/.gitignore
+!/storage/framework/views/
+!/storage/framework/views/.gitignore
+!/storage/logs/
+!/storage/logs/.gitignore
+
+# تجاهل الملفات الخاصة بالتطبيق
+/storage/app/private/
+/storage/logs/*.log
+
+# تجاهل النسخ الاحتياطية
+/storage/app/private/Laravel/*.zip
+
+# تجاهل صور أغلفة الدورات
+/storage/app/private/course-covers/
+
+# إذا أردت تجاهل شعار الموقع أيضاً
+# /storage/app/public/site/brand/logo.png
