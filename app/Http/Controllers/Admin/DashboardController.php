@@ -10,18 +10,28 @@ use App\Models\PaymentRequest;
 use App\Models\User;
 use App\Models\UserDevice;
 use App\Support\AdminInertia;
+use Illuminate\Support\Carbon;
 use Inertia\Response;
 
 class DashboardController extends Controller
 {
+    private const ONLINE_WINDOW_MINUTES = 10;
+
     public function index(): Response
     {
+        $onlineThreshold = Carbon::now()->subMinutes(self::ONLINE_WINDOW_MINUTES);
+        $activeDevicesQuery = UserDevice::query()
+            ->where('is_active', true)
+            ->where('last_seen_at', '>=', $onlineThreshold);
+
         $stats = [
             'courses_total' => Course::count(),
             'courses_published' => Course::where('status', 'published')->count(),
             'users_total' => User::count(),
-            'connected_users_count' => UserDevice::where('is_active', true)->distinct('user_id')->count('user_id'),
-            'active_devices_count' => UserDevice::where('is_active', true)->count(),
+            'connected_users_count' => (clone $activeDevicesQuery)
+                ->distinct('user_id')
+                ->count('user_id'),
+            'active_devices_count' => $activeDevicesQuery->count(),
             'users_by_role' => User::query()
                 ->selectRaw('role, count(*) as c')
                 ->groupBy('role')
