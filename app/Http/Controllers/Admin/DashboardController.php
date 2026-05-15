@@ -8,6 +8,7 @@ use App\Models\CourseEnrollment;
 use App\Models\CourseFile;
 use App\Models\PaymentRequest;
 use App\Models\User;
+use App\Models\UserDevice;
 use App\Support\AdminInertia;
 use Inertia\Response;
 
@@ -19,6 +20,8 @@ class DashboardController extends Controller
             'courses_total' => Course::count(),
             'courses_published' => Course::where('status', 'published')->count(),
             'users_total' => User::count(),
+            'connected_users_count' => UserDevice::where('is_active', true)->distinct('user_id')->count('user_id'),
+            'active_devices_count' => UserDevice::where('is_active', true)->count(),
             'users_by_role' => User::query()
                 ->selectRaw('role, count(*) as c')
                 ->groupBy('role')

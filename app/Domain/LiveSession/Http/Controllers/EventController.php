@@ -7,6 +7,7 @@ use App\Domain\LiveSession\Http\Requests\CreateEventRequest;
 use App\Domain\LiveSession\Http\Resources\EventResource;
 use App\Domain\LiveSession\Models\LiveSession;
 use App\Domain\LiveSession\Services\EventService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

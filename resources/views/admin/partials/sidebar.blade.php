@@ -13,6 +13,7 @@
         ['route' => 'admin.security-events.index', 'params' => [], 'match' => 'admin.security-events.*', 'label' => __('admin.nav.security_logs'), 'icon' => 'shield'],
         ['route' => 'admin.carousel.index', 'params' => [], 'match' => 'admin.carousel.*', 'label' => __('admin.nav.carousel'), 'icon' => 'carousel'],
         ['route' => 'admin.settings.index', 'params' => [], 'match' => 'admin.settings.*', 'label' => __('admin.nav.settings'), 'icon' => 'cog'],
+        ['route' => 'admin.user-reports.index', 'params' => [], 'match' => 'admin.user-reports.*', 'label' => __('admin.nav.user_reports'), 'icon' => 'report'],
     ];
     $sidebarPos = $isEn
         ? 'left-0 border-r -translate-x-full lg:translate-x-0'

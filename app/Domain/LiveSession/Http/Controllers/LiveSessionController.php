@@ -14,6 +14,7 @@ use App\Domain\LiveSession\Http\Resources\LiveSessionCollection;
 use App\Domain\LiveSession\Http\Resources\LiveSessionResource;
 use App\Domain\LiveSession\Models\LiveSession;
 use App\Domain\LiveSession\Services\LiveSessionService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

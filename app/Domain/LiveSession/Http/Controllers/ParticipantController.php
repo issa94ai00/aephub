@@ -5,6 +5,7 @@ namespace App\Domain\LiveSession\Http\Controllers;
 use App\Domain\LiveSession\Http\Resources\ParticipantResource;
 use App\Domain\LiveSession\Models\LiveSession;
 use App\Domain\LiveSession\Services\LiveSessionService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
 class ParticipantController extends Controller

@@ -21,6 +21,12 @@
             </div>
         </div>
         <div class="admin-card p-4">
+            <div class="text-xs text-white/55">{{ __('admin.user_reports.connected_users') }}</div>
+            <div class="mt-2 text-2xl font-bold text-white">{{ $stats['connected_users_count'] }}</div>
+            <div class="mt-1 text-[11px] text-emerald-200/80">{{ __('admin.user_reports.active_devices') }}: {{ $stats['active_devices_count'] }}</div>
+            <a href="{{ route('admin.user-reports.index') }}" class="mt-2 inline-block text-[11px] text-emerald-200 hover:underline">{{ __('admin.user_reports.view_report') }}</a>
+        </div>
+        <div class="admin-card p-4">
             <div class="text-xs text-white/55">{{ __('admin.dashboard.enrollments_pending') }}</div>
             <div class="mt-2 text-2xl font-bold text-amber-200">{{ $stats['enrollments_pending'] }}</div>
         </div>

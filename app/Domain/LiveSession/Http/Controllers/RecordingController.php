@@ -6,6 +6,7 @@ use App\Domain\LiveSession\Http\Resources\RecordingResource;
 use App\Domain\LiveSession\Models\LiveSession;
 use App\Domain\LiveSession\Models\LiveSessionRecording;
 use App\Domain\LiveSession\Services\RecordingService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
 class RecordingController extends Controller

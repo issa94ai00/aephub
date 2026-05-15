@@ -7,6 +7,7 @@ use App\Domain\LiveSession\Http\Resources\AssetResource;
 use App\Domain\LiveSession\Models\LiveSession;
 use App\Domain\LiveSession\Models\LiveSessionAsset;
 use App\Domain\LiveSession\Services\AssetService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

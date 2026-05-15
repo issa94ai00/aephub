@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\StudyYearWebController;
 use App\Http\Controllers\Admin\TeacherManagementController;
 use App\Http\Controllers\Admin\UniversityWebController;
 use App\Http\Controllers\Admin\UserDeviceWebController;
+use App\Http\Controllers\Admin\UserReportsController;
 use App\Http\Controllers\Admin\UserWebController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegalController;
@@ -68,6 +69,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('users/{user}/role', [UserWebController::class, 'updateRole'])->name('users.role');
         Route::post('users/{user}/freeze', [UserWebController::class, 'freeze'])->name('users.freeze');
         Route::post('users/{user}/unfreeze', [UserWebController::class, 'unfreeze'])->name('users.unfreeze');
+        Route::get('user-reports', [UserReportsController::class, 'index'])->name('user-reports.index');
         Route::get('teachers', [TeacherManagementController::class, 'index'])->name('teachers.index');
         Route::post('teachers/{user}/approve', [TeacherManagementController::class, 'approve'])->name('teachers.approve');
         Route::post('teachers/{user}/reject', [TeacherManagementController::class, 'reject'])->name('teachers.reject');
