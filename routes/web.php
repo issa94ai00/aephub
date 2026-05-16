@@ -94,6 +94,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
+        Route::post('settings/rotate-encryption-key', [SettingsController::class, 'rotateEncryptionKey'])->name('settings.rotate-encryption-key');
         Route::post('settings/clear-cache', [SettingsController::class, 'clearCache'])->name('settings.clear-cache');
 
         Route::get('queue-workers', [QueueWorkerController::class, 'index'])->name('queue-workers.index');

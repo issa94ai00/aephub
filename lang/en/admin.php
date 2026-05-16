@@ -50,6 +50,7 @@ return [
     'flash' => [
         'settings_saved' => 'Settings saved.',
         'cache_cleared' => 'Application cache cleared.',
+        'encryption_rotate_success' => 'Encryption migration completed. :processed records updated, :skipped skipped, :failed failed.',
         'course_created' => 'Course created.',
         'course_updated' => 'Course updated.',
         'course_deleted' => 'Course deleted.',
@@ -496,6 +497,14 @@ return [
         'maintenance_hint' => 'Clear Laravel caches and reload site settings from the database.',
         'confirm_optimize' => 'I confirm running',
         'clear_cache' => 'Clear cache',
+        'encryption_rotate_section' => 'Encryption migration',
+        'encryption_rotate_hint' => 'Rotate stored video encryption keys from an old APP_KEY to a new APP_KEY. The tool uses the supplied keys for migration only and does not modify .env.',
+        'old_app_key' => 'Old APP_KEY',
+        'new_app_key' => 'New APP_KEY',
+        'confirm_rotate' => 'I understand this will migrate stored video keys and update APP_KEY.',
+        'rotate_keys' => 'Rotate encryption keys',
+        'invalid_app_key' => 'One or both APP_KEY values are invalid for the current cipher.',
+        'env_write_failed' => 'Cannot save the new APP_KEY to .env. Ensure the file is writable.',
     ],
 
     'course_form' => [

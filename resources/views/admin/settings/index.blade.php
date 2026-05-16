@@ -224,6 +224,30 @@
                 </button>
             </form>
         </section>
+        <section class="admin-card p-5">
+            <h2 class="text-sm font-semibold text-white">{{ __('admin.settings.encryption_rotate_section') }}</h2>
+            <p class="mt-2 text-xs text-white/55">{{ __('admin.settings.encryption_rotate_hint') }}</p>
+            <form method="post" action="{{ route('admin.settings.rotate-encryption-key') }}" class="mt-4 space-y-4">
+                @csrf
+                <div>
+                    <label class="text-xs font-medium text-white/70">{{ __('admin.settings.old_app_key') }}</label>
+                    <input name="old_app_key" type="password" required autocomplete="new-password"
+                           class="mt-1 w-full rounded-xl border border-white/10 bg-[#0a0f0d] px-3 py-2 text-sm text-white" dir="ltr" />
+                </div>
+                <div>
+                    <label class="text-xs font-medium text-white/70">{{ __('admin.settings.new_app_key') }}</label>
+                    <input name="new_app_key" type="password" required autocomplete="new-password"
+                           class="mt-1 w-full rounded-xl border border-white/10 bg-[#0a0f0d] px-3 py-2 text-sm text-white" dir="ltr" />
+                </div>
+                <label class="flex items-start gap-2 text-xs text-white/70">
+                    <input type="checkbox" name="confirm_rotate" value="1" required class="mt-0.5 rounded border-white/20 bg-[#0a0f0d] text-emerald-500" />
+                    {{ __('admin.settings.confirm_rotate') }}
+                </label>
+                <button type="submit" class="admin-btn rounded-xl bg-sky-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-sky-900/25 hover:bg-sky-500">
+                    {{ __('admin.settings.rotate_keys') }}
+                </button>
+            </form>
+        </section>
     </div>
 
     <script>

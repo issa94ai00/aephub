@@ -50,6 +50,7 @@ return [
     'flash' => [
         'settings_saved' => 'تم حفظ الإعدادات.',
         'cache_cleared' => 'تم مسح الذاكرة المؤقتة للتطبيق.',
+        'encryption_rotate_success' => 'اكتمل ترحيل التشفير. تم تحديث :processed سجلاً، تم تخطي :skipped، فشل :failed.',
         'course_created' => 'تم إنشاء الدورة.',
         'course_updated' => 'تم تحديث الدورة.',
         'course_deleted' => 'تم حذف الدورة.',
@@ -496,6 +497,14 @@ return [
         'maintenance_hint' => 'مسح ذاكرة Laravel المؤقتة وإعادة تحميل إعدادات الموقع من قاعدة البيانات.',
         'confirm_optimize' => 'أؤكد تنفيذ',
         'clear_cache' => 'مسح الذاكرة المؤقتة',
+        'encryption_rotate_section' => 'ترحيل مفتاح التشفير',
+        'encryption_rotate_hint' => 'أعد تشفير مفاتيح فيديو الدورة المرتبطة بالمفتاح القديم إلى APP_KEY جديد. يستخدم هذا الأداة المفاتيح المدخلة فقط للترحيل ولا يعدّل ملف .env.',
+        'old_app_key' => 'APP_KEY القديم',
+        'new_app_key' => 'APP_KEY الجديد',
+        'confirm_rotate' => 'أفهم أن هذا سيُحوِّل مفاتيح فيديو الموقع ويُحدِّث APP_KEY.',
+        'rotate_keys' => 'ترحيل مفاتيح التشفير',
+        'invalid_app_key' => 'واحد أو كلا مفتاحي APP_KEY غير صالحين لهذا التشفير.',
+        'env_write_failed' => 'لا يمكن حفظ APP_KEY الجديد في .env. تأكد من أن الملف قابل للكتابة.',
     ],
 
     'course_form' => [

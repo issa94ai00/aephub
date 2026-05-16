@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CourseVideo;
 use App\Services\SiteSettingsService;
 use App\Support\AdminInertia;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -84,6 +87,105 @@ class SettingsController extends Controller
         $this->siteSettings->persist($data);
 
         return redirect()->route('admin.settings.index')->with('status', __('admin.flash.settings_saved'));
+    }
+
+    public function rotateEncryptionKey(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'old_app_key' => ['required', 'string', 'max:255'],
+            'new_app_key' => ['required', 'string', 'max:255'],
+            'confirm_rotate' => ['accepted'],
+        ]);
+
+        $oldAppKey = trim($this->normalizeAppKey($data['old_app_key']));
+        $newAppKey = trim($this->normalizeAppKey($data['new_app_key']));
+        $currentAppKey = trim($this->normalizeAppKey((string) config('app.key')));
+        $cipher = (string) config('app.cipher');
+
+        try {
+            $oldEncrypter = new Encrypter($oldAppKey, $cipher);
+            $newEncrypter = new Encrypter($newAppKey, $cipher);
+            $currentEncrypter = new Encrypter($currentAppKey, $cipher);
+        } catch (\Throwable $exception) {
+            return redirect()->route('admin.settings.index')->withErrors([
+                'old_app_key' => __('admin.settings.invalid_app_key'),
+                'new_app_key' => __('admin.settings.invalid_app_key'),
+            ]);
+        }
+
+        if ($newAppKey !== $currentAppKey) {
+            config(['app.key' => $newAppKey]);
+        }
+
+        $processed = 0;
+        $skipped = 0;
+        $failed = 0;
+
+        foreach (CourseVideo::query()->whereNotNull('encrypted_content_key')->cursor() as $video) {
+            $encrypted = (string) $video->encrypted_content_key;
+            if ($encrypted === '') {
+                $skipped++;
+                continue;
+            }
+
+            $decrypted = null;
+            $usedKey = null;
+            foreach (['new' => $newEncrypter, 'current' => $currentEncrypter, 'old' => $oldEncrypter] as $name => $encrypter) {
+                try {
+                    $decrypted = $encrypter->decryptString($encrypted);
+                    $usedKey = $name;
+                    break;
+                } catch (DecryptException) {
+                    continue;
+                }
+            }
+
+            if ($decrypted === null) {
+                $failed++;
+                continue;
+            }
+
+            if ($usedKey === 'new') {
+                $skipped++;
+                continue;
+            }
+
+            try {
+                $reEncrypted = $newEncrypter->encryptString($decrypted);
+                $roundtrip = $newEncrypter->decryptString($reEncrypted);
+            } catch (DecryptException) {
+                $failed++;
+                continue;
+            }
+
+            if (! hash_equals($roundtrip, $decrypted)) {
+                $failed++;
+                continue;
+            }
+
+            $video->encrypted_content_key = $reEncrypted;
+            $video->save();
+            $processed++;
+        }
+
+        return redirect()->route('admin.settings.index')
+            ->with('status', __('admin.flash.encryption_rotate_success', [
+                'processed' => $processed,
+                'skipped' => $skipped,
+                'failed' => $failed,
+            ]));
+    }
+
+    private function normalizeAppKey(string $key): string
+    {
+        $key = trim($key);
+
+        if (str_starts_with($key, 'base64:')) {
+            $decoded = base64_decode(substr($key, 7), true);
+            return $decoded === false ? $key : $decoded;
+        }
+
+        return $key;
     }
 
     public function clearCache(Request $request): RedirectResponse

@@ -6,6 +6,7 @@ public/downloads/lms-android.apk
 # Laravel 4 specific
 bootstrap/compiled.php
 app/storage/
+storage/framework/views/*.php
 # استثناء مجلد الـ course-files بالكامل
 storage/app/private/course-files/
 
