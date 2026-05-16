@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\CourseVideo;
 use App\Models\PlaybackSession;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -75,7 +76,15 @@ class PlaybackController extends Controller
         }
 
         $video = $session->video;
-        $contentKeyBase64 = Crypt::decryptString($video->encrypted_content_key);
+
+        try {
+            $contentKeyBase64 = Crypt::decryptString($video->encrypted_content_key);
+        } catch (DecryptException $exception) {
+            return response()->json([
+                'message' => 'Unable to decrypt stored video content key. Verify APP_KEY and video encryption metadata.',
+            ], 500);
+        }
+
         $contentKeyBytes = base64_decode($contentKeyBase64, true);
         if ($contentKeyBytes === false || strlen($contentKeyBytes) !== 16) {
             return response()->json(['message' => 'Invalid stored content_key format'], 500);
