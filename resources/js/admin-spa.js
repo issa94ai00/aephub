@@ -3,7 +3,7 @@ import '../css/app.css';
 import { createApp, h } from 'vue';
 import { createInertiaApp, router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { setupAdminContentReveal, setupAdminMobileNav, setupAdminScrollHeader } from './admin/admin-dom';
+import { setupAdminContentReveal, setupAdminMobileNav, setupAdminScrollHeader, setupAdminBulkTables } from './admin/admin-dom';
 
 const appName = import.meta.env.VITE_APP_NAME || 'LMS';
 
@@ -11,6 +11,7 @@ const bootChrome = () => {
     setupAdminMobileNav();
     setupAdminScrollHeader();
     setupAdminContentReveal();
+    setupAdminBulkTables();
 };
 
 router.on('finish', () => {

@@ -69,3 +69,5 @@ node_modules
 
 # إذا أردت تجاهل شعار الموقع أيضاً
 # /storage/app/public/site/brand/logo.png
+"storage/" 
+"storage/*" 

@@ -108,6 +108,39 @@ export const setupAdminContentReveal = () => {
     io.observe(container);
 };
 
+export const setupAdminBulkTables = () => {
+    document.querySelectorAll('[data-bulk-table]').forEach((table) => {
+        const container = table.closest('[data-bulk-container]') ?? table.parentElement;
+        const checkboxes = table.querySelectorAll('[data-bulk-checkbox]');
+        const selectAll = container.querySelector('[data-bulk-select-all]');
+        const button = container.querySelector('[data-bulk-button]');
+        const counter = container.querySelector('[data-bulk-counter]');
+        if (!checkboxes.length || !button) {
+            return;
+        }
+
+        const refresh = () => {
+            const count = Array.from(checkboxes).filter((cb) => cb.checked).length;
+            button.disabled = count === 0;
+            button.classList.toggle('opacity-40', count === 0);
+            if (counter) {
+                counter.textContent = count > 0 ? `(${count})` : '';
+            }
+        };
+
+        checkboxes.forEach((cb) => cb.addEventListener('change', refresh));
+
+        selectAll?.addEventListener('change', (e) => {
+            checkboxes.forEach((cb) => {
+                cb.checked = e.target.checked;
+            });
+            refresh();
+        });
+
+        refresh();
+    });
+};
+
 export const setupAdminLoginReady = () => {
     const root = document.querySelector('[data-admin-login]');
     if (!root) {

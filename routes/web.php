@@ -66,6 +66,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('courses/{course}/sessions/{session}/videos', [CourseSessionWebController::class, 'syncVideos'])->name('courses.sessions.videos.sync');
 
         Route::get('users', [UserWebController::class, 'index'])->name('users.index');
+        Route::get('users/create', [UserWebController::class, 'create'])->name('users.create');
+        Route::post('users', [UserWebController::class, 'store'])->name('users.store');
+        Route::get('users/{user}/edit', [UserWebController::class, 'edit'])->name('users.edit');
+        Route::put('users/{user}', [UserWebController::class, 'update'])->name('users.update');
+        Route::delete('users/{user}', [UserWebController::class, 'destroy'])->name('users.destroy');
+        Route::post('users/bulk-delete', [UserWebController::class, 'bulkDestroy'])->name('users.bulk-destroy');
         Route::patch('users/{user}/role', [UserWebController::class, 'updateRole'])->name('users.role');
         Route::post('users/{user}/freeze', [UserWebController::class, 'freeze'])->name('users.freeze');
         Route::post('users/{user}/unfreeze', [UserWebController::class, 'unfreeze'])->name('users.unfreeze');
