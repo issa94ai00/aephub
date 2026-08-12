@@ -13,6 +13,9 @@ const props = defineProps({
 
 const chrome = computed(() => page.props.adminChrome);
 
+const nav = computed(() => (props.nav?.length ? props.nav : chrome.value?.nav ?? []));
+const activeRouteName = computed(() => props.routeName || chrome.value?.routeName || null);
+
 const locale = computed(() => chrome.value?.locale ?? 'ar');
 const isEn = computed(() => locale.value === 'en');
 const mainPad = computed(() => (isEn.value ? 'lg:pl-64' : 'lg:pr-64'));
@@ -35,7 +38,7 @@ function routeNameMatches(current, pattern) {
 }
 
 function navItemActive(item) {
-    const name = props.routeName;
+    const name = activeRouteName.value;
     const patterns = Array.isArray(item.match) ? item.match : [item.match];
 
     return patterns.some((p) => routeNameMatches(name, p));
@@ -134,6 +137,34 @@ function logout() {
                                 stroke-linejoin="round"
                                 stroke-width="1.8"
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                            />
+                        </svg>
+                        <svg
+                            v-else-if="item.icon === 'exam'"
+                            class="h-5 w-5 shrink-0 opacity-90"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                            />
+                        </svg>
+                        <svg
+                            v-else-if="item.icon === 'report'"
+                            class="h-5 w-5 shrink-0 opacity-90"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                             />
                         </svg>
                         <svg
@@ -266,6 +297,22 @@ function logout() {
                                 stroke-linejoin="round"
                                 stroke-width="1.8"
                                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                            />
+                        </svg>
+                        <!-- Storage management. Same glyph the Blade sidebar
+                             uses, so the two shells name the screen alike. -->
+                        <svg
+                            v-else-if="item.icon === 'cloud'"
+                            class="h-5 w-5 shrink-0 opacity-90"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"
                             />
                         </svg>
                         <svg v-else class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">

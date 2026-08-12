@@ -111,4 +111,9 @@ class Course extends Model
     {
         return $this->hasMany(CourseChatMessage::class);
     }
+
+    public function exams(): HasMany
+    {
+        return $this->hasMany(Exam::class)->latest('id');
+    }
 }

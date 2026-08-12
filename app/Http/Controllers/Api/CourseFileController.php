@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseEnrollment;
 use App\Models\CourseFile;
+use App\Services\StorageDestinationService;
 use App\Support\ApiPagination;
 use App\Support\LocalEncryptedBlobRangeResponse;
 use App\Support\MediaChunkingHints;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
@@ -79,7 +81,15 @@ class CourseFileController extends Controller
             return response()->json(['message' => 'content_iv must be base64 for 16 bytes'], 422);
         }
 
-        $disk = (string) config('filesystems.default', 'local');
+        // The destination the admin selected on the storage screen, not whatever
+        // `.env` set as the default disk. Those two disagreed as soon as anyone
+        // configured storage from the panel.
+        $disk = app(StorageDestinationService::class)->uploadDisk();
+
+        if ($rejection = $this->quotaRejection($disk, (int) $request->file('file')->getSize())) {
+            return $rejection;
+        }
+
         $path = $request->file('file')->store('course-files/'.$course->id, $disk);
 
         $file = CourseFile::create([
@@ -119,7 +129,11 @@ class CourseFileController extends Controller
             'content_iv' => ['required', 'string'],
             'key_version' => ['nullable', 'string', 'max:50'],
             'encrypted_sha256' => ['nullable', 'string', 'max:128'],
-            'storage_disk' => ['nullable', 'string', 'in:wasabi,r2,local'],
+            // Built from the destinations that exist rather than a fixed pair,
+            // so a managed destination is nameable by a client that wants one.
+            // Omitting it — which is the normal case now that the admin chooses
+            // — takes whatever the storage screen selected.
+            'storage_disk' => ['nullable', 'string', Rule::in($this->selectableUploadDisks())],
         ]);
 
         $keyBytes = base64_decode((string) $data['content_key'], true);
@@ -133,17 +147,36 @@ class CourseFileController extends Controller
 
         $mime = (string) ($data['mime_type'] ?? 'application/octet-stream');
         $requested = isset($data['storage_disk']) ? trim((string) $data['storage_disk']) : '';
-        $defaultDisk = strtolower((string) config('filesystems.default', 'local'));
 
-        // Explicit local, or default filesystem is local (no storage_disk) → skip object storage attempts
+        // Where an unspecified upload goes is the admin's decision, taken on the
+        // storage screen. Reading `filesystems.default` here meant the answer
+        // came from `.env` instead, and the two parted company the moment a
+        // destination was configured from the panel.
+        $defaultDisk = strtolower(app(StorageDestinationService::class)->uploadDisk());
+
+        // Refused here rather than at completion. The client has told us how big
+        // the file is before sending a byte of it, so a destination that cannot
+        // hold it can say so while that still saves the upload rather than only
+        // explaining it. `size_bytes` is optional, and an upload that omits it
+        // is checked against the current usage alone.
+        if ($rejection = $this->quotaRejection($requested !== '' ? $requested : $defaultDisk, (int) ($data['size_bytes'] ?? 0))) {
+            return $rejection;
+        }
+
+        // Explicit local, or the selected destination is local (no storage_disk) → skip object storage attempts
         if ($requested === 'local' || ($requested === '' && $defaultDisk === 'local')) {
             return $this->multipartLocalInitResponse($request, $course, $data, $mime);
         }
 
-        foreach ($this->orderedS3DisksForMultipart($requested) as $s3Disk) {
+        foreach ($this->orderedS3DisksForMultipart($requested !== '' ? $requested : $defaultDisk) as $s3Disk) {
             if (! $this->isS3DiskConfigured($s3Disk)) {
                 continue;
             }
+
+            // The row behind this disk, when there is one. `.env` disks have
+            // none, and then the platform-wide defaults apply.
+            $destination = app(StorageDestinationService::class)->active()->firstWhere('disk_key', $s3Disk);
+            $tokenTtlHours = (int) ($destination?->option('multipart_token_ttl_hours') ?? 2);
 
             $client = $this->buildS3ClientForDisk($s3Disk);
             $bucket = (string) config("filesystems.disks.{$s3Disk}.bucket");
@@ -180,7 +213,7 @@ class CourseFileController extends Controller
                 'content_iv' => $data['content_iv'],
                 'key_version' => $data['key_version'] ?? 'v1',
                 'encrypted_sha256' => $data['encrypted_sha256'] ?? null,
-                'expires_at' => now()->addHours(2)->timestamp,
+                'expires_at' => now()->addHours($tokenTtlHours)->timestamp,
             ];
 
             return response()->json(array_merge([
@@ -188,9 +221,12 @@ class CourseFileController extends Controller
                 'object_key' => $objectKey,
                 'storage_disk' => $s3Disk,
                 'max_parts' => 10000,
-                'expires_in_seconds' => 7200,
+                'expires_in_seconds' => $tokenTtlHours * 3600,
                 'multipart_token' => Crypt::encryptString(json_encode($tokenPayload, JSON_THROW_ON_ERROR)),
-            ], MediaChunkingHints::multipartInitFields('s3')), 201);
+                // Part sizes and parallelism come from the destination the
+                // upload is going to, so a client tuned for one backend is not
+                // handed the other's numbers.
+            ], MediaChunkingHints::multipartInitFieldsFor($destination, 's3')), 201);
         }
 
         return $this->multipartLocalInitResponse($request, $course, $data, $mime);
@@ -292,7 +328,16 @@ class CourseFileController extends Controller
         $partPath = $tmpDir.'/part-'.$partNumber;
         $disk->makeDirectory($tmpDir);
 
-        $maxBytes = max(1024 * 1024, (int) config('media_chunking.multipart.max_part_bytes', 100 * 1024 * 1024));
+        // The ceiling on one PUT body, from the local destination when one is
+        // managed. It has to stay under what nginx and PHP will accept, which
+        // is why it is worth setting per install rather than shipping a number.
+        $localDestination = app(StorageDestinationService::class)
+            ->active()
+            ->firstWhere(fn ($d) => $d->driver === StorageDestination::TYPE_LOCAL);
+
+        $maxBytes = $localDestination
+            ? (int) $localDestination->option('max_part_mb') * 1024 * 1024
+            : max(1024 * 1024, (int) config('media_chunking.multipart.max_part_bytes', 100 * 1024 * 1024));
         $written = 0;
         $input = fopen('php://input', 'rb');
         if ($input === false) {
@@ -737,16 +782,26 @@ class CourseFileController extends Controller
      */
     private function multipartLocalInitResponse(Request $request, Course $course, array $data, string $mime): JsonResponse
     {
+        // A managed local destination may tune part sizes and how long a
+        // resumable upload stays resumable; without one the platform defaults
+        // apply exactly as before.
+        $localDestination = app(StorageDestinationService::class)
+            ->active()
+            ->firstWhere(fn ($d) => $d->driver === StorageDestination::TYPE_LOCAL);
+        $localTokenTtlHours = (int) ($localDestination?->option('multipart_token_ttl_hours') ?? 2);
+
         $uploadId = Str::uuid()->toString();
         $objectKey = $this->makeMultipartObjectKey($course->id, (string) $data['original_name'], 'local');
         $tmpDir = $this->localMultipartTmpRelativePath($course->id, $uploadId);
         Storage::disk('local')->makeDirectory($tmpDir);
 
+        // The staging record has to outlive the token, or a client resuming at
+        // the last legal moment finds the parts it already uploaded gone.
         Cache::put($this->localMultipartCacheKey($uploadId), [
             'course_id' => (int) $course->id,
             'uploader_id' => (int) $request->user()->id,
             'object_key' => $objectKey,
-        ], now()->addHours(2));
+        ], now()->addHours($localTokenTtlHours));
 
         $tokenPayload = [
             'course_id' => (int) $course->id,
@@ -764,7 +819,7 @@ class CourseFileController extends Controller
             'content_iv' => $data['content_iv'],
             'key_version' => $data['key_version'] ?? 'v1',
             'encrypted_sha256' => $data['encrypted_sha256'] ?? null,
-            'expires_at' => now()->addHours(2)->timestamp,
+            'expires_at' => now()->addHours($localTokenTtlHours)->timestamp,
         ];
 
         return response()->json(array_merge([
@@ -772,9 +827,9 @@ class CourseFileController extends Controller
             'object_key' => $objectKey,
             'storage_disk' => 'local',
             'max_parts' => 10000,
-            'expires_in_seconds' => 7200,
+            'expires_in_seconds' => $localTokenTtlHours * 3600,
             'multipart_token' => Crypt::encryptString(json_encode($tokenPayload, JSON_THROW_ON_ERROR)),
-        ], MediaChunkingHints::multipartInitFields('local')), 201);
+        ], MediaChunkingHints::multipartInitFieldsFor($localDestination, 'local')), 201);
     }
 
     /**
@@ -903,22 +958,90 @@ class CourseFileController extends Controller
     /**
      * @return list<string>
      */
-    private function orderedS3DisksForMultipart(string $requested): array
+    /**
+     * Disk names a client is allowed to ask for.
+     *
+     * `local` is always in: it needs no configuring and is the floor the app
+     * falls back to. The `.env` disks stay accepted so an existing client that
+     * hardcodes "wasabi" is not broken by this change.
+     *
+     * @return list<string>
+     */
+    private function selectableUploadDisks(): array
     {
-        if ($requested === 'r2') {
-            return ['r2', 'wasabi'];
-        }
+        $managed = app(StorageDestinationService::class)->active()->pluck('disk_key')->all();
 
-        return ['wasabi', 'r2'];
+        return array_values(array_unique(['local', 'wasabi', 'r2', ...$managed]));
     }
 
+    /**
+     * The response to send when a destination is at its capacity limit, or null
+     * when there is room.
+     *
+     * 507 rather than 422: this is not a malformed request, and a client that
+     * treats it as one would ask the teacher to fix a field. The condition is
+     * new — before quotas existed the upload simply succeeded — so no existing
+     * client behaviour changes except that a full bucket now says so.
+     */
+    private function quotaRejection(string $diskKey, int $incomingBytes): ?JsonResponse
+    {
+        $quota = app(StorageDestinationService::class)->quotaCheck($diskKey, $incomingBytes);
+
+        if ($quota['allowed']) {
+            return null;
+        }
+
+        return response()->json([
+            'message' => __('admin.storage_settings.quota_exceeded_api'),
+            'storage_disk' => $diskKey,
+            'used_bytes' => $quota['used'],
+            'quota_bytes' => $quota['quota'],
+        ], 507);
+    }
+
+    /**
+     * S3 disks to try, the intended destination first.
+     *
+     * The list used to be the literal `['wasabi', 'r2']`, so a managed
+     * destination under any other name was unreachable no matter what the admin
+     * selected. It is now built from the destinations that actually exist, with
+     * the two `.env` disks kept on the end as the pre-existing fallback.
+     *
+     * @return list<string>
+     */
+    private function orderedS3DisksForMultipart(string $requested): array
+    {
+        $managed = app(StorageDestinationService::class)
+            ->active()
+            ->filter(fn ($destination) => $destination->driver !== 'local')
+            ->pluck('disk_key')
+            ->all();
+
+        // `array_values(array_unique(...))` keeps the first occurrence, so the
+        // requested disk stays at the head and nothing is tried twice.
+        return array_values(array_unique(array_filter([
+            $requested,
+            ...$managed,
+            'wasabi',
+            'r2',
+        ], fn ($disk) => is_string($disk) && $disk !== '' && $disk !== 'local')));
+    }
+
+    /**
+     * Whether a disk has everything an S3 client needs.
+     *
+     * Reads the resolved filesystem config rather than an allow-list of two
+     * names: managed destinations are registered into `filesystems.disks` at
+     * boot, so this now sees them the same way it sees the `.env` ones.
+     */
     private function isS3DiskConfigured(string $disk): bool
     {
-        if (! in_array($disk, ['wasabi', 'r2'], true)) {
+        $prefix = "filesystems.disks.{$disk}";
+
+        if ((string) config("{$prefix}.driver") !== 's3') {
             return false;
         }
 
-        $prefix = "filesystems.disks.{$disk}";
         $key = (string) config("{$prefix}.key");
         $secret = (string) config("{$prefix}.secret");
         $bucket = (string) config("{$prefix}.bucket");
@@ -998,11 +1121,22 @@ class CourseFileController extends Controller
             $filename .= '.'.Str::lower($ext);
         }
 
-        $prefix = match ($storageDisk) {
-            'r2' => "course-files/{$courseId}/multipart/r2/",
-            'local' => "course-files/{$courseId}/multipart/local/",
-            default => "course-files/{$courseId}/multipart/",
-        };
+        // The destination's own prefix when it has one, so a single bucket can
+        // hold several environments without them writing over each other. The
+        // per-disk literals below stay as the fallback for the `.env` disks,
+        // which have no row to carry a prefix.
+        $configured = app(StorageDestinationService::class)
+            ->active()
+            ->firstWhere('disk_key', $storageDisk)
+            ?->option('path_prefix');
+
+        $prefix = $configured
+            ? trim((string) $configured, '/')."/{$courseId}/multipart/"
+            : match ($storageDisk) {
+                'r2' => "course-files/{$courseId}/multipart/r2/",
+                'local' => "course-files/{$courseId}/multipart/local/",
+                default => "course-files/{$courseId}/multipart/",
+            };
 
         return $prefix.$filename;
     }

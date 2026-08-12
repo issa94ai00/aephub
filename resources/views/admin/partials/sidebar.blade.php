@@ -8,11 +8,14 @@
         ['route' => 'admin.device-change-requests.index', 'params' => [], 'match' => 'admin.device-change-requests.*', 'label' => __('admin.nav.device_change_requests'), 'icon' => 'device'],
         ['route' => 'admin.users.index', 'params' => [], 'match' => 'admin.users.*', 'label' => __('admin.nav.users'), 'icon' => 'users'],
         ['route' => 'admin.courses.index', 'params' => [], 'match' => ['admin.courses.index', 'admin.courses.create', 'admin.courses.edit', 'admin.courses.sessions.*'], 'label' => __('admin.nav.course_management'), 'icon' => 'book'],
+        ['route' => 'admin.exams.index', 'params' => [], 'match' => ['admin.exams.index', 'admin.exams.create', 'admin.exams.edit', 'admin.exams.attempts.*'], 'label' => __('admin.nav.exams'), 'icon' => 'exam'],
+        ['route' => 'admin.exams.reports', 'params' => [], 'match' => 'admin.exams.reports', 'label' => __('admin.nav.exam_reports'), 'icon' => 'report'],
         ['route' => 'admin.academics.universities.index', 'params' => [], 'match' => 'admin.academics.*', 'label' => __('admin.nav.academics'), 'icon' => 'academic'],
         ['route' => 'admin.teachers.index', 'params' => [], 'match' => 'admin.teachers.*', 'label' => __('admin.nav.teachers'), 'icon' => 'teacher'],
         ['route' => 'admin.security-events.index', 'params' => [], 'match' => 'admin.security-events.*', 'label' => __('admin.nav.security_logs'), 'icon' => 'shield'],
         ['route' => 'admin.carousel.index', 'params' => [], 'match' => 'admin.carousel.*', 'label' => __('admin.nav.carousel'), 'icon' => 'carousel'],
         ['route' => 'admin.settings.index', 'params' => [], 'match' => 'admin.settings.*', 'label' => __('admin.nav.settings'), 'icon' => 'cog'],
+        ['route' => 'admin.storage-settings.index', 'params' => [], 'match' => 'admin.storage-settings.*', 'label' => __('admin.nav.storage'), 'icon' => 'cloud'],
         ['route' => 'admin.user-reports.index', 'params' => [], 'match' => 'admin.user-reports.*', 'label' => __('admin.nav.user_reports'), 'icon' => 'report'],
     ];
     $sidebarPos = $isEn
@@ -63,6 +66,10 @@
                         <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                     @elseif ($item['icon'] === 'book')
                         <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    @elseif ($item['icon'] === 'exam')
+                        <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    @elseif ($item['icon'] === 'report')
+                        <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     @elseif ($item['icon'] === 'book-open')
                         <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v15.674A8.967 8.967 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v15.674A8.967 8.967 0 0118 18c-2.305 0-4.408.867-6 2.292m0-14.25v15.674"/></svg>
                     @elseif ($item['icon'] === 'device')
@@ -77,6 +84,8 @@
                         <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     @elseif ($item['icon'] === 'users')
                         <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    @elseif ($item['icon'] === 'cloud')
+                        <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"/></svg>
                     @elseif ($item['icon'] === 'card')
                         <svg class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                     @else

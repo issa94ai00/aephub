@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use App\Models\StorageDestination;
+
 final class MediaChunkingHints
 {
     /**
@@ -10,6 +12,34 @@ final class MediaChunkingHints
      * @param  'local'|'s3'  $backend  local = server-assembled parts; s3 = Wasabi/R2 rules (≥ 5 MiB).
      * @return array<string, int>
      */
+    /**
+     * The same fields taken from a destination's own options.
+     *
+     * The config values below are the platform-wide fallback; a destination
+     * that has been tuned in the admin panel overrides them. Kept as a separate
+     * entry point so callers with no destination — and the tests — keep the old
+     * behaviour unchanged.
+     *
+     * @return array<string, int>
+     */
+    public static function multipartInitFieldsFor(?StorageDestination $destination, string $backend = 's3'): array
+    {
+        if (! $destination) {
+            return self::multipartInitFields($backend);
+        }
+
+        $options = $destination->effectiveOptions();
+        $mb = 1024 * 1024;
+
+        // Already clamped by the model — S3's 5 MiB floor included — so these
+        // are safe to advertise as-is.
+        return [
+            'part_size_bytes' => (int) $options['part_size_mb'] * $mb,
+            'recommended_part_size_bytes' => (int) $options['recommended_part_size_mb'] * $mb,
+            'recommended_parallel_parts' => (int) $options['recommended_parallel_parts'],
+        ];
+    }
+
     public static function multipartInitFields(string $backend = 's3'): array
     {
         $parallel = max(1, min(16, (int) config('media_chunking.multipart.recommended_parallel_parts', 4)));

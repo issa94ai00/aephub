@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Services\SiteSettingsService;
+use App\Support\AdminChrome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 use Inertia\Middleware;
@@ -52,129 +53,18 @@ class HandleInertiaRequests extends Middleware
 
                 return $t;
             },
+            // The admin shell — sidebar, branding, locale links — comes from
+            // AdminChrome. This closure used to carry its own copy of the
+            // navigation list, which is how the two drifted: entries added to
+            // AdminChrome never appeared, because Inertia responses read this
+            // one and AdminChrome was only reached by the SPA payload builder.
+            // Storage management was the entry that went missing.
             'adminChrome' => function () use ($request) {
                 if (! $request->routeIs('admin.*') || $request->routeIs('admin.login')) {
                     return null;
                 }
-                $user = $request->user();
-                if ($user === null) {
-                    return null;
-                }
 
-                $svc = app(SiteSettingsService::class);
-                $site = $svc->all();
-                $sideLogo = trim((string) ($site['site_logo_url'] ?? ''));
-                $headerTitle = trim((string) ($site['site_name_resolved'] ?? '')) !== ''
-                    ? $site['site_name_resolved']
-                    : ($site['site_name'] ?? config('app.name'));
-
-                $nav = [
-                    [
-                        'href' => route('admin.dashboard'),
-                        'match' => ['admin.dashboard'],
-                        'label' => __('admin.nav.dashboard'),
-                        'icon' => 'grid',
-                    ],
-                    [
-                        'href' => route('admin.statistics'),
-                        'match' => ['admin.statistics'],
-                        'label' => __('admin.nav.statistics'),
-                        'icon' => 'chart',
-                    ],
-                    [
-                        'href' => route('admin.payments.index'),
-                        'match' => ['admin.payments.*'],
-                        'label' => __('admin.nav.registration_payments'),
-                        'icon' => 'card',
-                    ],
-                    [
-                        'href' => route('admin.courses.student-catalog'),
-                        'match' => ['admin.courses.student-catalog'],
-                        'label' => __('admin.nav.student_courses'),
-                        'icon' => 'book-open',
-                    ],
-                    [
-                        'href' => route('admin.device-change-requests.index'),
-                        'match' => ['admin.device-change-requests.*'],
-                        'label' => __('admin.nav.device_change_requests'),
-                        'icon' => 'device',
-                    ],
-                    [
-                        'href' => route('admin.users.index'),
-                        'match' => ['admin.users.*'],
-                        'label' => __('admin.nav.users'),
-                        'icon' => 'users',
-                    ],
-                    [
-                        'href' => route('admin.courses.index'),
-                        'match' => ['admin.courses.index', 'admin.courses.create', 'admin.courses.edit', 'admin.courses.sessions.*'],
-                        'label' => __('admin.nav.course_management'),
-                        'icon' => 'book',
-                    ],
-                    [
-                        'href' => route('admin.academics.universities.index'),
-                        'match' => ['admin.academics.*'],
-                        'label' => __('admin.nav.academics'),
-                        'icon' => 'academic',
-                    ],
-                    [
-                        'href' => route('admin.teachers.index'),
-                        'match' => ['admin.teachers.*'],
-                        'label' => __('admin.nav.teachers'),
-                        'icon' => 'teacher',
-                    ],
-                    [
-                        'href' => route('admin.security-events.index'),
-                        'match' => ['admin.security-events.*'],
-                        'label' => __('admin.nav.security_logs'),
-                        'icon' => 'shield',
-                    ],
-                    [
-                        'href' => route('admin.carousel.index'),
-                        'match' => ['admin.carousel.*'],
-                        'label' => __('admin.nav.carousel'),
-                        'icon' => 'carousel',
-                    ],
-                    [
-                        'href' => route('admin.faqs.index'),
-                        'match' => ['admin.faqs.*'],
-                        'label' => __('admin.nav.faqs'),
-                        'icon' => 'faq',
-                    ],
-                    [
-                        'href' => route('admin.queue-workers.index'),
-                        'match' => ['admin.queue-workers.*'],
-                        'label' => __('admin.nav.queue_workers'),
-                        'icon' => 'cog', // Or find a better icon
-                    ],
-                    [
-                        'href' => route('admin.settings.index'),
-                        'match' => ['admin.settings.*'],
-                        'label' => __('admin.nav.settings'),
-                        'icon' => 'cog',
-                    ],
-                ];
-
-                return [
-                    'routeName' => $request->route()?->getName(),
-                    'locale' => app()->getLocale(),
-                    'userName' => $user->name,
-                    'appName' => config('app.name'),
-                    'siteLogoUrl' => $sideLogo,
-                    'headerLogoUrl' => $sideLogo,
-                    'headerTitle' => $headerTitle,
-                    'logoutAction' => route('admin.logout'),
-                    'localeUrls' => [
-                        'ar' => route('locale.switch', ['locale' => 'ar']),
-                        'en' => route('locale.switch', ['locale' => 'en']),
-                        'auto' => route('locale.switch', ['locale' => 'auto']),
-                    ],
-                    'routes' => [
-                        'dashboard' => route('admin.dashboard'),
-                        'home' => url('/'),
-                    ],
-                    'nav' => $nav,
-                ];
+                return AdminChrome::for($request);
             },
             'siteChrome' => function () use ($request, $localeCookie) {
                 $svc = app(SiteSettingsService::class);

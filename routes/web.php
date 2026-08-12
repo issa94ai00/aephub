@@ -7,11 +7,13 @@ use App\Http\Controllers\Admin\CourseSessionWebController;
 use App\Http\Controllers\Admin\CourseWebController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeviceChangeRequestWebController;
+use App\Http\Controllers\Admin\ExamWebController;
 use App\Http\Controllers\Admin\FacultyWebController;
 use App\Http\Controllers\Admin\PaymentWebController;
 use App\Http\Controllers\Admin\QueueWorkerController;
 use App\Http\Controllers\Admin\SecurityEventWebController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\StorageSettingsWebController;
 use App\Http\Controllers\Admin\StudyTermWebController;
 use App\Http\Controllers\Admin\StudyYearWebController;
 use App\Http\Controllers\Admin\TeacherManagementController;
@@ -65,6 +67,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('courses/{course}/sessions/{session}/videos', [CourseSessionWebController::class, 'videos'])->name('courses.sessions.videos');
         Route::post('courses/{course}/sessions/{session}/videos', [CourseSessionWebController::class, 'syncVideos'])->name('courses.sessions.videos.sync');
 
+        Route::get('exams', [ExamWebController::class, 'index'])->name('exams.index');
+        Route::get('exams/reports', [ExamWebController::class, 'reports'])->name('exams.reports');
+        Route::get('exams/create', [ExamWebController::class, 'create'])->name('exams.create');
+        Route::post('exams', [ExamWebController::class, 'store'])->name('exams.store');
+        Route::get('exams/{exam}/edit', [ExamWebController::class, 'edit'])->name('exams.edit');
+        Route::put('exams/{exam}', [ExamWebController::class, 'update'])->name('exams.update');
+        Route::delete('exams/{exam}', [ExamWebController::class, 'destroy'])->name('exams.destroy');
+        Route::get('exams/{exam}/attempts/{attempt}', [ExamWebController::class, 'attemptShow'])->name('exams.attempts.show');
+
         Route::get('users', [UserWebController::class, 'index'])->name('users.index');
         Route::get('users/create', [UserWebController::class, 'create'])->name('users.create');
         Route::post('users', [UserWebController::class, 'store'])->name('users.store');
@@ -102,6 +113,29 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
         Route::post('settings/rotate-encryption-key', [SettingsController::class, 'rotateEncryptionKey'])->name('settings.rotate-encryption-key');
         Route::post('settings/clear-cache', [SettingsController::class, 'clearCache'])->name('settings.clear-cache');
+
+        // Storage destinations: where uploaded videos and course files are kept,
+        // and which destination new uploads go to.
+        Route::get('storage-settings', [StorageSettingsWebController::class, 'index'])->name('storage-settings.index');
+        Route::post('storage-settings', [StorageSettingsWebController::class, 'store'])->name('storage-settings.store');
+
+        // Capacity, health and housekeeping. Keyed by disk rather than by
+        // destination id: `local` is a real destination with no row behind it,
+        // and these three screens have to work for it too.
+        Route::post('storage-settings/check-all', [StorageSettingsWebController::class, 'checkAll'])->name('storage-settings.check-all');
+        Route::get('storage-settings/disks/{disk}/browse', [StorageSettingsWebController::class, 'browse'])->name('storage-settings.browse');
+        Route::delete('storage-settings/disks/{disk}/cleanup', [StorageSettingsWebController::class, 'cleanup'])->name('storage-settings.cleanup');
+
+        // Moving everything off a destination so it can be retired.
+        Route::post('storage-settings/transfers', [StorageSettingsWebController::class, 'startTransfer'])->name('storage-settings.transfers.start');
+        Route::post('storage-settings/transfers/{transfer}/cancel', [StorageSettingsWebController::class, 'cancelTransfer'])->name('storage-settings.transfers.cancel');
+
+        // Declared after the literal segments above so `check-all` and
+        // `transfers` are not swallowed by the `{destination}` wildcard.
+        Route::put('storage-settings/{destination}', [StorageSettingsWebController::class, 'update'])->name('storage-settings.update');
+        Route::post('storage-settings/{destination}/default', [StorageSettingsWebController::class, 'makeDefault'])->name('storage-settings.default');
+        Route::post('storage-settings/{destination}/test', [StorageSettingsWebController::class, 'test'])->name('storage-settings.test');
+        Route::delete('storage-settings/{destination}', [StorageSettingsWebController::class, 'destroy'])->name('storage-settings.destroy');
 
         Route::get('queue-workers', [QueueWorkerController::class, 'index'])->name('queue-workers.index');
         Route::post('queue-workers/manage', [QueueWorkerController::class, 'manage'])->name('queue-workers.manage');

@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\CourseFileController;
 use App\Http\Controllers\Api\CourseSessionController;
 use App\Http\Controllers\Api\DeviceChangeRequestController;
 use App\Http\Controllers\Api\EnrollmentController;
+use App\Http\Controllers\Api\ExamController;
 use App\Http\Controllers\Api\LearningController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PaymentController;
@@ -77,6 +78,14 @@ Route::prefix('v1')->group(function () {
         Route::get('/courses/{course}', [CourseController::class, 'show']);
         Route::get('/courses/{course}/sessions', [CourseSessionController::class, 'index'])->middleware('role:student');
         Route::post('/courses/{course}/sessions/{session}/attend', [CourseSessionController::class, 'attend'])->middleware('role:student');
+
+        Route::get('/courses/{course}/exams', [ExamController::class, 'index'])->middleware('role:student');
+        Route::get('/courses/{course}/exams/{exam}', [ExamController::class, 'show'])->middleware('role:student');
+        Route::post('/courses/{course}/exams/{exam}/attempts', [ExamController::class, 'start'])->middleware('role:student');
+        Route::get('/courses/{course}/exams/{exam}/attempts/{attempt}', [ExamController::class, 'showAttempt'])->middleware('role:student');
+        Route::put('/courses/{course}/exams/{exam}/attempts/{attempt}/answers', [ExamController::class, 'saveAnswers'])->middleware('role:student');
+        Route::post('/courses/{course}/exams/{exam}/attempts/{attempt}/submit', [ExamController::class, 'submit'])->middleware('role:student');
+
         Route::post('/courses/{course}/cover', [CourseController::class, 'uploadCover'])
             ->middleware('role:teacher,admin');
         Route::get('/courses/{course}/students', [CourseController::class, 'students'])

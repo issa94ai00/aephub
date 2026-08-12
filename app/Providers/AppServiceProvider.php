@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\CourseVideo;
 use App\Policies\VideoPolicy;
 use App\Services\SiteSettingsService;
+use App\Services\StorageDestinationService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(SiteSettingsService::class, fn () => new SiteSettingsService);
+        $this->app->singleton(StorageDestinationService::class, fn () => new StorageDestinationService);
     }
 
     /**
@@ -31,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
         $settings = $this->app->make(SiteSettingsService::class);
         $settings->applyToConfig();
         View::share('site', $settings->all());
+
+        // After applyToConfig(), so a managed destination that reuses a provider
+        // name ("wasabi") wins over the legacy single-provider settings applied
+        // over the same disk. Two sources of truth for one disk is how a file
+        // ends up written to one bucket and read back from another.
+        $this->app->make(StorageDestinationService::class)->registerDisks();
 
         $compiledViewPath = config('view.compiled') ?: storage_path('framework/views');
         if (! File::isDirectory($compiledViewPath)) {

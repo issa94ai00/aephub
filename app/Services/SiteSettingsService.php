@@ -43,6 +43,13 @@ class SiteSettingsService
             'seo_og_image',
             'sham_cash_code',
             'score_degree',
+            'storage_provider',
+            'storage_bucket',
+            'storage_endpoint',
+            'storage_region',
+            'storage_access_key',
+            'storage_secret_key',
+            'storage_use_path_style',
         ];
     }
 
@@ -74,6 +81,13 @@ class SiteSettingsService
             'seo_og_image' => '',
             'sham_cash_code' => '',
             'score_degree' => '0',
+            'storage_provider' => 'local',
+            'storage_bucket' => '',
+            'storage_endpoint' => '',
+            'storage_region' => '',
+            'storage_access_key' => '',
+            'storage_secret_key' => '',
+            'storage_use_path_style' => '0',
         ];
     }
 
@@ -307,5 +321,78 @@ class SiteSettingsService
             'app.timezone' => $all['timezone'] ?? config('app.timezone'),
             'app.locale' => $all['locale'] ?? config('app.locale'),
         ]);
+
+        $provider = $all['storage_provider'] ?? 'local';
+        if ($provider !== 'wasabi' && $provider !== 'r2') {
+            config(['filesystems.default' => 'local']);
+            return;
+        }
+
+        if (! $this->isStorageDiskConfigured($provider)) {
+            config(['filesystems.default' => 'local']);
+            return;
+        }
+
+        config([
+            'filesystems.default' => $provider,
+            "filesystems.disks.{$provider}.key" => $all['storage_access_key'] ?? config("filesystems.disks.{$provider}.key"),
+            "filesystems.disks.{$provider}.secret" => $all['storage_secret_key'] ?? config("filesystems.disks.{$provider}.secret"),
+            "filesystems.disks.{$provider}.bucket" => $all['storage_bucket'] ?? config("filesystems.disks.{$provider}.bucket"),
+            "filesystems.disks.{$provider}.endpoint" => $all['storage_endpoint'] ?? config("filesystems.disks.{$provider}.endpoint"),
+            "filesystems.disks.{$provider}.region" => $all['storage_region'] ?? config("filesystems.disks.{$provider}.region"),
+            "filesystems.disks.{$provider}.use_path_style_endpoint" => ($all['storage_use_path_style'] ?? '0') === '1',
+        ]);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function storageSettings(): array
+    {
+        $all = $this->all();
+
+        return [
+            'storage_provider' => $all['storage_provider'] ?? 'local',
+            'storage_bucket' => $all['storage_bucket'] ?? '',
+            'storage_endpoint' => $all['storage_endpoint'] ?? '',
+            'storage_region' => $all['storage_region'] ?? '',
+            'storage_access_key' => $all['storage_access_key'] ?? '',
+            'storage_secret_key' => $all['storage_secret_key'] ?? '',
+            'storage_use_path_style' => $all['storage_use_path_style'] ?? '0',
+        ];
+    }
+
+    public function isStorageDiskConfigured(string $storageProvider): bool
+    {
+        if ($storageProvider === 'local') {
+            return true;
+        }
+
+        if (! in_array($storageProvider, ['wasabi', 'r2'], true)) {
+            return false;
+        }
+
+        $settings = $this->storageSettings();
+
+        return trim($settings['storage_bucket']) !== ''
+            && trim($settings['storage_endpoint']) !== ''
+            && trim($settings['storage_access_key']) !== ''
+            && trim($settings['storage_secret_key']) !== '';
+    }
+
+    public function effectiveUploadDisk(): string
+    {
+        $settings = $this->storageSettings();
+        $provider = $settings['storage_provider'] ?? 'local';
+
+        if ($provider === 'local') {
+            return 'local';
+        }
+
+        if ($this->isStorageDiskConfigured($provider)) {
+            return $provider;
+        }
+
+        return 'local';
     }
 }
