@@ -35,6 +35,10 @@ return [
         'storage' => 'Storage management',
         'system_admin' => 'System administration',
         'back_to_site' => 'Back to site',
+        'section_overview' => 'Overview',
+        'section_students' => 'Students & Registration',
+        'section_content' => 'Academic Content',
+        'section_system' => 'System & Settings',
     ],
 
     'login' => [

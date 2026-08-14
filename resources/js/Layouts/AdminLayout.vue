@@ -16,6 +16,28 @@ const chrome = computed(() => page.props.adminChrome);
 const nav = computed(() => (props.nav?.length ? props.nav : chrome.value?.nav ?? []));
 const activeRouteName = computed(() => props.routeName || chrome.value?.routeName || null);
 
+function sectionLabel(key) {
+    return page.props.translations?.admin?.nav?.[`section_${key}`] || key;
+}
+
+/**
+ * Flatten the sidebar into render rows: a section header whenever the section
+ * changes, then its items. Entries without a section fall into `overview`.
+ */
+const navRows = computed(() => {
+    const rows = [];
+    let lastKey = null;
+    for (const item of nav.value) {
+        const key = item.section || 'overview';
+        if (key !== lastKey) {
+            rows.push({ type: 'section', key, label: sectionLabel(key) });
+            lastKey = key;
+        }
+        rows.push({ type: 'item', item });
+    }
+    return rows;
+});
+
 const locale = computed(() => chrome.value?.locale ?? 'ar');
 const isEn = computed(() => locale.value === 'en');
 const mainPad = computed(() => (isEn.value ? 'lg:pl-64' : 'lg:pr-64'));
@@ -81,7 +103,7 @@ function closeMobileSidebar() {
             class="admin-sidebar fixed inset-y-0 z-40 w-64 transform border-white/10 transition-transform duration-200"
             :class="sidebarPos"
         >
-            <div class="flex h-full flex-col">
+            <div class="flex h-full min-h-0 flex-col">
                 <div class="border-b border-white/10 px-4 py-5">
                     <Link :href="chrome?.routes?.dashboard ?? '/admin'" class="flex items-center gap-3">
                         <span
@@ -113,244 +135,251 @@ function closeMobileSidebar() {
                     </Link>
                 </div>
 
-                <nav class="flex-1 space-y-1 px-2 py-4">
-                    <Link
-                        v-for="(item, idx) in nav"
-                        :key="idx"
-                        :href="item.href"
-                        class="admin-nav-link relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
-                        :class="
-                            navItemActive(item)
-                                ? 'bg-emerald-500/15 text-emerald-100 ring-1 ring-emerald-400/25'
-                                : 'text-white/90 hover:bg-white/5 hover:text-white'
-                        "
-                        @click="closeMobileSidebar"
-                    >
-                        <span
-                            v-if="navItemActive(item)"
-                            class="absolute inset-y-2 start-0 w-1 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.6)]"
-                            aria-hidden="true"
-                        />
-                        <svg
-                            v-if="item.icon === 'grid'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                <nav class="admin-sidebar-nav flex-1 overflow-y-auto overscroll-contain px-2 py-4">
+                    <template v-for="(row, idx) in navRows" :key="idx">
+                        <div
+                            v-if="row.type === 'section'"
+                            class="admin-nav-section px-3 pb-1.5 pt-4 text-[10px] font-semibold uppercase tracking-wider text-white/40"
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'book'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                            {{ row.label }}
+                        </div>
+                        <Link
+                            v-else
+                            :href="row.item.href"
+                            class="admin-nav-link relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
+                            :class="
+                                navItemActive(row.item)
+                                    ? 'bg-emerald-500/15 text-emerald-100 ring-1 ring-emerald-400/25'
+                                    : 'text-white/90 hover:bg-white/5 hover:text-white'
+                            "
+                            @click="closeMobileSidebar"
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                            <span
+                                v-if="navItemActive(row.item)"
+                                class="absolute inset-y-2 start-0 w-1 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.6)]"
+                                aria-hidden="true"
                             />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'exam'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'report'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'book-open'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v15.674A8.967 8.967 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v15.674A8.967 8.967 0 0118 18c-2.305 0-4.408.867-6 2.292m0-14.25v15.674"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'device'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'academic'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.716 50.716 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm6.5 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm7.5 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'teacher'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0Zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0Z"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'shield'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'carousel'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'faq'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M12 21a9 9 0 100-18 9 9 0 000 18z"
-                            />
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M9.75 9.75h.008v.008H9.75V9.75zm.375 0a3.375 3.375 0 116.75 0c0 1.657-1.007 2.55-1.688 3.135-.34.292-.562.478-.562.99V15m0 3h.01"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'users'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                        </svg>
-                        <svg
-                            v-else-if="item.icon === 'card'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                            />
-                        </svg>
-                        <!-- Storage management. Same glyph the Blade sidebar
-                             uses, so the two shells name the screen alike. -->
-                        <svg
-                            v-else-if="item.icon === 'cloud'"
-                            class="h-5 w-5 shrink-0 opacity-90"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"
-                            />
-                        </svg>
-                        <svg v-else class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                            />
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                        </svg>
-                        {{ item.label }}
-                    </Link>
+                            <svg
+                                v-if="row.item.icon === 'grid'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'book'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'exam'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'report'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'book-open'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v15.674A8.967 8.967 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v15.674A8.967 8.967 0 0118 18c-2.305 0-4.408.867-6 2.292m0-14.25v15.674"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'device'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'academic'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.716 50.716 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm6.5 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm7.5 0a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'teacher'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0Zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0Z"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'shield'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'carousel'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'faq'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M12 21a9 9 0 100-18 9 9 0 000 18z"
+                                />
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M9.75 9.75h.008v.008H9.75V9.75zm.375 0a3.375 3.375 0 116.75 0c0 1.657-1.007 2.55-1.688 3.135-.34.292-.562.478-.562.99V15m0 3h.01"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'users'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                            </svg>
+                            <svg
+                                v-else-if="row.item.icon === 'card'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                                />
+                            </svg>
+                            <!-- Storage management. Same glyph the Blade sidebar
+                                 uses, so the two shells name the screen alike. -->
+                            <svg
+                                v-else-if="row.item.icon === 'cloud'"
+                                class="h-5 w-5 shrink-0 opacity-90"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"
+                                />
+                            </svg>
+                            <svg v-else class="h-5 w-5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                />
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                            </svg>
+                            <span class="truncate">{{ row.item.label }}</span>
+                        </Link>
+                    </template>
                 </nav>
 
                 <div class="border-t border-white/10 p-4">
@@ -388,11 +417,11 @@ function closeMobileSidebar() {
                             decoding="async"
                         />
                         <div class="min-w-0">
-                            <h1 class="text-sm font-semibold text-white sm:text-base">{{ heading }}</h1>
-                            <p v-if="subheading" class="mt-0.5 hidden text-xs text-white/55 sm:block">{{ subheading }}</p>
+                            <h1 class="truncate text-sm font-semibold text-white sm:text-base">{{ heading }}</h1>
+                            <p v-if="subheading" class="mt-0.5 hidden truncate text-xs text-white/55 sm:block">{{ subheading }}</p>
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-end gap-2 text-xs sm:gap-3 sm:text-sm">
+                    <div class="flex shrink-0 flex-wrap items-center justify-end gap-2 text-xs sm:gap-3 sm:text-sm">
                         <div
                             class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-1 py-0.5"
                             role="group"
@@ -432,7 +461,7 @@ function closeMobileSidebar() {
                 </div>
             </header>
 
-            <main class="flex-1 px-4 py-6 sm:px-6">
+            <main class="mx-auto w-full flex-1 px-4 py-6 sm:px-6 2xl:max-w-[1600px]">
                 <slot />
             </main>
         </div>

@@ -48,11 +48,11 @@
                             <img src="{{ $adminHeaderLogo }}" alt="{{ $adminHeaderTitle }}" class="h-8 w-8 shrink-0 rounded-xl border border-white/10 bg-white/[0.06] object-contain p-0.5 sm:h-9 sm:w-9" width="36" height="36" decoding="async" />
                         @endif
                         <div class="min-w-0">
-                            <h1 class="text-sm font-semibold text-white sm:text-base">@yield('heading', __('admin.layout.default_title'))</h1>
-                            <p class="mt-0.5 text-xs text-white/55 hidden sm:block">@yield('subheading')</p>
+                            <h1 class="truncate text-sm font-semibold text-white sm:text-base">@yield('heading', __('admin.layout.default_title'))</h1>
+                            <p class="mt-0.5 hidden truncate text-xs text-white/55 sm:block">@yield('subheading')</p>
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-end gap-2 text-xs sm:text-sm sm:gap-3">
+                    <div class="flex shrink-0 flex-wrap items-center justify-end gap-2 text-xs sm:text-sm sm:gap-3">
                         <div class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-1 py-0.5" role="group" aria-label="{{ __('admin.layout.language') }}">
                             <a href="{{ route('locale.switch', ['locale' => 'ar']) }}" class="rounded-lg px-2 py-1 font-medium {{ $locale === 'ar' ? 'bg-emerald-500/25 text-emerald-100' : 'text-white/70 hover:bg-white/10' }}">{{ __('admin.layout.lang_ar') }}</a>
                             <a href="{{ route('locale.switch', ['locale' => 'en']) }}" class="rounded-lg px-2 py-1 font-medium {{ $locale === 'en' ? 'bg-emerald-500/25 text-emerald-100' : 'text-white/70 hover:bg-white/10' }}">{{ __('admin.layout.lang_en') }}</a>
@@ -69,7 +69,7 @@
                 </div>
             </header>
 
-            <main class="flex-1 px-4 py-6 sm:px-6">
+            <main class="mx-auto w-full flex-1 px-4 py-6 sm:px-6 2xl:max-w-[1600px]">
                 @if (session('status'))
                     <div class="admin-fade-up is-visible mb-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
                         {{ session('status') }}

@@ -503,6 +503,47 @@
         transform: translateX(-1px) scale(0.99);
     }
 
+    .admin-sidebar-nav {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    .admin-sidebar-nav::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .admin-sidebar-nav::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .admin-sidebar-nav::-webkit-scrollbar-thumb {
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+    .admin-sidebar-nav::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.28);
+    }
+
+    .admin-nav-section {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .admin-nav-section::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .admin-nav-section:first-child {
+        padding-top: 0;
+    }
+
     .admin-card {
         border-radius: 1rem;
         border: 1px solid color-mix(in oklab, white 12%, transparent);

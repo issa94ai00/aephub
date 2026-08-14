@@ -73,49 +73,53 @@ class AdminChrome
     private static function nav(): array
     {
         return array_values(array_filter([
-            self::link('admin.dashboard', ['admin.dashboard'], __('admin.nav.dashboard'), 'grid'),
-            self::link('admin.statistics', ['admin.statistics'], __('admin.nav.statistics'), 'chart'),
-            self::link('admin.payments.index', ['admin.payments.*'], __('admin.nav.registration_payments'), 'card'),
-            self::link('admin.courses.student-catalog', ['admin.courses.student-catalog'], __('admin.nav.student_courses'), 'book-open'),
-            self::link('admin.device-change-requests.index', ['admin.device-change-requests.*'], __('admin.nav.device_change_requests'), 'device'),
-            self::link('admin.users.index', ['admin.users.*'], __('admin.nav.users'), 'users'),
+            self::link('admin.dashboard', ['admin.dashboard'], __('admin.nav.dashboard'), 'grid', null, 'overview'),
+            self::link('admin.statistics', ['admin.statistics'], __('admin.nav.statistics'), 'chart', null, 'overview'),
+            self::link('admin.payments.index', ['admin.payments.*'], __('admin.nav.registration_payments'), 'card', null, 'students'),
+            self::link('admin.courses.student-catalog', ['admin.courses.student-catalog'], __('admin.nav.student_courses'), 'book-open', null, 'students'),
+            self::link('admin.device-change-requests.index', ['admin.device-change-requests.*'], __('admin.nav.device_change_requests'), 'device', null, 'students'),
+            self::link('admin.users.index', ['admin.users.*'], __('admin.nav.users'), 'users', null, 'students'),
             self::link(
                 'admin.courses.index',
                 ['admin.courses.index', 'admin.courses.create', 'admin.courses.edit', 'admin.courses.sessions.*'],
                 __('admin.nav.course_management'),
-                'book'
+                'book',
+                null,
+                'content'
             ),
             self::link(
                 'admin.exams.index',
                 ['admin.exams.index', 'admin.exams.create', 'admin.exams.edit', 'admin.exams.attempts.*'],
                 __('admin.nav.exams'),
-                'exam'
+                'exam',
+                null,
+                'content'
             ),
-            self::link('admin.exams.reports', ['admin.exams.reports'], __('admin.nav.exam_reports'), 'report'),
-            self::link('admin.academics.universities.index', ['admin.academics.*'], __('admin.nav.academics'), 'academic'),
+            self::link('admin.exams.reports', ['admin.exams.reports'], __('admin.nav.exam_reports'), 'report', null, 'content'),
+            self::link('admin.academics.universities.index', ['admin.academics.*'], __('admin.nav.academics'), 'academic', null, 'content'),
 
             // Warehouse screens. The controllers and Vue pages exist but no
             // routes are registered for them, so these resolve to nothing and
             // are dropped until someone wires them up.
-            self::link('admin.stock.index', ['admin.stock.index', 'admin.stock.movements'], __('admin.nav.stock'), 'stock', __('admin.nav.warehouse_system')),
-            self::link('admin.stock.balances', ['admin.stock.balances'], __('admin.nav.stock_balances'), 'table', __('admin.nav.warehouse_system')),
-            self::link('admin.stock.organize', ['admin.stock.organize'], __('admin.nav.stock_organize'), 'organize', __('admin.nav.warehouse_system')),
-            self::link('admin.products.index', ['admin.products.*'], __('admin.nav.products'), 'box', __('admin.nav.warehouse_system')),
-            self::link('admin.warehouses.index', ['admin.warehouses.*'], __('admin.nav.warehouses'), 'warehouse', __('admin.nav.warehouse_system')),
+            self::link('admin.stock.index', ['admin.stock.index', 'admin.stock.movements'], __('admin.nav.stock'), 'stock', __('admin.nav.warehouse_system'), 'warehouse'),
+            self::link('admin.stock.balances', ['admin.stock.balances'], __('admin.nav.stock_balances'), 'table', __('admin.nav.warehouse_system'), 'warehouse'),
+            self::link('admin.stock.organize', ['admin.stock.organize'], __('admin.nav.stock_organize'), 'organize', __('admin.nav.warehouse_system'), 'warehouse'),
+            self::link('admin.products.index', ['admin.products.*'], __('admin.nav.products'), 'box', __('admin.nav.warehouse_system'), 'warehouse'),
+            self::link('admin.warehouses.index', ['admin.warehouses.*'], __('admin.nav.warehouses'), 'warehouse', __('admin.nav.warehouse_system'), 'warehouse'),
 
-            self::link('admin.teachers.index', ['admin.teachers.*'], __('admin.nav.teachers'), 'teacher'),
-            self::link('admin.security-events.index', ['admin.security-events.*'], __('admin.nav.security_logs'), 'shield'),
-            self::link('admin.carousel.index', ['admin.carousel.*'], __('admin.nav.carousel'), 'carousel'),
-            self::link('admin.faqs.index', ['admin.faqs.*'], __('admin.nav.faqs'), 'faq'),
-            self::link('admin.queue-workers.index', ['admin.queue-workers.*'], __('admin.nav.queue_workers'), 'cog'),
-            self::link('admin.settings.index', ['admin.settings.*'], __('admin.nav.settings'), 'cog'),
+            self::link('admin.teachers.index', ['admin.teachers.*'], __('admin.nav.teachers'), 'teacher', null, 'content'),
+            self::link('admin.security-events.index', ['admin.security-events.*'], __('admin.nav.security_logs'), 'shield', null, 'system'),
+            self::link('admin.carousel.index', ['admin.carousel.*'], __('admin.nav.carousel'), 'carousel', null, 'system'),
+            self::link('admin.faqs.index', ['admin.faqs.*'], __('admin.nav.faqs'), 'faq', null, 'system'),
+            self::link('admin.queue-workers.index', ['admin.queue-workers.*'], __('admin.nav.queue_workers'), 'cog', null, 'system'),
+            self::link('admin.settings.index', ['admin.settings.*'], __('admin.nav.settings'), 'cog', null, 'system'),
 
             // Storage management. Sits beside settings, as it does in the Blade
             // sidebar, because it is the same kind of thing: platform
             // configuration rather than day-to-day content.
-            self::link('admin.storage-settings.index', ['admin.storage-settings.*'], __('admin.nav.storage'), 'cloud'),
+            self::link('admin.storage-settings.index', ['admin.storage-settings.*'], __('admin.nav.storage'), 'cloud', null, 'system'),
 
-            self::link('admin.user-reports.index', ['admin.user-reports.*'], __('admin.nav.user_reports'), 'report'),
+            self::link('admin.user-reports.index', ['admin.user-reports.*'], __('admin.nav.user_reports'), 'report', null, 'system'),
         ]));
     }
 
@@ -125,7 +129,7 @@ class AdminChrome
      * @param  list<string>  $match  route-name patterns that light this entry up
      * @return array<string, mixed>|null
      */
-    private static function link(string $routeName, array $match, string $label, string $icon, ?string $group = null): ?array
+    private static function link(string $routeName, array $match, string $label, string $icon, ?string $group = null, ?string $section = null): ?array
     {
         if (! Route::has($routeName)) {
             return null;
@@ -137,6 +141,7 @@ class AdminChrome
             'label' => $label,
             'icon' => $icon,
             'group' => $group,
+            'section' => $section,
         ], fn ($value) => $value !== null);
     }
 }

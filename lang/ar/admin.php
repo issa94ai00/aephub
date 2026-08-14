@@ -35,6 +35,10 @@ return [
         'storage' => 'إدارة التخزين',
         'system_admin' => 'إدارة النظام',
         'back_to_site' => 'العودة للموقع',
+        'section_overview' => 'النظرة العامة',
+        'section_students' => 'الطلاب والتسجيل',
+        'section_content' => 'المحتوى الأكاديمي',
+        'section_system' => 'النظام والإعدادات',
     ],
 
     'login' => [

@@ -1,3 +1,49 @@
+let adminNavInstalled = false;
+
+/**
+ * Re-resolve the drawer DOM on every call.
+ *
+ * The SPA shell re-mounts its sidebar on each navigation, so any listener that
+ * lives longer than one page (document-level key/touch handlers, the resize
+ * watcher) has to look the elements up when it fires, not when it was bound.
+ */
+const adminNavRefs = () => {
+    const sidebar = document.querySelector('[data-admin-sidebar]');
+    const overlay = document.querySelector('[data-admin-overlay]');
+    const dir = sidebar?.dataset.sidebarDir === 'ltr' ? 'ltr' : 'rtl';
+    const hiddenClass = dir === 'ltr' ? '-translate-x-full' : 'translate-x-full';
+
+    return { sidebar, overlay, dir, hiddenClass };
+};
+
+const openAdminNav = () => {
+    const { sidebar, overlay, hiddenClass } = adminNavRefs();
+    if (!sidebar || !overlay) {
+        return;
+    }
+    sidebar.classList.remove(hiddenClass);
+    sidebar.classList.add('translate-x-0');
+    overlay.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+};
+
+const closeAdminNav = () => {
+    const { sidebar, overlay, hiddenClass } = adminNavRefs();
+    if (!sidebar || !overlay) {
+        return;
+    }
+    sidebar.classList.add(hiddenClass);
+    sidebar.classList.remove('translate-x-0');
+    overlay.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+};
+
+const isAdminNavOpen = () => {
+    const { sidebar, hiddenClass } = adminNavRefs();
+
+    return sidebar ? !sidebar.classList.contains(hiddenClass) : false;
+};
+
 export const setupAdminMobileNav = () => {
     const btn = document.querySelector('[data-admin-nav-toggle]');
     const sidebar = document.querySelector('[data-admin-sidebar]');
@@ -6,43 +52,93 @@ export const setupAdminMobileNav = () => {
         return;
     }
 
-    const dir = sidebar.dataset.sidebarDir === 'ltr' ? 'ltr' : 'rtl';
-    const hiddenClass = dir === 'ltr' ? '-translate-x-full' : 'translate-x-full';
-    const visibleClass = 'translate-x-0';
+    btn.addEventListener('click', () => (isAdminNavOpen() ? closeAdminNav() : openAdminNav()));
+    overlay.addEventListener('click', closeAdminNav);
 
-    const open = () => {
-        sidebar.classList.remove(hiddenClass);
-        sidebar.classList.add(visibleClass);
-        overlay.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
-    };
-
-    const close = () => {
-        sidebar.classList.add(hiddenClass);
-        sidebar.classList.remove(visibleClass);
-        overlay.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-    };
-
-    btn.addEventListener('click', () => {
-        if (sidebar.classList.contains(hiddenClass)) {
-            open();
-        } else {
-            close();
-        }
-    });
-
-    overlay.addEventListener('click', close);
+    // Everything below is app-wide and must be installed once, not once per
+    // shell boot — the SPA re-runs this on every navigation.
+    if (adminNavInstalled) {
+        return;
+    }
+    adminNavInstalled = true;
 
     window.addEventListener(
         'keydown',
         (e) => {
-            if (e.key === 'Escape') {
-                close();
+            if (e.key === 'Escape' && isAdminNavOpen()) {
+                closeAdminNav();
             }
         },
         { passive: true }
     );
+
+    // A drawer left open by a previous session pins the body scroll and blocks
+    // the content behind it once the screen grows wide enough for a fixed
+    // sidebar. Closing on resize keeps the two states from ever mixing.
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const onWide = (e) => {
+        if (e.matches && isAdminNavOpen()) {
+            closeAdminNav();
+        }
+    };
+    mq.addEventListener?.('change', onWide);
+    onWide(mq);
+
+    // Swipe to open from the screen edge / swipe to close from inside the
+    // drawer. Tracked with passive listeners so scrolling the menu is never
+    // blocked — the gesture only *adds* a shortcut, it does not fight the
+    // native scroll the user asked for.
+    const edgePx = 28;
+    const thresholdPx = 64;
+    let gesture = null;
+
+    const onTouchStart = (e) => {
+        if (e.touches.length !== 1) {
+            return;
+        }
+        const { dir } = adminNavRefs();
+        const touch = e.touches[0];
+        const startEdge = dir === 'ltr' ? touch.clientX <= edgePx : touch.clientX >= window.innerWidth - edgePx;
+
+        if (!isAdminNavOpen()) {
+            if (!startEdge) {
+                return;
+            }
+            gesture = { startX: touch.clientX, startY: touch.clientY, type: 'open' };
+        } else if (e.target.closest('[data-admin-sidebar]')) {
+            gesture = { startX: touch.clientX, startY: touch.clientY, type: 'close' };
+        }
+    };
+
+    const onTouchEnd = () => {
+        if (!gesture) {
+            return;
+        }
+        const { type, startX, startY } = gesture;
+        gesture = null;
+        const { dir } = adminNavRefs();
+        const touch = window.event?.changedTouches?.[0];
+        const endX = touch?.clientX ?? startX;
+        const endY = touch?.clientY ?? startY;
+        const travelled = Math.abs(endX - startX);
+        if (Math.abs(endY - startY) > Math.abs(endX - startX) || travelled < thresholdPx) {
+            return;
+        }
+        if (type === 'open') {
+            const swipedIn = dir === 'ltr' ? endX - startX > 0 : startX - endX > 0;
+            if (swipedIn) {
+                openAdminNav();
+            }
+        } else if (type === 'close') {
+            const swipedOut = dir === 'ltr' ? startX - endX > 0 : endX - startX > 0;
+            if (swipedOut) {
+                closeAdminNav();
+            }
+        }
+    };
+
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchend', onTouchEnd, { passive: true });
 };
 
 export const setupAdminScrollHeader = () => {
