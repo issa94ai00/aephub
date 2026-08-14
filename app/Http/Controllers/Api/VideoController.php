@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class VideoController extends Controller
 {
@@ -28,7 +29,7 @@ class VideoController extends Controller
             'title_en' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'description_en' => ['nullable', 'string'],
-            'storage_disk' => ['nullable', 'string', 'in:local,wasabi,s3,r2'],
+            'storage_disk' => ['nullable', 'string', Rule::in(array_keys(config('filesystems.disks')))],
             'storage_path' => ['required', 'string', 'max:2048'],
             'size_bytes' => ['nullable', 'integer', 'min:0'],
             'duration_seconds' => ['nullable', 'integer', 'min:0'],
