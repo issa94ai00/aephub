@@ -32,8 +32,8 @@ defineProps({
                 >
                     {{ t.faq_page?.breadcrumb_home }}
                 </Link>
-                <span class="text-slate-400" aria-hidden="true">/</span>
-                <span class="text-slate-600 dark:text-slate-400">{{ t.home?.faq_title }}</span>
+                <span class="text-slate-600" aria-hidden="true">/</span>
+                <span class="text-slate-700 dark:text-slate-300">{{ t.home?.faq_title }}</span>
             </div>
         </div>
 

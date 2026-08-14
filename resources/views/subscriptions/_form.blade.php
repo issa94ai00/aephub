@@ -20,7 +20,7 @@
     <div>
         <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">{{ __('site.form.phone') }}</label>
         <input type="tel" name="phone" value="{{ old('account_type') === $accountType ? old('phone') : '' }}" required autocomplete="tel" dir="ltr" placeholder="{{ __('site.form.phone_placeholder') }}" class="site-input" />
-        <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-500">{{ __('site.form.phone_hint') }}</p>
+        <p class="mt-1 text-[11px] text-slate-700 dark:text-slate-500">{{ __('site.form.phone_hint') }}</p>
     </div>
     <div class="grid gap-3 sm:grid-cols-2">
         <div>
@@ -33,7 +33,7 @@
         </div>
     </div>
     @if($accountType === 'student')
-        <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">{{ __('site.registration_page.academic_edit_hint') }}</p>
+        <p class="text-[11px] leading-relaxed text-slate-700 dark:text-slate-300">{{ __('site.registration_page.academic_edit_hint') }}</p>
         @if(isset($universities) && $universities->isEmpty())
             <div class="rounded-xl border border-amber-200/80 bg-amber-50/80 px-3 py-2 text-xs text-amber-950 dark:border-amber-800/50 dark:bg-amber-950/30 dark:text-amber-100">
                 {{ __('site.registration_page.universities_empty') }}
@@ -70,7 +70,7 @@
                     :required="hasUniversities"
                     x-effect="patchSelectFromModel($el, facultyOptions, labels.select_faculty, 'facultyId')"
                 ></select>
-                <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-500" x-show="loadingFaculties" x-cloak>{{ __('site.form.loading') }}</p>
+                <p class="mt-1 text-[11px] text-slate-700 dark:text-slate-500" x-show="loadingFaculties" x-cloak>{{ __('site.form.loading') }}</p>
             </div>
             <div>
                 <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">{{ __('site.form.study_year') }}</label>
@@ -82,7 +82,7 @@
                     :required="hasUniversities"
                     x-effect="patchSelectFromModel($el, yearOptions, labels.select_year, 'studyYearId')"
                 ></select>
-                <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-500" x-show="loadingYears" x-cloak>{{ __('site.form.loading') }}</p>
+                <p class="mt-1 text-[11px] text-slate-700 dark:text-slate-500" x-show="loadingYears" x-cloak>{{ __('site.form.loading') }}</p>
             </div>
             <div>
                 <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">{{ __('site.form.study_term') }}</label>
@@ -94,7 +94,7 @@
                     :required="hasUniversities"
                     x-effect="patchSelectFromModel($el, termOptions, labels.select_term, 'studyTermId')"
                 ></select>
-                <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-500" x-show="loadingTerms" x-cloak>{{ __('site.form.loading') }}</p>
+                <p class="mt-1 text-[11px] text-slate-700 dark:text-slate-500" x-show="loadingTerms" x-cloak>{{ __('site.form.loading') }}</p>
             </div>
         </div>
     @endif

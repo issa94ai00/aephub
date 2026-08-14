@@ -1,9 +1,9 @@
 <script setup>
 import { computed } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { useAdminForm } from '../../../Admin/useAdminForm';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { useAdminForm } from '../../../admin/useAdminForm';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import Alert from '../Partials/Alert.vue';
 import Pagination from '../Partials/Pagination.vue';
 import { fmt, localizedName } from '../Partials/helpers';
@@ -122,9 +122,9 @@ function destroy(id) {
                                     >
                                         {{ w.code }}
                                     </span>
-                                    <span v-else class="text-white/35">—</span>
+                                    <span v-else class="text-white/35">â€”</span>
                                 </td>
-                                <td class="px-4 py-3 text-white/60">{{ w.location || '—' }}</td>
+                                <td class="px-4 py-3 text-white/60">{{ w.location || 'â€”' }}</td>
                                 <td class="px-4 py-3 text-center text-white/70">{{ w.product_count ?? 0 }}</td>
                                 <td class="px-4 py-3 text-center font-semibold text-white">{{ fmt(w.total_units) }}</td>
                                 <td class="px-4 py-3">
@@ -135,7 +135,7 @@ function destroy(id) {
                                             class="admin-badge admin-badge--violet"
                                             :title="p.sku || localizedName(p, locale)"
                                         >
-                                            {{ localizedName(p, locale) }} · {{ fmt(p.quantity) }}
+                                            {{ localizedName(p, locale) }} آ· {{ fmt(p.quantity) }}
                                         </span>
                                     </div>
                                     <span v-else class="text-xs text-white/40">{{ t.warehouses?.no_links }}</span>

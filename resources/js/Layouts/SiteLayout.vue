@@ -81,7 +81,7 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                             <div class="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-50">
                                 {{ siteName }}
                             </div>
-                            <div class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                            <div class="text-xs font-medium text-slate-700 dark:text-slate-400">
                                 {{ t.tagline }}
                             </div>
                         </div>
@@ -241,6 +241,7 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                         </button>
                     </div>
 
+                    <Transition name="site-mobile-nav">
                     <div
                         v-show="mobileOpen"
                         id="site-mobile-nav"
@@ -248,9 +249,7 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                         role="navigation"
                         :aria-label="t.nav?.mobile"
                     >
-                        <div
-                            class="space-y-1 rounded-2xl border border-slate-200/80 bg-white/95 p-3 shadow-2xl shadow-slate-900/15 ring-1 ring-white/80 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-900/95 dark:shadow-black/40 dark:ring-slate-700/50"
-                        >
+                        <div class="site-mobile-nav-panel space-y-1">
                             <a
                                 :href="chrome.nav_courses_href"
                                 class="block rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-emerald-50 hover:text-emerald-900 dark:text-slate-100 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
@@ -301,7 +300,7 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                                 role="group"
                                 :aria-label="t.locale?.switch"
                             >
-                                <p class="px-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                                <p class="px-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
                                     {{ t.locale?.switch }}
                                 </p>
                                 <div class="flex gap-1 px-2">
@@ -323,6 +322,7 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                             </div>
                         </div>
                     </div>
+                    </Transition>
                 </div>
             </div>
         </header>
@@ -383,18 +383,18 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                                 <span class="block text-base font-bold tracking-tight text-slate-900 dark:text-slate-50">{{
                                     siteName
                                 }}</span>
-                                <span class="mt-0.5 block text-xs font-medium text-slate-500 dark:text-slate-400">{{
+                                <span class="mt-0.5 block text-xs font-medium text-slate-700 dark:text-slate-400">{{
                                     t.footer?.trusted
                                 }}</span>
                             </span>
                         </Link>
-                        <p class="mt-5 max-w-sm text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                        <p class="mt-5 max-w-sm text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                             {{ t.footer?.about }}
                         </p>
                     </div>
 
                     <div class="lg:col-span-3">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-500">
                             {{ t.footer?.browse }}
                         </h3>
                         <ul class="mt-5 space-y-3 text-sm">
@@ -444,12 +444,12 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                     </div>
 
                     <div class="sm:col-span-2 lg:col-span-5">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-500">
                             {{ t.footer?.contact }}
                         </h3>
                         <ul class="mt-5 space-y-3.5 text-sm">
                             <li v-if="site?.contact_phone" class="flex items-start gap-2.5">
-                                <span class="mt-0.5 text-slate-400 dark:text-slate-500" aria-hidden="true">
+                                <span class="mt-0.5 text-slate-600 dark:text-slate-500" aria-hidden="true">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path
                                             stroke-linecap="round"
@@ -467,7 +467,7 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                                 >
                             </li>
                             <li v-if="site?.contact_email" class="flex items-start gap-2.5">
-                                <span class="mt-0.5 text-slate-400 dark:text-slate-500" aria-hidden="true">
+                                <span class="mt-0.5 text-slate-600 dark:text-slate-500" aria-hidden="true">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path
                                             stroke-linecap="round"
@@ -490,7 +490,7 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                             v-if="site?.facebook_url || site?.telegram_url || site?.whatsapp_url"
                             class="mt-8 flex flex-wrap items-center gap-3"
                         >
-                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">{{
+                            <span class="text-xs font-medium text-slate-700 dark:text-slate-400">{{
                                 t.footer?.social
                             }}</span>
                             <div class="flex items-center gap-2">
@@ -545,10 +545,10 @@ const faqNavIsHash = computed(() => (chrome.value?.nav_faq_href ?? '') === '#faq
                 </div>
 
                 <div class="mt-14 border-t border-slate-200/80 pt-8 text-center dark:border-slate-800/80">
-                    <p class="text-xs text-slate-500 dark:text-slate-500">
-                        © {{ new Date().getFullYear() }}
+                    <p class="text-xs text-slate-700 dark:text-slate-500">
+                        آ© {{ new Date().getFullYear() }}
                         <span class="font-semibold text-slate-700 dark:text-slate-300">{{ siteName }}</span>
-                        — {{ t.footer?.rights }}
+                        â€” {{ t.footer?.rights }}
                     </p>
                 </div>
             </div>

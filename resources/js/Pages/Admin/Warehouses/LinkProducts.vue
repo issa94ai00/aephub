@@ -1,9 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { useAdminForm } from '../../../Admin/useAdminForm';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { useAdminForm } from '../../../admin/useAdminForm';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import Alert from '../Partials/Alert.vue';
 import { fmt, localizedName, unitLabel } from '../Partials/helpers';
 
@@ -87,7 +87,7 @@ useAdminHead(t.value.warehouses?.link_products_title ?? '');
                     </div>
                     <div class="admin-card p-5">
                         <div class="text-xs uppercase tracking-wide text-white/45">{{ t.warehouses?.col_code }}</div>
-                        <div class="mt-1 font-mono text-sm text-emerald-100/90" dir="ltr">{{ warehouse.code || '—' }}</div>
+                        <div class="mt-1 font-mono text-sm text-emerald-100/90" dir="ltr">{{ warehouse.code || 'â€”' }}</div>
                         <div v-if="warehouse.location" class="mt-2 text-xs text-white/45">{{ warehouse.location }}</div>
                     </div>
                     <div class="admin-card p-5">
@@ -148,7 +148,7 @@ useAdminHead(t.value.warehouses?.link_products_title ?? '');
                                     dir="ltr"
                                     class="mt-1.5 w-full rounded-xl border border-emerald-400/30 bg-[#0a0f0d] px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none"
                                 />
-                                <p class="mt-1 text-[11px] text-white/40">{{ t.warehouses?.linked }} — {{ t.warehouses?.initial_balance }}</p>
+                                <p class="mt-1 text-[11px] text-white/40">{{ t.warehouses?.linked }} â€” {{ t.warehouses?.initial_balance }}</p>
                             </template>
                             <template v-else>
                                 <div class="text-xs text-white/50">

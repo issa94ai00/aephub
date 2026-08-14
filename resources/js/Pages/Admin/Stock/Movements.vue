@@ -1,9 +1,9 @@
 <script setup>
 import { computed, reactive } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { router } from '../../../Admin/adminRouter';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { router } from '../../../admin/adminRouter';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import Toaster from '../Partials/Toaster.vue';
 import Pagination from '../Partials/Pagination.vue';
 import { fmt, fmtDateTime, localizedName } from '../Partials/helpers';
@@ -214,12 +214,12 @@ const inputCls =
                                 <td class="px-4 py-3 text-white/70">{{ localizedName(m.warehouse, locale) }}</td>
                                 <td class="px-4 py-3 text-center">
                                     <span class="font-semibold" :class="dir(m.type) ? 'text-emerald-200' : 'text-rose-200'">
-                                        {{ dir(m.type) ? '+' : '−' }}{{ fmt(m.quantity) }}
+                                        {{ dir(m.type) ? '+' : 'âˆ’' }}{{ fmt(m.quantity) }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-center font-semibold text-white">{{ fmt(m.balance_after) }}</td>
-                                <td class="px-4 py-3 text-white/60">{{ m.user?.name ?? '—' }}</td>
-                                <td class="px-4 py-3 text-xs text-white/50">{{ m.note || '—' }}</td>
+                                <td class="px-4 py-3 text-white/60">{{ m.user?.name ?? 'â€”' }}</td>
+                                <td class="px-4 py-3 text-xs text-white/50">{{ m.note || 'â€”' }}</td>
                             </tr>
                             <tr v-if="rows.length === 0">
                                 <td colspan="9" class="px-4 py-10 text-center text-white/55">{{ t.stock?.no_movements }}</td>

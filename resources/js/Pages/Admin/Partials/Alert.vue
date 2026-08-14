@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { clearFlash, state } from '../../../Admin/state';
+import { clearFlash, state } from '../../../admin/state';
 
 const flash = computed(() => state.flash);
 

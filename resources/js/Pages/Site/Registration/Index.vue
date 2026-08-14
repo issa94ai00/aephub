@@ -255,10 +255,10 @@ function errorList(formErr) {
                     <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400/90">
                         {{ t.registration_page?.kicker }}
                     </p>
-                    <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+                    <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-950 dark:text-slate-50 sm:text-3xl">
                         {{ t.registration_page?.title }}
                     </h1>
-                    <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    <p class="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                         {{ t.registration_page?.lead }}
                     </p>
                 </div>
@@ -304,10 +304,10 @@ function errorList(formErr) {
                         v-show="tab === 'student'"
                         class="mt-5 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-5 dark:border-slate-700/60 dark:bg-slate-800/50"
                     >
-                        <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50">
+                        <h2 class="text-lg font-bold text-slate-950 dark:text-slate-50">
                             {{ t.registration_page?.panel_student_title }}
                         </h2>
-                        <p class="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                        <p class="mt-1 text-xs text-slate-700 dark:text-slate-300">
                             {{ t.registration_page?.panel_student_hint }}
                         </p>
 
@@ -368,7 +368,7 @@ function errorList(formErr) {
                                     class="site-input"
                                     :class="{ 'ring-2 ring-rose-400/80': studentForm.errors.phone }"
                                 />
-                                <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-500">{{ t.form?.phone_hint }}</p>
+                                <p class="mt-1 text-[11px] text-slate-700 dark:text-slate-500">{{ t.form?.phone_hint }}</p>
                                 <p v-if="studentForm.errors.phone" class="mt-1 text-xs text-rose-600 dark:text-rose-400">
                                     {{ studentForm.errors.phone }}
                                 </p>
@@ -416,7 +416,7 @@ function errorList(formErr) {
                                 </div>
                             </div>
 
-                            <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
+                            <p class="text-[11px] leading-relaxed text-slate-700 dark:text-slate-300">
                                 {{ t.registration_page?.academic_edit_hint }}
                             </p>
                             <div
@@ -469,7 +469,7 @@ function errorList(formErr) {
                                     </select>
                                     <p
                                         v-show="loadingFaculties"
-                                        class="mt-1 text-[11px] text-slate-500 dark:text-slate-500"
+                                        class="mt-1 text-[11px] text-slate-700 dark:text-slate-500"
                                     >
                                         {{ t.form?.loading }}
                                     </p>
@@ -490,7 +490,7 @@ function errorList(formErr) {
                                             {{ o.localized_name }}
                                         </option>
                                     </select>
-                                    <p v-show="loadingYears" class="mt-1 text-[11px] text-slate-500 dark:text-slate-500">
+                                    <p v-show="loadingYears" class="mt-1 text-[11px] text-slate-700 dark:text-slate-500">
                                         {{ t.form?.loading }}
                                     </p>
                                 </div>
@@ -509,7 +509,7 @@ function errorList(formErr) {
                                             {{ o.localized_name }}
                                         </option>
                                     </select>
-                                    <p v-show="loadingTerms" class="mt-1 text-[11px] text-slate-500 dark:text-slate-500">
+                                    <p v-show="loadingTerms" class="mt-1 text-[11px] text-slate-700 dark:text-slate-500">
                                         {{ t.form?.loading }}
                                     </p>
                                     <p
@@ -563,10 +563,10 @@ function errorList(formErr) {
                         v-show="tab === 'teacher'"
                         class="mt-5 rounded-2xl border border-emerald-200/50 bg-emerald-50/50 p-5 dark:border-emerald-800/40 dark:bg-emerald-950/25"
                     >
-                        <h2 class="text-lg font-bold text-slate-900 dark:text-slate-50">
+                        <h2 class="text-lg font-bold text-slate-950 dark:text-slate-50">
                             {{ t.registration_page?.panel_teacher_title }}
                         </h2>
-                        <p class="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                        <p class="mt-1 text-xs text-slate-700 dark:text-slate-300">
                             {{ t.registration_page?.panel_teacher_hint }}
                         </p>
 
@@ -627,7 +627,7 @@ function errorList(formErr) {
                                     class="site-input"
                                     :class="{ 'ring-2 ring-rose-400/80': teacherForm.errors.phone }"
                                 />
-                                <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-500">{{ t.form?.phone_hint }}</p>
+                                <p class="mt-1 text-[11px] text-slate-700 dark:text-slate-500">{{ t.form?.phone_hint }}</p>
                                 <p v-if="teacherForm.errors.phone" class="mt-1 text-xs text-rose-600 dark:text-rose-400">
                                     {{ teacherForm.errors.phone }}
                                 </p>

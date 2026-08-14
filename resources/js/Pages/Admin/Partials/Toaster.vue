@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
-import { clearFlash, setErrors, state } from '../../../Admin/state';
+import { clearFlash, setErrors, state } from '../../../admin/state';
 
 const visible = ref(false);
 const marker = ref('');

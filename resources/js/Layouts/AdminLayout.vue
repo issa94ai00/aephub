@@ -50,6 +50,20 @@ function logout() {
     }
     router.post(chrome.value.logoutAction);
 }
+
+function closeMobileSidebar() {
+    const sidebar = document.querySelector('[data-admin-sidebar]');
+    const overlay = document.querySelector('[data-admin-overlay]');
+    if (!sidebar || !overlay) {
+        return;
+    }
+    const dir = sidebar.dataset.sidebarDir === 'ltr' ? 'ltr' : 'rtl';
+    const hiddenClass = dir === 'ltr' ? '-translate-x-full' : 'translate-x-full';
+    sidebar.classList.add(hiddenClass);
+    sidebar.classList.remove('translate-x-0');
+    overlay.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
 </script>
 
 <template>
@@ -104,13 +118,19 @@ function logout() {
                         v-for="(item, idx) in nav"
                         :key="idx"
                         :href="item.href"
-                        class="admin-nav-link flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
+                        class="admin-nav-link relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
                         :class="
                             navItemActive(item)
                                 ? 'bg-emerald-500/15 text-emerald-100 ring-1 ring-emerald-400/25'
                                 : 'text-white/90 hover:bg-white/5 hover:text-white'
                         "
+                        @click="closeMobileSidebar"
                     >
+                        <span
+                            v-if="navItemActive(item)"
+                            class="absolute inset-y-2 start-0 w-1 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.6)]"
+                            aria-hidden="true"
+                        />
                         <svg
                             v-if="item.icon === 'grid'"
                             class="h-5 w-5 shrink-0 opacity-90"

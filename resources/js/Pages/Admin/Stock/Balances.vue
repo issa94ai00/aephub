@@ -1,9 +1,9 @@
 <script setup>
 import { computed, reactive } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { router } from '../../../Admin/adminRouter';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { router } from '../../../admin/adminRouter';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import Toaster from '../Partials/Toaster.vue';
 import Pagination from '../Partials/Pagination.vue';
 import { fmt, localizedName, unitLabel } from '../Partials/helpers';
@@ -166,7 +166,7 @@ function isLow(p) {
                                     >
                                         {{ p.sku }}
                                     </span>
-                                    <span v-else class="text-white/35">—</span>
+                                    <span v-else class="text-white/35">â€”</span>
                                 </td>
                                 <td class="px-4 py-3 text-white">
                                     <div class="font-medium">{{ localizedName(p, locale) }}</div>

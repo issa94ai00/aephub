@@ -1,9 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { useAdminForm } from '../../../Admin/useAdminForm';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { useAdminForm } from '../../../admin/useAdminForm';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import ProductPicker from '../Partials/ProductPicker.vue';
 import Toaster from '../Partials/Toaster.vue';
 import { fmt, fmtDateTime, localizedName } from '../Partials/helpers';
@@ -405,7 +405,7 @@ function dir(tp) {
                                     {{ typeLabel(m.type) }}
                                 </span>
                                 <span class="font-semibold text-white" :class="dir(m.type) ? 'text-emerald-200' : 'text-rose-200'">
-                                    {{ dir(m.type) ? '+' : '−' }}{{ fmt(m.quantity) }}
+                                    {{ dir(m.type) ? '+' : 'âˆ’' }}{{ fmt(m.quantity) }}
                                 </span>
                                 <span class="text-[11px] text-white/40">{{ fmtDateTime(m.occurred_at) }}</span>
                             </span>

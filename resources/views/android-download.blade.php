@@ -5,8 +5,8 @@
             <section class="reveal site-panel">
                 <div class="max-w-3xl">
                     <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400/90">{{ __('site.android.kicker') }}</p>
-                    <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">{{ __('site.android.title') }}</h1>
-                    <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-950 dark:text-slate-50 sm:text-3xl">{{ __('site.android.title') }}</h1>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                         {{ __('site.android.lead') }}
                     </p>
                 </div>
@@ -14,18 +14,18 @@
                 <div class="mt-10 grid gap-4 sm:grid-cols-3">
                     <div class="rounded-2xl border border-slate-200/70 bg-slate-50/90 p-5 shadow-inner transition duration-300 hover:border-emerald-200/50 dark:border-slate-700/60 dark:bg-slate-800/80">
                         <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-b from-amber-500 to-orange-600 text-sm font-bold text-white shadow-md shadow-orange-900/20">1</div>
-                        <h2 class="mt-4 text-sm font-bold text-slate-900 dark:text-slate-50">{{ __('site.android.step1_title') }}</h2>
-                        <p class="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">{{ __('site.android.step1_text') }}</p>
+                        <h2 class="mt-4 text-sm font-bold text-slate-950 dark:text-slate-50">{{ __('site.android.step1_title') }}</h2>
+                        <p class="mt-2 text-xs leading-relaxed text-slate-700 dark:text-slate-300">{{ __('site.android.step1_text') }}</p>
                     </div>
                     <div class="rounded-2xl border border-slate-200/70 bg-slate-50/90 p-5 shadow-inner transition duration-300 hover:border-emerald-200/50 dark:border-slate-700/60 dark:bg-slate-800/80">
                         <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-b from-amber-500 to-orange-600 text-sm font-bold text-white shadow-md shadow-orange-900/20">2</div>
-                        <h2 class="mt-4 text-sm font-bold text-slate-900 dark:text-slate-50">{{ __('site.android.step2_title') }}</h2>
-                        <p class="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">{{ __('site.android.step2_text') }}</p>
+                        <h2 class="mt-4 text-sm font-bold text-slate-950 dark:text-slate-50">{{ __('site.android.step2_title') }}</h2>
+                        <p class="mt-2 text-xs leading-relaxed text-slate-700 dark:text-slate-300">{{ __('site.android.step2_text') }}</p>
                     </div>
                     <div class="rounded-2xl border border-slate-200/70 bg-slate-50/90 p-5 shadow-inner transition duration-300 hover:border-emerald-200/50 dark:border-slate-700/60 dark:bg-slate-800/80">
                         <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-b from-amber-500 to-orange-600 text-sm font-bold text-white shadow-md shadow-orange-900/20">3</div>
-                        <h2 class="mt-4 text-sm font-bold text-slate-900 dark:text-slate-50">{{ __('site.android.step3_title') }}</h2>
-                        <p class="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">{{ __('site.android.step3_text') }}</p>
+                        <h2 class="mt-4 text-sm font-bold text-slate-950 dark:text-slate-50">{{ __('site.android.step3_title') }}</h2>
+                        <p class="mt-2 text-xs leading-relaxed text-slate-700 dark:text-slate-300">{{ __('site.android.step3_text') }}</p>
                     </div>
                 </div>
 

@@ -1,9 +1,9 @@
 <script setup>
 import { computed } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { useAdminForm } from '../../../Admin/useAdminForm';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { useAdminForm } from '../../../admin/useAdminForm';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import Alert from '../Partials/Alert.vue';
 import { fmt, localizedName, unitLabel } from '../Partials/helpers';
 
@@ -76,7 +76,7 @@ useAdminHead(t.value.products?.link_warehouses_title ?? '');
                 <div class="mb-5 grid gap-4 md:grid-cols-3">
                     <div class="admin-card p-5">
                         <div class="text-xs uppercase tracking-wide text-white/45">{{ t.products?.col_sku }}</div>
-                        <div class="mt-1 font-mono text-sm text-emerald-100/90" dir="ltr">{{ product.sku || '—' }}</div>
+                        <div class="mt-1 font-mono text-sm text-emerald-100/90" dir="ltr">{{ product.sku || 'â€”' }}</div>
                     </div>
                     <div class="admin-card p-5 md:col-span-2">
                         <div class="text-xs uppercase tracking-wide text-white/45">{{ t.products?.col_name }}</div>
@@ -130,7 +130,7 @@ useAdminHead(t.value.products?.link_warehouses_title ?? '');
                                     dir="ltr"
                                     class="mt-1.5 w-full rounded-xl border border-emerald-400/30 bg-[#0a0f0d] px-3 py-2 text-sm text-white focus:border-emerald-400/50 focus:outline-none"
                                 />
-                                <p class="mt-1 text-[11px] text-white/40">{{ t.products?.linked }} — {{ t.products?.initial_balance }}</p>
+                                <p class="mt-1 text-[11px] text-white/40">{{ t.products?.linked }} â€” {{ t.products?.initial_balance }}</p>
                             </template>
                             <template v-else>
                                 <div class="text-xs text-white/50">

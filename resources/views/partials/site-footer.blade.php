@@ -22,17 +22,17 @@
                         @endif
                     </span>
                     <span class="text-start">
-                        <span class="block text-base font-bold tracking-tight text-slate-900 dark:text-slate-50">{{ $name }}</span>
-                        <span class="mt-0.5 block text-xs font-medium text-slate-500 dark:text-slate-400">{{ __('site.footer.trusted') }}</span>
+                        <span class="block text-base font-bold tracking-tight text-slate-950 dark:text-slate-50">{{ $name }}</span>
+                        <span class="mt-0.5 block text-xs font-medium text-slate-700 dark:text-slate-400">{{ __('site.footer.trusted') }}</span>
                     </span>
                 </a>
-                <p class="mt-5 max-w-sm text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                <p class="mt-5 max-w-sm text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                     {{ __('site.footer.about') }}
                 </p>
             </div>
 
             <div class="lg:col-span-3">
-                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ __('site.footer.browse') }}</h3>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-500">{{ __('site.footer.browse') }}</h3>
                 <ul class="mt-5 space-y-3 text-sm">
                     <li><a href="{{ url('/#courses') }}" class="font-medium text-slate-700 transition duration-300 hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-400">{{ __('site.nav.courses') }}</a></li>
                     <li><a href="{{ url('/#why') }}" class="font-medium text-slate-700 transition duration-300 hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-400">{{ __('site.nav.why') }}</a></li>
@@ -43,11 +43,11 @@
             </div>
 
             <div class="sm:col-span-2 lg:col-span-5">
-                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">{{ __('site.footer.contact') }}</h3>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-slate-500">{{ __('site.footer.contact') }}</h3>
                 <ul class="mt-5 space-y-3.5 text-sm">
                     @if(!empty($site['contact_phone']))
                         <li class="flex items-start gap-2.5">
-                            <span class="mt-0.5 text-slate-400 dark:text-slate-500" aria-hidden="true">
+                            <span class="mt-0.5 text-slate-600 dark:text-slate-500" aria-hidden="true">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                             </span>
                             <a href="tel:{{ preg_replace('/\s+/', '', $site['contact_phone']) }}" class="text-slate-800 transition hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-400" dir="ltr">{{ $site['contact_phone'] }}</a>
@@ -55,7 +55,7 @@
                     @endif
                     @if(!empty($site['contact_email']))
                         <li class="flex items-start gap-2.5">
-                            <span class="mt-0.5 text-slate-400 dark:text-slate-500" aria-hidden="true">
+                            <span class="mt-0.5 text-slate-600 dark:text-slate-500" aria-hidden="true">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             </span>
                             <a href="mailto:{{ $site['contact_email'] }}" class="break-all text-slate-800 transition hover:text-emerald-700 dark:text-slate-200 dark:hover:text-emerald-400" dir="ltr">{{ $site['contact_email'] }}</a>
@@ -65,7 +65,7 @@
 
                 @if(!empty($site['facebook_url']) || !empty($site['telegram_url']) || !empty($site['whatsapp_url']))
                     <div class="mt-8 flex flex-wrap items-center gap-3">
-                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ __('site.footer.social') }}</span>
+                        <span class="text-xs font-medium text-slate-700 dark:text-slate-400">{{ __('site.footer.social') }}</span>
                         <div class="flex items-center gap-2">
                             @if(!empty($site['facebook_url']))
                                 <a href="{{ $site['facebook_url'] }}" target="_blank" rel="noopener noreferrer" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200/80 bg-white text-[#1877F2] shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-600 dark:bg-slate-800/90" title="{{ __('site.footer.facebook') }}" aria-label="{{ __('site.footer.facebook') }}">
@@ -89,7 +89,7 @@
         </div>
 
         <div class="mt-14 border-t border-slate-200/80 pt-8 text-center dark:border-slate-800/80">
-            <p class="text-xs text-slate-500 dark:text-slate-500">
+            <p class="text-xs text-slate-700 dark:text-slate-500">
                 © {{ date('Y') }} <span class="font-semibold text-slate-700 dark:text-slate-300">{{ $name }}</span> — {{ __('site.footer.rights') }}
             </p>
         </div>

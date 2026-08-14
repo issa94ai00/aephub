@@ -29,10 +29,10 @@ const steps = computed(() => {
                     <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400/90">
                         {{ t.android?.kicker }}
                     </p>
-                    <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+                    <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-950 dark:text-slate-50 sm:text-3xl">
                         {{ t.android?.title }}
                     </h1>
-                    <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{{ t.android?.lead }}</p>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">{{ t.android?.lead }}</p>
                 </div>
 
                 <div class="mt-10 grid gap-4 sm:grid-cols-3">
@@ -46,8 +46,8 @@ const steps = computed(() => {
                         >
                             {{ step.n }}
                         </div>
-                        <h2 class="mt-4 text-sm font-bold text-slate-900 dark:text-slate-50">{{ step.title }}</h2>
-                        <p class="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">{{ step.text }}</p>
+                        <h2 class="mt-4 text-sm font-bold text-slate-950 dark:text-slate-50">{{ step.title }}</h2>
+                        <p class="mt-2 text-xs leading-relaxed text-slate-700 dark:text-slate-300">{{ step.text }}</p>
                     </div>
                 </div>
 

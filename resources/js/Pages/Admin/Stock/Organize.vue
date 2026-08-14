@@ -1,10 +1,10 @@
 <script setup>
 import { computed, reactive, ref, watch } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { router } from '../../../Admin/adminRouter';
-import { useAdminForm } from '../../../Admin/useAdminForm';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { router } from '../../../admin/adminRouter';
+import { useAdminForm } from '../../../admin/useAdminForm';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import Toaster from '../Partials/Toaster.vue';
 import Pagination from '../Partials/Pagination.vue';
 import { fmt, localizedName, unitLabel } from '../Partials/helpers';

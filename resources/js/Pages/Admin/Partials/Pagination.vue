@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import { toPath } from '../../../Admin/adminRouter';
+import { toPath } from '../../../admin/adminRouter';
 
 defineProps({
     links: { type: Array, default: () => [] },

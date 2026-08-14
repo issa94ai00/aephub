@@ -32,10 +32,10 @@
                 </span>
                 <div class="leading-tight">
                     <div class="flex items-center gap-2">
-                        <div class="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-50">{{ trim($site['site_name_resolved'] ?? '') !== '' ? $site['site_name_resolved'] : ($site['site_name'] ?? config('app.name')) }}</div>
+                        <div class="text-sm font-bold tracking-tight text-slate-950 dark:text-slate-50">{{ trim($site['site_name_resolved'] ?? '') !== '' ? $site['site_name_resolved'] : ($site['site_name'] ?? config('app.name')) }}</div>
                         <img src="{{ asset('favicon.ico') }}" alt="Site icon" class="h-4 w-4 rounded-sm" />
                     </div>
-                    <div class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ __('site.tagline') }}</div>
+                    <div class="text-xs font-medium text-slate-700 dark:text-slate-400">{{ __('site.tagline') }}</div>
                 </div>
             </a>
 
@@ -137,7 +137,7 @@
                     <a href="{{ route('android.download') }}" @click="mobileOpen = false" class="block rounded-xl px-4 py-3 text-sm font-semibold text-sky-700 dark:text-sky-400">{{ __('site.nav.download_app') }}</a>
 
                     <div class="border-t border-slate-200/80 pt-2 dark:border-slate-700/60" role="group" aria-label="{{ __('site.locale.switch') }}">
-                        <p class="px-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{{ __('site.locale.switch') }}</p>
+                        <p class="px-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-slate-600">{{ __('site.locale.switch') }}</p>
                         <div class="flex gap-1 px-2">
                             <a href="{{ route('locale.switch', ['locale' => 'ar']) }}" @click="mobileOpen = false" class="flex-1 rounded-lg py-2 text-center text-xs font-bold transition {{ $localeArActive ? $segOn : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">{{ __('site.locale.ar') }}</a>
                             <a href="{{ route('locale.switch', ['locale' => 'en']) }}" @click="mobileOpen = false" class="flex-1 rounded-lg py-2 text-center text-xs font-bold transition {{ $localeEnActive ? $segOn : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">{{ __('site.locale.en') }}</a>

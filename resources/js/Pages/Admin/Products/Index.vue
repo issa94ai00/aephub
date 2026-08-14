@@ -1,10 +1,10 @@
 <script setup>
 import { computed, reactive } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
-import AppLink from '../../../Admin/AppLink.vue';
-import { router } from '../../../Admin/adminRouter';
-import { useAdminForm } from '../../../Admin/useAdminForm';
-import { useAdminHead } from '../../../Admin/useAdminHead';
+import AppLink from '../../../admin/AppLink.vue';
+import { router } from '../../../admin/adminRouter';
+import { useAdminForm } from '../../../admin/useAdminForm';
+import { useAdminHead } from '../../../admin/useAdminHead';
 import Alert from '../Partials/Alert.vue';
 import Pagination from '../Partials/Pagination.vue';
 import { fmt, fmtMoney, localizedName, unitLabel } from '../Partials/helpers';
@@ -163,7 +163,7 @@ function destroy(id) {
                                     >
                                         {{ p.sku }}
                                     </span>
-                                    <span v-else class="text-white/35">—</span>
+                                    <span v-else class="text-white/35">â€”</span>
                                 </td>
                                 <td class="px-4 py-3 text-white">
                                     <div class="font-medium">{{ localizedName(p, locale) }}</div>
@@ -171,7 +171,7 @@ function destroy(id) {
                                         {{ p.name_en }}
                                     </div>
                                 </td>
-                                <td class="px-4 py-3 text-white/60">{{ p.category || '—' }}</td>
+                                <td class="px-4 py-3 text-white/60">{{ p.category || 'â€”' }}</td>
                                 <td class="px-4 py-3 text-center text-white/60">{{ unitLabel(p.unit, t.value) }}</td>
                                 <td class="px-4 py-3 text-center">
                                     <div class="font-semibold text-white">{{ fmt(stockState(p).total) }}</div>
@@ -187,7 +187,7 @@ function destroy(id) {
                                             class="admin-badge admin-badge--sky"
                                             :title="w.code || localizedName(w, locale)"
                                         >
-                                            {{ w.code || localizedName(w, locale) }} · {{ fmt(w.quantity) }}
+                                            {{ w.code || localizedName(w, locale) }} آ· {{ fmt(w.quantity) }}
                                         </span>
                                     </div>
                                     <span v-else class="text-xs text-white/40">{{ t.products?.no_links }}</span>

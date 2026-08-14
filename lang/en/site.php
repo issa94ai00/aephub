@@ -2,7 +2,7 @@
 
 return [
 
-    'tagline' => 'Higher education',
+    'tagline' => 'Learn across every qualification',
 
     'bootloader' => [
         'loading' => 'Loading site',
@@ -21,7 +21,7 @@ return [
     'nav' => [
         'main' => 'Main navigation',
         'mobile' => 'Mobile navigation',
-        'courses' => 'Latest courses',
+        'courses' => 'Courses',
         'universities' => 'Universities',
         'why' => 'Why us',
         'faq' => 'FAQ',
@@ -38,8 +38,8 @@ return [
     ],
 
     'footer' => [
-        'trusted' => 'Trusted higher education',
-        'about' => 'A learning platform that combines structured content, easy follow‑up, and support for students throughout their academic journey.',
+        'trusted' => 'Trusted learning for every qualification',
+        'about' => 'A learning platform that combines structured content, easy follow‑up, and support for learners throughout their journey — from secondary school to professional and university qualifications.',
         'browse' => 'Browse',
         'privacy_terms' => 'Privacy policy & terms of use',
         'faq' => 'Frequently asked questions',
@@ -71,9 +71,27 @@ return [
             'library' => 'Library — focus and reading',
             'students' => 'University students — collaboration and success',
         ],
-        'hero_sr' => 'Higher education platform — courses and learning content',
+        'hero_sr' => 'A comprehensive learning platform — courses and content for every educational qualification',
         'carousel_empty_hint' => 'There are no homepage carousel slides yet. Add slides in the admin panel (Homepage carousel), or run database migrations to insert the default set.',
-        'hero_kicker' => 'Higher education',
+        'hero_kicker' => 'Comprehensive learning platform',
+        'hero_cta_courses' => 'Browse courses',
+        'hero_cta_app' => 'Download the app',
+        'tracks_kicker' => 'Learning tracks',
+        'tracks_title' => 'Milestones on your learning journey',
+        'tracks_sub' => 'Whatever stage you are studying at, you will find the right support here — from secondary school to professional certificates, languages, and university.',
+        'tracks_1_title' => 'Secondary education',
+        'tracks_1_text' => 'In‑depth lessons and intensive reviews to help you prepare for secondary exams with confidence.',
+        'tracks_2_title' => 'Professional certificates',
+        'tracks_2_text' => 'Practical skills and recognized certificates to advance your career and professional path.',
+        'tracks_3_title' => 'Languages & tests',
+        'tracks_3_text' => 'Language programs and international test preparation (IELTS/TOEFL…) step by step.',
+        'tracks_4_title' => 'University education',
+        'tracks_4_text' => 'Structured university content organized by faculties, study years, and terms.',
+        'tracks_5_title' => 'Exams & admissions',
+        'tracks_5_text' => 'Focused preparation for competitive and aptitude exams.',
+        'tracks_6_title' => 'Skills development',
+        'tracks_6_text' => 'Self‑development, computer, and management skills courses for all ages.',
+        'browse_tracks' => 'Browse courses',
         'snapshot' => 'Quick snapshot',
         'snapshot_text' => 'Up‑to‑date numbers from the platform: published courses, total video lessons, and approved enrollments in available courses.',
         'stat_courses' => 'Courses',
@@ -106,10 +124,14 @@ return [
         'why_3_text' => 'A design that works smoothly on phone, tablet, and desktop so you can study without eye strain.',
         'why_4_title' => 'A real learning community',
         'why_4_text' => 'In‑course interaction, file sharing, and chat help you ask questions and learn from peers.',
-        'why_goal_html' => 'Our goal is for the platform to feel <span class="font-bold text-teal-700 dark:text-teal-400">comfortable</span> to read, <span class="font-bold text-teal-700 dark:text-teal-400">easy</span> to navigate, and <span class="font-bold text-teal-700 dark:text-teal-400">serious</span> about supporting your higher‑education learning.',
+        'why_goal_html' => 'Our goal is for the platform to feel <span class="font-bold text-teal-700 dark:text-teal-400">comfortable</span> to read, <span class="font-bold text-teal-700 dark:text-teal-400">easy</span> to navigate, and <span class="font-bold text-teal-700 dark:text-teal-400">serious</span> about supporting your learning journey whatever your qualification.',
         'faq_title' => 'Frequently asked questions',
         'faq_sub' => 'Short answers to common questions.',
         'faq_empty' => 'No FAQs yet.',
+        'app_banner_kicker' => 'Learn anywhere',
+        'app_banner_title' => 'Download the app and follow your lessons smoothly',
+        'app_banner_text' => 'Available on Android — the same account, the same courses, with an experience built specifically for mobile so you can review your lessons anytime.',
+        'app_banner_cta' => 'Download the app',
     ],
 
     'faq_page' => [
@@ -220,7 +242,7 @@ return [
     ],
 
     'seo' => [
-        'default_description' => 'A higher‑education platform for courses: structured content and a mobile‑friendly experience.',
+        'default_description' => 'A comprehensive learning platform for every educational qualification: secondary, professional, languages, and university. Structured content and a mobile‑friendly experience.',
     ],
 
 ];
