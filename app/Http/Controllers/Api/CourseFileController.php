@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseEnrollment;
 use App\Models\CourseFile;
+use App\Models\StorageDestination;
 use App\Services\StorageDestinationService;
 use App\Support\ApiPagination;
 use App\Support\LocalEncryptedBlobRangeResponse;
