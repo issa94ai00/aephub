@@ -32,7 +32,12 @@ final class CourseVideoBlobUrls
 
     private static function s3PublicUrl(string $disk, string $path): ?string
     {
-        if (! in_array($disk, ['wasabi', 'r2', 's3'], true)) {
+        // Managed destinations are S3-backed under any name, so membership is
+        // decided by the resolved driver instead of a fixed list of three.
+        $isObjectStorage = in_array($disk, ['wasabi', 'r2', 's3'], true)
+            || (string) config("filesystems.disks.{$disk}.driver") === 's3';
+
+        if (! $isObjectStorage) {
             return null;
         }
         try {

@@ -1079,15 +1079,20 @@ class CourseFileController extends Controller
     }
 
     /**
-     * R2 uploads use .../multipart/r2/...; local uses .../multipart/local/...
+     * Which S3/local disk an object key belongs to.
+     *
+     * Every new multipart key embeds its disk name as
+     * `.../multipart/{disk}/...` — including managed destinations, whose keys
+     * used to carry only the row's path_prefix. Without the disk name in the
+     * path, `multipartSignPart`/`multipartStatus`/`multipartAbort` fell back to
+     * the literal `wasabi`, and a managed destination (say `aephub`) hit
+     * "Object storage disk [wasabi] is not fully configured" on the very first
+     * part. The bare fallback is kept for keys written before this change.
      */
     private function multipartStorageDiskFromObjectKey(string $objectKey): string
     {
-        if (str_contains($objectKey, '/multipart/r2/')) {
-            return 'r2';
-        }
-        if (str_contains($objectKey, '/multipart/local/')) {
-            return 'local';
+        if (preg_match('#/multipart/([a-z0-9_-]+)/#i', $objectKey, $m)) {
+            return strtolower($m[1]);
         }
 
         return 'wasabi';
@@ -1125,17 +1130,22 @@ class CourseFileController extends Controller
         // hold several environments without them writing over each other. The
         // per-disk literals below stay as the fallback for the `.env` disks,
         // which have no row to carry a prefix.
+        //
+        // The disk name is embedded after `multipart/` in both branches: the
+        // part endpoints recover the disk from the object key, and a managed
+        // destination keyed `aephub` is indistinguishable from the `.env`
+        // `wasabi` disk by prefix alone.
         $configured = app(StorageDestinationService::class)
             ->active()
             ->firstWhere('disk_key', $storageDisk)
             ?->option('path_prefix');
 
         $prefix = $configured
-            ? trim((string) $configured, '/')."/{$courseId}/multipart/"
+            ? trim((string) $configured, '/')."/{$courseId}/multipart/{$storageDisk}/"
             : match ($storageDisk) {
                 'r2' => "course-files/{$courseId}/multipart/r2/",
                 'local' => "course-files/{$courseId}/multipart/local/",
-                default => "course-files/{$courseId}/multipart/",
+                default => "course-files/{$courseId}/multipart/{$storageDisk}/",
             };
 
         return $prefix.$filename;
