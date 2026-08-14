@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+import { initAdminTheme } from './admin/useTheme';
 import { createApp, h } from 'vue';
 import { createInertiaApp, router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -43,6 +44,7 @@ const watchStorageTransfer = () => {
 };
 
 const bootChrome = () => {
+    initAdminTheme();
     setupAdminMobileNav();
     setupAdminScrollHeader();
     setupAdminContentReveal();

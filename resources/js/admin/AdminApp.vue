@@ -68,9 +68,25 @@ watch(
 <template>
     <div v-if="loading" class="flex min-h-screen items-center justify-center p-8">
         <div class="text-center">
-            <div class="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-emerald-400/30 border-t-emerald-400"></div>
-            <div class="mt-4 text-sm text-white/60">{{ state.translations?.admin?.layout?.loading }}</div>
+            <div class="relative mx-auto h-12 w-12">
+                <div class="absolute inset-0 h-12 w-12 animate-spin rounded-full border-2 border-emerald-400/20"></div>
+                <div class="absolute inset-0 h-12 w-12 animate-spin rounded-full border-2 border-transparent border-t-emerald-400" style="animation-duration: 1.5s"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="h-6 w-6 rounded-full bg-emerald-400/10 animate-pulse"></div>
+                </div>
+            </div>
+            <div class="mt-6 text-sm font-medium text-white/60 animate-pulse">{{ state.translations?.admin?.layout?.loading }}</div>
+            <div class="mt-2 text-xs text-white/40">{{ state.translations?.admin?.layout?.please_wait }}</div>
         </div>
     </div>
-    <component v-else :is="view" v-bind="pageProps" />
+    <transition 
+        enter-active-class="transition-opacity duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition-opacity duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+    >
+        <component v-if="!loading" :is="view" v-bind="pageProps" />
+    </transition>
 </template>

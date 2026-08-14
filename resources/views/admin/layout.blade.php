@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', __('admin.layout.default_title')) — {{ config('app.name') }}</title>
+    @include('admin.partials.theme-script')
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -58,6 +59,22 @@
                             <a href="{{ route('locale.switch', ['locale' => 'en']) }}" class="rounded-lg px-2 py-1 font-medium {{ $locale === 'en' ? 'bg-emerald-500/25 text-emerald-100' : 'text-white/70 hover:bg-white/10' }}">{{ __('admin.layout.lang_en') }}</a>
                             <a href="{{ route('locale.switch', ['locale' => 'auto']) }}" class="rounded-lg px-2 py-1 text-white/55 hover:bg-white/10" title="{{ __('admin.layout.lang_auto') }}">A</a>
                         </div>
+                        <button type="button" data-admin-theme-toggle
+                            data-admin-theme-label-light="{{ __('admin.layout.theme_light') }}"
+                            data-admin-theme-label-dark="{{ __('admin.layout.theme_dark') }}"
+                            class="admin-theme-toggle admin-btn relative inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 p-2 text-[#e7eee9] hover:bg-white/10"
+                            aria-label="{{ __('admin.layout.theme_toggle') }}"
+                            aria-pressed="true">
+                            <svg class="admin-theme-sun h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M12 3v1m0 16v1m8.66-9.34H21m-2.66 0h-2.66M5.64 5.64l.71.71M17.65 17.65l.71.71M4 12H2m20 0h-2.66" />
+                                <circle cx="12" cy="12" r="3" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+                            </svg>
+                            <svg class="admin-theme-moon h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M21 14.5a7 7 0 0 1-9.5-9.5 7 7 0 0 0 9.5 9.5Z" />
+                            </svg>
+                        </button>
                         <span class="hidden sm:inline text-white/70">{{ auth()->user()->name }}</span>
                         <form method="post" action="{{ route('admin.logout') }}">
                             @csrf

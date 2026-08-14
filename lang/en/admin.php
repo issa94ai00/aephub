@@ -10,6 +10,10 @@ return [
         'lang_en' => 'English',
         'lang_auto' => 'Auto',
         'language' => 'Language',
+        'theme' => 'Theme',
+        'theme_toggle' => 'Toggle theme',
+        'theme_light' => 'Light mode',
+        'theme_dark' => 'Dark mode',
     ],
 
     'nav' => [

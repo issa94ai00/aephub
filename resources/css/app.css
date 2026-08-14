@@ -466,41 +466,42 @@
 
     .admin-header {
         transition:
-            background-color 0.35s ease,
-            box-shadow 0.35s ease,
-            border-color 0.35s ease;
+            background-color 0.3s ease,
+            box-shadow 0.3s ease,
+            border-color 0.3s ease;
     }
 
     .admin-header.is-scrolled {
-        background-color: color-mix(in oklab, #0c110f 88%, transparent);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-        border-color: color-mix(in oklab, white 14%, transparent);
+        background-color: color-mix(in oklab, #0c110f 92%, transparent);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        border-color: color-mix(in oklab, white 16%, transparent);
     }
 
     .admin-sidebar {
         transition:
             transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-            box-shadow 0.35s ease,
-            border-color 0.35s ease;
-        background: linear-gradient(165deg, rgba(12, 17, 15, 0.96), rgba(8, 12, 10, 0.98));
-        box-shadow: -12px 0 48px rgba(0, 0, 0, 0.35);
-        backdrop-filter: blur(12px);
+            box-shadow 0.3s ease,
+            border-color 0.3s ease;
+        background: linear-gradient(165deg, rgba(12, 17, 15, 0.97), rgba(8, 12, 10, 0.99));
+        box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(16px);
     }
 
     .admin-nav-link {
         transition:
-            transform 0.22s ease,
-            background-color 0.22s ease,
-            color 0.22s ease,
-            box-shadow 0.22s ease;
+            transform 0.2s ease,
+            background-color 0.2s ease,
+            color 0.2s ease,
+            box-shadow 0.2s ease;
     }
 
     .admin-nav-link:hover {
-        transform: translateX(-3px);
+        transform: translateX(-4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .admin-nav-link:active {
-        transform: translateX(-1px) scale(0.99);
+        transform: translateX(-2px) scale(0.98);
     }
 
     .admin-sidebar-nav {
@@ -547,29 +548,30 @@
     .admin-card {
         border-radius: 1rem;
         border: 1px solid color-mix(in oklab, white 12%, transparent);
-        background: linear-gradient(155deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+        background: linear-gradient(155deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
         transition:
-            transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-            border-color 0.35s ease,
-            box-shadow 0.35s ease;
+            transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
     }
 
     .admin-card:hover {
-        transform: translateY(-2px);
-        border-color: color-mix(in oklab, #34d399 28%, transparent);
+        transform: translateY(-3px);
+        border-color: color-mix(in oklab, #34d399 32%, transparent);
         box-shadow:
-            0 18px 40px rgba(0, 0, 0, 0.28),
-            0 0 0 1px color-mix(in oklab, #34d399 18%, transparent);
+            0 20px 48px rgba(0, 0, 0, 0.32),
+            0 0 0 1px color-mix(in oklab, #34d399 20%, transparent);
     }
 
     .admin-table-wrap {
         border-radius: 1rem;
-        transition: box-shadow 0.35s ease;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
     .admin-table-wrap:hover {
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+        border-color: color-mix(in oklab, white 16%, transparent);
     }
 
     .admin-table tbody tr {
@@ -578,18 +580,20 @@
 
     .admin-btn {
         transition:
-            transform 0.18s ease,
+            transform 0.2s ease,
             box-shadow 0.25s ease,
             background-color 0.2s ease,
             border-color 0.2s ease;
     }
 
     .admin-btn:hover {
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .admin-btn:active {
-        transform: translateY(0) scale(0.98);
+        transform: translateY(0) scale(0.97);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
 
     .admin-fade-up {
@@ -702,6 +706,632 @@
     }
     to {
         opacity: 1;
+    }
+}
+
+/* —— Admin day/night switch (light theme) ——
+ *
+ * The admin shell is dark by default (the styles above). Adding the
+ * `light-theme` class to <html> flips it to a light palette. The palette is
+ * centralized in CSS custom properties so colors stay in sync between the
+ * structural component rules and the utility-class token remaps below — the
+ * templates use Tailwind's literal colour classes (e.g. `text-white`,
+ * `bg-[#0a0f0d]`) which only know about the dark theme. */
+@layer components {
+    html.light-theme {
+        /* Base colors - consistent slate blue-gray system */
+        --lt-canvas: #f1f5f9;
+        --lt-header: #ffffff;
+        --lt-surface: #ffffff;
+        --lt-surface-2: #f8fafc;
+        --lt-surface-3: #e2e8f0;
+        --lt-surface-4: #cbd5e1;
+        
+        /* Border system - consistent opacity levels */
+        --lt-border: #e2e8f0;
+        --lt-border-strong: #cbd5e1;
+        --lt-border-stronger: #94a3b8;
+        
+        /* Navigation states */
+        --lt-nav-hover: #f1f5f9;
+        --lt-nav-active: #dcfce7;
+        --lt-nav-active-text: #166534;
+        
+        /* Overlay system */
+        --lt-overlay: rgba(15, 23, 42, 0.03);
+        --lt-overlay-strong: rgba(15, 23, 42, 0.06);
+        
+        /* Text hierarchy - consistent slate scale */
+        --lt-text: #1e293b;
+        --lt-text-secondary: #475569;
+        --lt-text-muted: #64748b;
+        --lt-text-dim: #94a3b8;
+        --lt-text-dimmer: #cbd5e1;
+        --lt-placeholder: #94a3b8;
+        
+        /* Brand colors - emerald green system */
+        --lt-emerald: #10b981;
+        --lt-emerald-strong: #059669;
+        --lt-emerald-light: #34d399;
+        --lt-emerald-faint-bg: #ecfdf5;
+        --lt-emerald-faint-bg-alt: #d1fae5;
+        --lt-emerald-faint-text: #065f46;
+        --lt-emerald-border: #a7f3d0;
+        
+        /* Accent colors */
+        --lt-amber-faint-bg: #fef3c7;
+        --lt-amber-faint-text: #92400e;
+        --lt-rose-faint-bg: #fee2e2;
+        --lt-rose-faint-text: #991b1b;
+        --lt-sky-faint-bg: #e0f2fe;
+        --lt-sky-faint-text: #075985;
+        
+        /* Link colors */
+        --lt-link: #0284c7;
+        --lt-link-hover: #0369a1;
+        
+        /* Shadow system - consistent depth */
+        --lt-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+        --lt-shadow-md: 0 4px 6px rgba(15, 23, 42, 0.07);
+        --lt-shadow-lg: 0 10px 15px rgba(15, 23, 42, 0.1);
+        --lt-shadow-xl: 0 20px 25px rgba(15, 23, 42, 0.12);
+    }
+
+    /* Shell + structural chrome — soft blue-slate gradients, never flat white */
+    html.light-theme .admin-shell,
+    html.light-theme [data-admin-shell] {
+        background: linear-gradient(160deg, #f8fafc 0%, #e2e8f0 100%);
+        color: var(--lt-text);
+    }
+
+    html.light-theme .admin-header,
+    html.light-theme [data-admin-header] {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-color: var(--lt-border);
+        box-shadow: var(--lt-shadow-sm);
+    }
+
+    html.light-theme .admin-header.is-scrolled {
+        background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+        box-shadow: var(--lt-shadow-md);
+        border-color: var(--lt-border-strong);
+    }
+
+    html.light-theme .admin-sidebar {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-color: var(--lt-border);
+        box-shadow: 4px 0 16px rgba(15, 23, 42, 0.08);
+    }
+
+    html.light-theme .admin-sidebar .border-t,
+    html.light-theme .admin-sidebar .border-b {
+        border-color: var(--lt-border);
+    }
+
+    html.light-theme .admin-brand-icon {
+        background: var(--lt-surface-2);
+        border-color: var(--lt-border);
+    }
+
+    /* Softer, neutral-tinged glows so the dark orbs don't clash on a light canvas */
+    html.light-theme .admin-ambient__orb--a {
+        background: radial-gradient(circle at 30% 30%, color-mix(in oklab, #34d399 8%, transparent), transparent 65%);
+    }
+    html.light-theme .admin-ambient__orb--b {
+        background: radial-gradient(circle at 60% 50%, color-mix(in oklab, #10b981 6%, transparent), transparent 68%);
+    }
+    html.light-theme .admin-ambient__orb--c {
+        background: radial-gradient(circle at 50% 50%, color-mix(in oklab, #cbd5e1 15%, transparent), transparent 72%);
+    }
+
+    html.light-theme .admin-ambient__grid {
+        background-image:
+            linear-gradient(to left, var(--lt-border) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--lt-border) 1px, transparent 1px);
+    }
+
+    html.light-theme .admin-overlay {
+        background-color: rgba(15, 23, 42, 0.4);
+    }
+
+    html.light-theme .admin-card {
+        border-color: var(--lt-border);
+        background: linear-gradient(155deg, #ffffff 0%, #f8fafc 100%);
+        box-shadow: var(--lt-shadow-sm);
+    }
+    html.light-theme .admin-card:hover {
+        border-color: var(--lt-emerald-border);
+        box-shadow:
+            var(--lt-shadow-lg),
+            0 0 0 1px var(--lt-emerald-faint-bg);
+        transform: translateY(-3px);
+    }
+
+    html.light-theme .admin-table-wrap:hover {
+        box-shadow: var(--lt-shadow-lg);
+        border-color: var(--lt-border-strong);
+    }
+
+    html.light-theme .admin-sidebar-nav::-webkit-scrollbar-thumb {
+        background: var(--lt-border-strong);
+        border-radius: 9999px;
+    }
+    html.light-theme .admin-sidebar-nav::-webkit-scrollbar-thumb:hover {
+        background: var(--lt-border-stronger);
+    }
+
+    /* Theme toggle: icon colors handled by Vue scale animations */
+
+    /* Enhanced navigation active state for light theme */
+    html.light-theme .admin-nav-link[aria-current="page"],
+    html.light-theme .admin-nav-link.active {
+        background-color: var(--lt-nav-active);
+        color: var(--lt-nav-active-text);
+        border-color: var(--lt-emerald-border);
+    }
+
+    html.light-theme .admin-nav-link:hover {
+        background-color: var(--lt-nav-hover);
+        color: var(--lt-text-secondary);
+    }
+
+    html.light-theme .admin-nav-link:active {
+        transform: translateX(-2px) scale(0.98);
+    }
+
+    /* Collapsible sections styling */
+    .admin-nav-section {
+        user-select: none;
+        font-size: 12px;
+    }
+    
+    .admin-nav-section:hover {
+        cursor: pointer;
+    }
+    
+    html.light-theme .admin-nav-section {
+        color: var(--lt-text-secondary) !important;
+    }
+    
+    html.light-theme .admin-nav-section:hover {
+        color: var(--lt-text) !important;
+    }
+    
+    html.light-theme .admin-nav-section svg {
+        stroke: var(--lt-text-secondary) !important;
+    }
+    
+    html.light-theme .admin-nav-section:hover svg {
+        stroke: var(--lt-text) !important;
+    }
+
+    /* —— Utility token remaps —— the templates use literal Tailwind colour
+     * classes that only resolve to the dark palette. Each rule below only
+     * fires while `light-theme` is active, so the default dark build is left
+     * untouched. `[class~="x"]` matches whole tokens, so `text-white` and
+     * `text-white/50` stay distinct, and `hover:bg-white/5` is matched by its
+     * own prefixed token. —— */
+
+    /* Plain backgrounds */
+    html.light-theme [class~="bg-[#0a0f0d]"],
+    html.light-theme [class~="bg-[#0c110f]"],
+    html.light-theme [class~="bg-[#070a09]"] {
+        background-color: var(--lt-surface);
+    }
+
+    /* White translucent overlays -> surface colors */
+    html.light-theme [class~="bg-white/5"],
+    html.light-theme [class~="hover:bg-white/5"]:hover,
+    html.light-theme [class~="focus:bg-white/5"]:focus-visible {
+        background-color: var(--lt-surface-2);
+    }
+    html.light-theme [class~="bg-white/10"],
+    html.light-theme [class~="hover:bg-white/10"]:hover,
+    html.light-theme [class~="focus:bg-white/10"]:focus-visible {
+        background-color: var(--lt-surface-3);
+    }
+
+    /* Enhanced button hover states for light theme */
+    html.light-theme .admin-btn:hover {
+        background-color: var(--lt-surface-2);
+        border-color: var(--lt-border-strong);
+    }
+
+    html.light-theme .admin-btn:active {
+        background-color: var(--lt-surface-3);
+        transform: translateY(0) scale(0.97);
+    }
+
+    /* Enhanced loading spinner for light theme */
+    html.light-theme .animate-spin {
+        border-color: var(--lt-emerald-faint-bg);
+        border-top-color: var(--lt-emerald);
+    }
+
+    html.light-theme .animate-pulse {
+        background-color: var(--lt-emerald-faint-bg);
+    }
+
+    html.light-theme .text-white\/60 {
+        color: var(--lt-text-muted);
+    }
+
+    html.light-theme .text-white\/40 {
+        color: var(--lt-text-dim);
+    }
+
+    /* Enhanced theme toggle button for light theme */
+    html.light-theme .admin-theme-toggle {
+        background-color: var(--lt-surface-2);
+        border-color: var(--lt-border);
+        color: var(--lt-text) !important;
+    }
+
+    html.light-theme .admin-theme-toggle:hover {
+        background-color: var(--lt-surface-3);
+        border-color: var(--lt-border-strong);
+    }
+
+    html.light-theme .admin-theme-toggle.bg-emerald-500\/10 {
+        background-color: var(--lt-emerald-faint-bg);
+        border-color: var(--lt-emerald-border);
+    }
+
+    /* Theme toggle icon colors for light theme */
+    html.light-theme .admin-theme-sun,
+    html.light-theme .admin-theme-moon {
+        stroke: var(--lt-text) !important;
+    }
+    html:not(.light-theme) .admin-theme-sun,
+    html:not(.light-theme) .admin-theme-moon {
+        stroke: #e7eee9 !important;
+    }
+
+    /* Input fields for light theme */
+    html.light-theme input,
+    html.light-theme textarea,
+    html.light-theme select {
+        background-color: var(--lt-surface) !important;
+        border-color: var(--lt-border-strong) !important;
+        color: var(--lt-text) !important;
+    }
+    html.light-theme input::placeholder,
+    html.light-theme textarea::placeholder {
+        color: var(--lt-placeholder) !important;
+    }
+    html.light-theme input:focus,
+    html.light-theme textarea:focus,
+    html.light-theme select:focus {
+        border-color: var(--lt-emerald) !important;
+        outline-color: var(--lt-emerald) !important;
+    }
+
+    /* Dropdown menus for light theme */
+    html.light-theme .dropdown-menu,
+    html.light-theme select option {
+        background-color: var(--lt-surface) !important;
+        color: var(--lt-text) !important;
+        border-color: var(--lt-border) !important;
+    }
+    html.light-theme .dropdown-item:hover,
+    html.light-theme select option:hover {
+        background-color: var(--lt-nav-hover) !important;
+    }
+
+    /* Form elements specific styling */
+    html.light-theme .site-input {
+        background-color: var(--lt-surface) !important;
+        border-color: var(--lt-border-strong) !important;
+        color: var(--lt-text) !important;
+    }
+    html.light-theme .site-input:focus {
+        border-color: var(--lt-emerald) !important;
+        box-shadow: 0 0 0 3px var(--lt-emerald-faint-bg) !important;
+    }
+    html.light-theme .site-input::placeholder {
+        color: var(--lt-placeholder) !important;
+    }
+
+    /* Enhanced focus and hover states for form elements */
+    html.light-theme input:hover,
+    html.light-theme textarea:hover,
+    html.light-theme select:hover {
+        border-color: var(--lt-emerald-border) !important;
+    }
+    html.light-theme input:focus,
+    html.light-theme textarea:focus,
+    html.light-theme select:focus {
+        border-color: var(--lt-emerald) !important;
+        box-shadow: 0 0 0 3px var(--lt-emerald-faint-bg) !important;
+    }
+
+    /* Checkbox and radio button styling */
+    html.light-theme input[type="checkbox"],
+    html.light-theme input[type="radio"] {
+        accent-color: var(--lt-emerald) !important;
+    }
+    html.light-theme input[type="checkbox"]:checked,
+    html.light-theme input[type="radio"]:checked {
+        background-color: var(--lt-emerald) !important;
+        border-color: var(--lt-emerald) !important;
+    }
+
+    /* Button styling within forms */
+    html.light-theme button[type="submit"],
+    html.light-theme button[type="button"] {
+        background-color: var(--lt-emerald) !important;
+        color: white !important;
+        border-color: var(--lt-emerald) !important;
+    }
+    html.light-theme button[type="submit"]:hover,
+    html.light-theme button[type="button"]:hover {
+        background-color: var(--lt-emerald-strong) !important;
+        border-color: var(--lt-emerald-strong) !important;
+    }
+
+    /* Label styling */
+    html.light-theme label {
+        color: var(--lt-text-secondary) !important;
+    }
+    html.light-theme label:hover {
+        color: var(--lt-text) !important;
+    }
+    html.light-theme [class~="bg-white/15"] {
+        background-color: var(--lt-surface-3);
+    }
+    html.light-theme [class~="bg-white/20"] {
+        background-color: var(--lt-surface-4);
+    }
+    html.light-theme [class~="bg-white/[0.06]"] {
+        background-color: var(--lt-surface-2);
+    }
+    html.light-theme [class~="bg-white/[0.04]"] {
+        background-color: var(--lt-surface-2);
+    }
+    html.light-theme [class~="bg-white/[0.03]"] {
+        background-color: var(--lt-surface-2);
+    }
+    html.light-theme [class~="bg-white/[0.02]"],
+    html.light-theme [class~="hover:bg-white/[0.02]"]:hover {
+        background-color: var(--lt-nav-hover);
+    }
+
+    /* Colored badge tints */
+    html.light-theme [class~="bg-emerald-500/15"] {
+        background-color: var(--lt-emerald-faint-bg);
+    }
+    html.light-theme [class~="bg-emerald-500/20"] {
+        background-color: var(--lt-emerald-faint-bg-alt);
+    }
+    html.light-theme [class~="bg-emerald-500/25"] {
+        background-color: var(--lt-emerald-faint-bg-alt);
+    }
+    html.light-theme [class~="bg-amber-500/20"] {
+        background-color: var(--lt-amber-faint-bg);
+    }
+    html.light-theme [class~="bg-rose-500/20"] {
+        background-color: var(--lt-rose-faint-bg);
+    }
+
+    /* Borders */
+    html.light-theme [class~="border-white/5"],
+    html.light-theme [class~="hover:border-white/5"]:hover,
+    html.light-theme [class~="focus:border-white/5"]:focus-visible {
+        border-color: var(--lt-border);
+    }
+    html.light-theme [class~="border-white/10"],
+    html.light-theme [class~="hover:border-white/10"]:hover,
+    html.light-theme [class~="focus:border-white/10"]:focus-visible {
+        border-color: var(--lt-border-strong);
+    }
+    html.light-theme [class~="border-white/15"],
+    html.light-theme [class~="hover:border-white/15"]:hover {
+        border-color: var(--lt-border-stronger);
+    }
+
+    /* Rings (brand icons, active nav) */
+    html.light-theme [class~="ring-white/5"] {
+        --tw-ring-color: rgba(0, 0, 0, 0.03);
+    }
+    html.light-theme [class~="ring-white/10"] {
+        --tw-ring-color: var(--lt-border);
+    }
+    html.light-theme [class~="ring-white/25"] {
+        --tw-ring-color: rgba(0, 0, 0, 0.15);
+    }
+    html.light-theme [class~="ring-emerald-400/25"] {
+        --tw-ring-color: rgba(52, 211, 153, 0.3);
+    }
+    html.light-theme [class~="ring-emerald-400/20"] {
+        --tw-ring-color: rgba(52, 211, 153, 0.25);
+    }
+
+    /* Dividers (tables, lists) */
+    html.light-theme [class~="divide-white/10"] {
+        --tw-divide-y-color: var(--lt-border);
+        --tw-divide-x-color: var(--lt-border);
+    }
+    html.light-theme [class~="divide-white/5"] {
+        --tw-divide-y-color: rgba(0, 0, 0, 0.03);
+        --tw-divide-x-color: rgba(0, 0, 0, 0.03);
+    }
+
+    /* Text — remapped by exact opacity token so contrast hierarchy is kept */
+    html.light-theme [class~="text-[#e7eee9]"],
+    html.light-theme [class~="text-white"],
+    html.light-theme [class~="text-white/80"],
+    html.light-theme [class~="text-white/85"],
+    html.light-theme [class~="text-white/90"],
+    html.light-theme [class~="text-white/95"],
+    html.light-theme [class~="text-white/100"] {
+        color: var(--lt-text) !important;
+    }
+    html.light-theme [class~="text-white/70"] {
+        color: var(--lt-text-secondary) !important;
+    }
+    html.light-theme [class~="text-white/60"] {
+        color: var(--lt-text-muted) !important;
+    }
+    html.light-theme [class~="text-white/50"],
+    html.light-theme [class~="text-white/55"] {
+        color: var(--lt-text-secondary) !important;
+    }
+    html.light-theme [class~="text-white/45"],
+    html.light-theme [class~="text-white/40"],
+    html.light-theme [class~="text-white/35"],
+    html.light-theme [class~="text-white/30"] {
+        color: var(--lt-text-dimmer) !important;
+    }
+    html.light-theme [class~="placeholder-white/30"],
+    html.light-theme [class~="placeholder-white/40"],
+    html.light-theme [class~="placeholder-white/50"] {
+        color: var(--lt-placeholder) !important;
+    }
+    html.light-theme [class~="hover:text-white"]:hover {
+        color: var(--lt-text) !important;
+    }
+
+    /* Additional text color fixes for light theme */
+    html.light-theme .text-white {
+        color: var(--lt-text) !important;
+    }
+    html.light-theme .text-white\/60 {
+        color: var(--lt-text-muted) !important;
+    }
+    html.light-theme .text-white\/70 {
+        color: var(--lt-text-secondary) !important;
+    }
+    html.light-theme .text-white\/90 {
+        color: var(--lt-text) !important;
+    }
+    html.light-theme .text-\[\#e7eee9\] {
+        color: var(--lt-text) !important;
+    }
+
+    /* Tints reused for status badges */
+    html.light-theme [class~="text-emerald-100"] {
+        color: var(--lt-emerald-faint-text) !important;
+    }
+    html.light-theme [class~="text-emerald-200"] {
+        color: var(--lt-link) !important;
+    }
+    html.light-theme [class~="text-emerald-300"] {
+        color: var(--lt-emerald) !important;
+    }
+    html.light-theme [class~="text-emerald-400"] {
+        color: var(--lt-emerald-light) !important;
+    }
+    html.light-theme [class~="text-emerald-200"]:hover,
+    html.light-theme [class~="hover:text-emerald-200"]:hover {
+        color: var(--lt-emerald-strong) !important;
+    }
+    html.light-theme [class~="text-amber-100"] {
+        color: var(--lt-amber-faint-text) !important;
+    }
+    html.light-theme [class~="text-amber-200"] {
+        color: #d97706 !important;
+    }
+    html.light-theme [class~="text-rose-100"] {
+        color: var(--lt-rose-faint-text) !important;
+    }
+    html.light-theme [class~="text-rose-200"] {
+        color: #e11d48 !important;
+    }
+    html.light-theme [class~="hover:text-emerald-800"]:hover {
+        color: var(--lt-emerald-strong) !important;
+    }
+
+    /* Back-to-site link keeps a readable sky tint in both themes */
+    html.light-theme [class~="hover:text-emerald-200"] {
+        color: var(--lt-link) !important;
+    }
+    html.light-theme [class~="hover:text-emerald-200"]:hover {
+        color: var(--lt-emerald-strong) !important;
+    }
+
+    /* Additional colored text improvements */
+    html.light-theme .text-emerald-100 {
+        color: var(--lt-emerald-faint-text) !important;
+    }
+    html.light-theme .text-emerald-200 {
+        color: var(--lt-link) !important;
+    }
+    html.light-theme .text-emerald-300 {
+        color: var(--lt-emerald) !important;
+    }
+    html.light-theme .text-amber-100 {
+        color: var(--lt-amber-faint-text) !important;
+    }
+    html.light-theme .text-rose-100 {
+        color: var(--lt-rose-faint-text) !important;
+    }
+    html.light-theme .text-emerald-200 {
+        color: var(--lt-link) !important;
+    }
+
+    /* Sky blue text for links */
+    html.light-theme [class~="text-sky-200"] {
+        color: var(--lt-sky-faint-text) !important;
+    }
+    html.light-theme [class~="text-sky-300"] {
+        color: #0ea5e9 !important;
+    }
+    html.light-theme .text-sky-200 {
+        color: var(--lt-sky-faint-text) !important;
+    }
+    html.light-theme .text-sky-300 {
+        color: #0ea5e9 !important;
+    }
+
+    /* Enhanced link and hover states */
+    html.light-theme a {
+        color: var(--lt-link) !important;
+    }
+    html.light-theme a:hover {
+        color: var(--lt-link-hover) !important;
+    }
+    html.light-theme [class~="hover:text-emerald-200"]:hover {
+        color: var(--lt-emerald-strong) !important;
+    }
+    html.light-theme [class~="hover:text-emerald-300"]:hover {
+        color: var(--lt-emerald) !important;
+    }
+    html.light-theme [class~="hover:text-sky-200"]:hover {
+        color: #0ea5e9 !important;
+    }
+
+    /* Additional text color fixes */
+    html.light-theme [class~="text-emerald-400"] {
+        color: var(--lt-emerald-light) !important;
+    }
+    html.light-theme [class~="text-emerald-500"] {
+        color: var(--lt-emerald) !important;
+    }
+    html.light-theme [class~="text-emerald-600"] {
+        color: var(--lt-emerald-strong) !important;
+    }
+    html.light-theme .text-emerald-400 {
+        color: var(--lt-emerald-light) !important;
+    }
+    html.light-theme .text-emerald-500 {
+        color: var(--lt-emerald) !important;
+    }
+    html.light-theme .text-emerald-600 {
+        color: var(--lt-emerald-strong) !important;
+    }
+
+    /* Violet and other accent colors */
+    html.light-theme [class~="text-violet-200"] {
+        color: #7c3aed !important;
+    }
+    html.light-theme [class~="text-violet-300"] {
+        color: #8b5cf6 !important;
+    }
+    html.light-theme .text-violet-200 {
+        color: #7c3aed !important;
+    }
+    html.light-theme .text-violet-300 {
+        color: #8b5cf6 !important;
     }
 }
 

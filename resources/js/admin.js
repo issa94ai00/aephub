@@ -1,4 +1,5 @@
 import './bootstrap';
+import { setupAdminTheme } from './admin/useTheme';
 import {
     setupAdminContentReveal,
     setupAdminMobileNav,
@@ -7,6 +8,7 @@ import {
 } from './admin/admin-dom';
 
 document.addEventListener('DOMContentLoaded', () => {
+    setupAdminTheme();
     setupAdminMobileNav();
     setupAdminScrollHeader();
     setupAdminContentReveal();

@@ -1,6 +1,7 @@
 <script setup>
 import { Link, router, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { initAdminTheme, isAdminLight, syncThemeToggleButtons, toggleAdminTheme } from '../admin/useTheme';
 
 const page = usePage();
 
@@ -12,6 +13,55 @@ const props = defineProps({
 });
 
 const chrome = computed(() => page.props.adminChrome);
+
+const locale = computed(() => chrome.value?.locale ?? 'ar');
+const layoutT = computed(() => page.props.translations?.admin?.layout ?? {});
+
+const isLight = ref(isAdminLight());
+const collapsedSections = ref(new Set());
+
+// Initialize all sections as collapsed by default
+const allSectionKeys = computed(() => {
+    const keys = new Set();
+    for (const item of nav.value) {
+        const key = item.section || 'overview';
+        keys.add(key);
+    }
+    return Array.from(keys);
+});
+
+// Collapse all sections on mount
+onMounted(() => {
+    initAdminTheme();
+    isLight.value = isAdminLight();
+    // Collapse all sections by default
+    allSectionKeys.value.forEach(key => collapsedSections.value.add(key));
+    
+    // Expand the section containing the active route
+    const activeItem = nav.value.find(item => navItemActive(item));
+    if (activeItem) {
+        const activeSection = activeItem.section || 'overview';
+        collapsedSections.value.delete(activeSection);
+    }
+});
+
+function toggleSection(key) {
+    if (collapsedSections.value.has(key)) {
+        collapsedSections.value.delete(key);
+    } else {
+        collapsedSections.value.add(key);
+    }
+}
+
+function isSectionCollapsed(key) {
+    return collapsedSections.value.has(key);
+}
+
+function switchTheme() {
+    const next = toggleAdminTheme();
+    isLight.value = next === 'light';
+    syncThemeToggleButtons();
+}
 
 const nav = computed(() => (props.nav?.length ? props.nav : chrome.value?.nav ?? []));
 const activeRouteName = computed(() => props.routeName || chrome.value?.routeName || null);
@@ -33,12 +83,11 @@ const navRows = computed(() => {
             rows.push({ type: 'section', key, label: sectionLabel(key) });
             lastKey = key;
         }
-        rows.push({ type: 'item', item });
+        rows.push({ type: 'item', item, sectionKey: key });
     }
     return rows;
 });
 
-const locale = computed(() => chrome.value?.locale ?? 'ar');
 const isEn = computed(() => locale.value === 'en');
 const mainPad = computed(() => (isEn.value ? 'lg:pl-64' : 'lg:pr-64'));
 const sidebarDir = computed(() => (isEn.value ? 'ltr' : 'rtl'));
@@ -139,14 +188,29 @@ function closeMobileSidebar() {
                     <template v-for="(row, idx) in navRows" :key="idx">
                         <div
                             v-if="row.type === 'section'"
-                            class="admin-nav-section px-3 pb-1.5 pt-4 text-[10px] font-semibold uppercase tracking-wider text-white/40"
+                            class="admin-nav-section flex cursor-pointer items-center justify-between px-3 pb-1.5 pt-4 text-[10px] font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-white/70"
+                            @click="toggleSection(row.key)"
                         >
-                            {{ row.label }}
+                            <span>{{ row.label }}</span>
+                            <svg
+                                class="h-3 w-3 transition-transform duration-200"
+                                :class="isSectionCollapsed(row.key) ? '-rotate-90' : 'rotate-0'"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 9l-7 7-7-7"
+                                />
+                            </svg>
                         </div>
                         <Link
-                            v-else
+                            v-else-if="!isSectionCollapsed(row.sectionKey)"
                             :href="row.item.href"
-                            class="admin-nav-link relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
+                            class="admin-nav-link relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200"
                             :class="
                                 navItemActive(row.item)
                                     ? 'bg-emerald-500/15 text-emerald-100 ring-1 ring-emerald-400/25'
@@ -423,36 +487,86 @@ function closeMobileSidebar() {
                     </div>
                     <div class="flex shrink-0 flex-wrap items-center justify-end gap-2 text-xs sm:gap-3 sm:text-sm">
                         <div
-                            class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-1 py-0.5"
+                            class="flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-1.5 py-1 transition-all duration-300 hover:bg-white/10"
                             role="group"
                             :aria-label="page.props.translations?.admin?.layout?.language"
                         >
                             <a
                                 :href="chrome?.localeUrls?.ar ?? '#'"
-                                class="rounded-lg px-2 py-1 font-medium"
-                                :class="locale === 'ar' ? 'bg-emerald-500/25 text-emerald-100' : 'text-white/70 hover:bg-white/10'"
+                                class="rounded-lg px-2.5 py-1 text-xs font-semibold transition-all duration-200"
+                                :class="locale === 'ar' ? 'bg-emerald-500/25 text-emerald-100 shadow-sm' : 'text-white/70 hover:bg-white/10 hover:text-white'"
                             >
                                 {{ page.props.translations?.admin?.layout?.lang_ar }}
                             </a>
                             <a
                                 :href="chrome?.localeUrls?.en ?? '#'"
-                                class="rounded-lg px-2 py-1 font-medium"
-                                :class="locale === 'en' ? 'bg-emerald-500/25 text-emerald-100' : 'text-white/70 hover:bg-white/10'"
+                                class="rounded-lg px-2.5 py-1 text-xs font-semibold transition-all duration-200"
+                                :class="locale === 'en' ? 'bg-emerald-500/25 text-emerald-100 shadow-sm' : 'text-white/70 hover:bg-white/10 hover:text-white'"
                             >
                                 {{ page.props.translations?.admin?.layout?.lang_en }}
                             </a>
                             <a
                                 :href="chrome?.localeUrls?.auto ?? '#'"
-                                class="rounded-lg px-2 py-1 text-white/55 hover:bg-white/10"
+                                class="rounded-lg px-2 py-1 text-xs font-medium text-white/55 transition-all duration-200 hover:bg-white/10 hover:text-white"
                                 :title="page.props.translations?.admin?.layout?.lang_auto"
                             >
                                 A
                             </a>
-                        </div>
+                         </div>
+                        <button
+                            type="button"
+                            data-admin-theme-toggle
+                            :data-admin-theme-label-light="layoutT.theme_light"
+                            :data-admin-theme-label-dark="layoutT.theme_dark"
+                            class="admin-theme-toggle admin-btn relative inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 p-2.5 text-[#e7eee9] transition-all duration-300 hover:bg-white/10 hover:scale-105 active:scale-95"
+                            :class="isLight ? 'bg-emerald-500/10 border-emerald-400/30' : ''"
+                            :aria-label="layoutT.theme_toggle"
+                            :aria-pressed="isLight ? 'false' : 'true'"
+                            @click="switchTheme"
+                        >
+                            <svg
+                                class="admin-theme-sun h-5 w-5 transition-transform duration-300"
+                                :class="isLight ? 'rotate-0 scale-100' : 'rotate-90 scale-0'"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M12 3v1m0 16v1m8.66-9.34H21m-2.66 0h-2.66M5.64 5.64l.71.71M17.65 17.65l.71.71M4 12H2m20 0h-2.66"
+                                />
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="3"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                />
+                            </svg>
+                            <svg
+                                class="admin-theme-moon h-5 w-5 absolute transition-transform duration-300"
+                                :class="isLight ? 'rotate-90 scale-0' : 'rotate-0 scale-100'"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M21 14.5a7 7 0 0 1-9.5-9.5 7 7 0 0 0 9.5 9.5Z"
+                                />
+                            </svg>
+                        </button>
                         <span class="hidden text-white/70 sm:inline">{{ chrome?.userName }}</span>
                         <button
                             type="button"
-                            class="admin-btn rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 font-medium text-white/90 hover:bg-white/10"
+                            class="admin-btn rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white/90 transition-all duration-300 hover:bg-white/10 hover:border-red-400/30 hover:text-red-200"
                             @click="logout"
                         >
                             {{ page.props.translations?.admin?.layout?.logout }}

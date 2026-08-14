@@ -10,6 +10,10 @@ return [
         'lang_en' => 'English',
         'lang_auto' => 'تلقائي',
         'language' => 'اللغة',
+        'theme' => 'المظهر',
+        'theme_toggle' => 'تبديل المظهر',
+        'theme_light' => 'الوضع الفاتح',
+        'theme_dark' => 'الوضع الداكن',
     ],
 
     'nav' => [
